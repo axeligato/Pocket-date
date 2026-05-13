@@ -3,31 +3,31 @@ const IMG = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAYEBQYFBAYG
 
 const CHARACTER = {
   name: "Kai", title: "The Athlete Next Door",
-  bio: "Loud laugh, terrible liar, makes you soup when you're sick and never admits it. Runs ten miles every morning and still shows up for everything that matters. Probably thinks about you more than he should.",
-  age: 24, sign: "Aries", likes: "Late games, instant ramen, your laugh",
+  bio: "Loud laugh, terrible liar, makes you soup when you're sick and never admits it. Runs ten miles every morning and still shows up for everything that matters.",
+  age: 24, sign: "Aries ♈", likes: "Late games, instant ramen, your laugh",
   moods: ["tired","neutral","happy","flustered","pumped"],
   messages: {
     tired:    ["Ugh... five more minutes.","Don't look at me right now.","I ran ten miles. Be nice."],
     neutral:  ["Oh. Hey.","What are you doing here?","...You came back."],
     happy:    ["You showed up! Nice.","This is good. You being here.","Stay for a bit, yeah?"],
     flustered:["That's— I'm not— whatever.","Stop smiling like that.","I wasn't waiting. Shut up."],
-    pumped:   ["LET'S GO!! You're here!","I've been thinking about you all day!","You're my good luck charm."],
+    pumped:   ["LET'S GO!! You're here!","I've been thinking about you all day!","You're my good luck charm!"],
   },
   stories: [
-    { id:1, level:1,  title:"After Practice",   preview:"He's still catching his breath when you find him.", locked:false },
-    { id:2, level:2,  title:"Borrowed Hoodie",  preview:"He says nothing. You're still wearing it.",          locked:true  },
-    { id:3, level:3,  title:"3–2 Loss",          preview:"He doesn't talk. You sit with him anyway.",          locked:true  },
-    { id:4, level:5,  title:"Rainy Stands",      preview:"His game. Your umbrella. Zero personal space.",      locked:true  },
-    { id:5, level:7,  title:"Your Name",         preview:"He's never said it like that before.",               locked:true  },
-    { id:6, level:10, title:"Championship Eve",  preview:"He asks you to stay. Just stay.",                    locked:true  },
+    { id:1, level:1,  title:"After Practice",  preview:"He's still catching his breath when you find him.", locked:false },
+    { id:2, level:2,  title:"Borrowed Hoodie", preview:"He says nothing. You're still wearing it.",          locked:true  },
+    { id:3, level:3,  title:"3–2 Loss",         preview:"He doesn't talk. You sit with him anyway.",          locked:true  },
+    { id:4, level:5,  title:"Rainy Stands",     preview:"His game. Your umbrella. Zero personal space.",      locked:true  },
+    { id:5, level:7,  title:"Your Name",        preview:"He's never said it like that before.",               locked:true  },
+    { id:6, level:10, title:"Championship Eve", preview:"He asks you to stay. Just stay.",                    locked:true  },
   ],
 };
 
 const DATES = [
-  { id:"jog",     label:"Morning Jog",    emoji:"🌅", xp:15, cost:0,  duration:2200 },
-  { id:"stadium", label:"Watch His Game", emoji:"🏟️", xp:30, cost:15, duration:3500 },
-  { id:"ramen",   label:"Ramen After",    emoji:"🍜", xp:20, cost:8,  duration:2800 },
-  { id:"gym",     label:"Gym Together",   emoji:"💪", xp:25, cost:12, duration:3000 },
+  { id:"jog",     label:"Morning Jog",    emoji:"🌅", xp:15, cost:0,  duration:2200, color:"#FFD166" },
+  { id:"stadium", label:"Watch His Game", emoji:"🏟️", xp:30, cost:15, duration:3500, color:"#EF476F" },
+  { id:"ramen",   label:"Ramen After",    emoji:"🍜", xp:20, cost:8,  duration:2800, color:"#06D6A0" },
+  { id:"gym",     label:"Gym Together",   emoji:"💪", xp:25, cost:12, duration:3000, color:"#118AB2" },
 ];
 
 const XP_PER_LEVEL = 50;
@@ -55,8 +55,31 @@ const STORIES_CONTENT = {
   ],
 };
 
+const PALETTE = {
+  cream: "#FFF8F0",
+  paper: "#FFFDF7",
+  red:   "#EF476F",
+  yellow:"#FFD166",
+  green: "#06D6A0",
+  blue:  "#118AB2",
+  navy:  "#073B4C",
+  pink:  "#FF6B9D",
+  orange:"#F77F00",
+};
+
 function getMood(a){ return a<20?"tired":a<40?"neutral":a<65?"happy":a<85?"flustered":"pumped"; }
 function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+// Wobbly deco shapes
+function Deco(){
+  return(
+    <>
+      <div style={{position:"absolute",top:8,right:8,width:28,height:28,background:PALETTE.yellow,borderRadius:"50%",border:"2px solid "+PALETTE.navy,zIndex:0}}/>
+      <div style={{position:"absolute",top:18,right:40,width:16,height:16,background:PALETTE.red,borderRadius:"3px",transform:"rotate(15deg)",border:"2px solid "+PALETTE.navy,zIndex:0}}/>
+      <div style={{position:"absolute",top:6,right:22,width:10,height:10,background:PALETTE.green,borderRadius:"50%",border:"1.5px solid "+PALETTE.navy,zIndex:0}}/>
+    </>
+  );
+}
 
 // ── Story Reader ──────────────────────────────────────────────────────────────
 function StoryReader({story, onClose}){
@@ -64,20 +87,32 @@ function StoryReader({story, onClose}){
   const lines=STORIES_CONTENT[story.id]||[{speaker:null,text:story.preview}];
   const cur=lines[idx];
   const done=idx>=lines.length-1;
+  const colors=[PALETTE.red,PALETTE.blue,PALETTE.green,PALETTE.yellow,PALETTE.pink];
+  const col=colors[story.id%colors.length];
   return(
-    <div style={{position:"fixed",inset:0,zIndex:100,background:"#faf8f4",display:"flex",flexDirection:"column",fontFamily:"'Lora',serif"}}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');`}</style>
-      <div style={{padding:"20px 24px 0",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-        <div style={{fontSize:11,letterSpacing:3,color:"#999",textTransform:"uppercase",fontFamily:"sans-serif"}}>✦ {story.title} ✦</div>
-        <button onClick={onClose} style={{background:"none",border:"1px solid #ccc",borderRadius:99,width:32,height:32,cursor:"pointer",color:"#888",fontSize:14}}>✕</button>
+    <div style={{position:"fixed",inset:0,zIndex:100,background:PALETTE.cream,display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflow:"hidden"}}>
+      {/* Colorful top bar */}
+      <div style={{background:col,padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:"3px solid "+PALETTE.navy,flexShrink:0}}>
+        <div style={{fontSize:13,letterSpacing:2,color:PALETTE.navy,textTransform:"uppercase",fontWeight:900,fontFamily:"'Fredoka One',cursive"}}>✦ {story.title} ✦</div>
+        <button onClick={onClose} style={{background:"white",border:"2.5px solid "+PALETTE.navy,borderRadius:99,width:32,height:32,cursor:"pointer",color:PALETTE.navy,fontSize:16,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
       </div>
-      <div style={{flex:1,display:"flex",alignItems:"flex-end",justifyContent:"center",overflow:"hidden",minHeight:0}}>
-        <img src={IMG} alt="Kai" style={{height:"70%",width:"auto",objectFit:"contain",objectPosition:"top center",borderRadius:"20px 20px 0 0",border:"1.5px solid #e0dbd4",borderBottom:"none",background:"#f0ede8"}}/>
+      {/* Character image — full display */}
+      <div style={{flex:1,display:"flex",alignItems:"flex-end",justifyContent:"center",overflow:"hidden",minHeight:0,background:`linear-gradient(180deg, ${col}22 0%, ${PALETTE.cream} 100%)`}}>
+        <img src={IMG} alt="Kai"
+          style={{height:"78%",width:"auto",maxWidth:"100%",objectFit:"contain",objectPosition:"top center",display:"block"}}
+        />
       </div>
-      <div onClick={()=>done?onClose():setIdx(i=>i+1)} style={{flexShrink:0,margin:"0 16px 28px",background:"white",border:"1.5px solid #1a1a1a",borderRadius:20,padding:"18px 22px 14px",cursor:"pointer",boxShadow:"3px 4px 0 #1a1a1a",minHeight:88}}>
-        {cur?.speaker&&<div style={{fontSize:11,letterSpacing:2,fontWeight:700,color:cur.speaker==="You"?"#555":"#c0392b",marginBottom:8,textTransform:"uppercase",fontFamily:"sans-serif"}}>{cur.speaker==="You"?"You":CHARACTER.name}</div>}
-        <p style={{margin:0,fontSize:15,lineHeight:1.7,color:"#1a1a1a"}}>{cur?.text}</p>
-        <div style={{textAlign:"right",marginTop:8,fontSize:11,color:"#bbb",fontFamily:"sans-serif",letterSpacing:1}}>{done?"[ close ]":"[ tap to continue ]"}</div>
+      {/* Dialogue */}
+      <div onClick={()=>done?onClose():setIdx(i=>i+1)}
+        style={{flexShrink:0,margin:"0 14px 24px",background:"white",border:"3px solid "+PALETTE.navy,borderRadius:20,padding:"16px 20px 14px",cursor:"pointer",
+          boxShadow:`4px 5px 0 ${PALETTE.navy}`,minHeight:86}}>
+        {cur?.speaker&&(
+          <div style={{fontSize:11,letterSpacing:2,fontWeight:900,color:cur.speaker==="You"?PALETTE.blue:col,marginBottom:8,textTransform:"uppercase"}}>
+            {cur.speaker==="You"?"You":CHARACTER.name}
+          </div>
+        )}
+        <p style={{margin:0,fontSize:15,lineHeight:1.7,color:PALETTE.navy}}>{cur?.text}</p>
+        <div style={{textAlign:"right",marginTop:8,fontSize:11,color:"#bbb",letterSpacing:1}}>{done?"[ close ]":"[ tap to continue ]"}</div>
       </div>
     </div>
   );
@@ -97,26 +132,43 @@ function DateScreen({date, onComplete}){
     },50);
     return()=>clearInterval(ref.current);
   },[date.duration]);
-  const circ=2*Math.PI*42;
+  const circ=2*Math.PI*40;
   return(
-    <div style={{position:"fixed",inset:0,zIndex:80,background:"#faf8f4",display:"flex",flexDirection:"column",fontFamily:"'Lora',serif"}}>
-      {/* Character takes top half */}
-      <div style={{flex:1,display:"flex",alignItems:"flex-end",justifyContent:"center",overflow:"hidden",minHeight:0,paddingTop:24}}>
-        <img src={IMG} alt="Kai" style={{height:"80%",width:"auto",objectFit:"contain",objectPosition:"top center",borderRadius:20,border:"2px solid #e0dbd4",background:"#f0ede8",boxShadow:"4px 6px 0 #d4cfc8"}}/>
-      </div>
-      {/* Bottom panel */}
-      <div style={{flexShrink:0,padding:"20px 24px 32px",display:"flex",flexDirection:"column",alignItems:"center",gap:18}}>
-        <div style={{fontSize:36}}>{date.emoji}</div>
-        <h2 style={{margin:0,fontSize:20,fontFamily:"'Playfair Display',serif",color:"#1a1a1a"}}>{date.label}</h2>
-        <p style={{margin:0,fontSize:13,color:"#999",letterSpacing:1}}>{done?"a good time ♡":"spending time together…"}</p>
-        <div style={{position:"relative",width:88,height:88}}>
-          <svg width="88" height="88" style={{transform:"rotate(-90deg)"}}>
-            <circle cx="44" cy="44" r="38" fill="none" stroke="#e8e4de" strokeWidth="6"/>
-            <circle cx="44" cy="44" r="38" fill="none" stroke="#1a1a1a" strokeWidth="6" strokeDasharray={2*Math.PI*38} strokeDashoffset={(2*Math.PI*38)*(1-progress/100)} strokeLinecap="round" style={{transition:"stroke-dashoffset 0.1s linear"}}/>
-          </svg>
-          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:done?20:14,color:"#1a1a1a",fontWeight:700}}>{done?"♡":`${Math.floor(progress)}%`}</div>
+    <div style={{position:"fixed",inset:0,zIndex:80,background:PALETTE.cream,display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif"}}>
+      {/* Colorful header */}
+      <div style={{background:date.color,padding:"16px 20px",borderBottom:"3px solid "+PALETTE.navy,display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
+        <span style={{fontSize:28}}>{date.emoji}</span>
+        <div>
+          <div style={{fontFamily:"'Fredoka One',cursive",fontSize:18,color:PALETTE.navy}}>{date.label}</div>
+          <div style={{fontSize:12,color:PALETTE.navy+"aa"}}>{done?"What a lovely time ♡":"Spending time together..."}</div>
         </div>
-        {done&&<button onClick={onComplete} style={{background:"#1a1a1a",color:"white",border:"none",borderRadius:99,padding:"13px 34px",fontSize:15,fontFamily:"'Lora',serif",cursor:"pointer",boxShadow:"3px 4px 0 #c0392b"}}>+{date.xp} affection ♡</button>}
+      </div>
+      {/* Character — big display */}
+      <div style={{flex:1,display:"flex",alignItems:"flex-end",justifyContent:"center",overflow:"hidden",minHeight:0,background:`linear-gradient(180deg,${date.color}33 0%,${PALETTE.cream} 100%)`}}>
+        <img src={IMG} alt="Kai"
+          style={{height:"78%",width:"auto",maxWidth:"100%",objectFit:"contain",objectPosition:"top center",display:"block"}}
+        />
+      </div>
+      {/* Progress */}
+      <div style={{flexShrink:0,padding:"20px 24px 32px",display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
+        <div style={{position:"relative",width:90,height:90}}>
+          <svg width="90" height="90" style={{transform:"rotate(-90deg)"}}>
+            <circle cx="45" cy="45" r="40" fill="none" stroke="#e8e4de" strokeWidth="7"/>
+            <circle cx="45" cy="45" r="40" fill="none" stroke={date.color} strokeWidth="7"
+              strokeDasharray={circ} strokeDashoffset={circ*(1-progress/100)}
+              strokeLinecap="round" style={{transition:"stroke-dashoffset 0.1s linear"}}/>
+          </svg>
+          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",
+            fontSize:done?22:15,color:PALETTE.navy,fontWeight:900}}>{done?"♡":`${Math.floor(progress)}%`}</div>
+        </div>
+        {done&&(
+          <button onClick={onComplete}
+            style={{background:date.color,color:PALETTE.navy,border:"3px solid "+PALETTE.navy,borderRadius:99,
+              padding:"12px 32px",fontSize:15,fontFamily:"'Fredoka One',cursive",cursor:"pointer",
+              boxShadow:`4px 4px 0 ${PALETTE.navy}`,letterSpacing:0.5}}>
+            +{date.xp} affection ♡
+          </button>
+        )}
       </div>
     </div>
   );
@@ -124,34 +176,48 @@ function DateScreen({date, onComplete}){
 
 // ── Bio Tab ───────────────────────────────────────────────────────────────────
 function BioTab(){
+  const pills=[
+    {label:"Age",    value:CHARACTER.age,  color:PALETTE.yellow},
+    {label:"Sign",   value:CHARACTER.sign, color:PALETTE.red},
+    {label:"Likes",  value:CHARACTER.likes,color:PALETTE.green},
+  ];
   return(
-    <div style={{padding:"20px 18px"}}>
-      {/* Big portrait */}
-      <div style={{display:"flex",justifyContent:"center",marginBottom:20}}>
-        <img src={IMG} alt="Kai" style={{height:260,width:"auto",objectFit:"contain",objectPosition:"top center",borderRadius:22,border:"2px solid #1a1a1a",background:"#f0ede8",boxShadow:"4px 6px 0 #d4cfc8"}}/>
+    <div style={{padding:"18px 16px"}}>
+      {/* Portrait card with sticker vibe */}
+      <div style={{position:"relative",marginBottom:16}}>
+        <div style={{background:"white",border:"3px solid "+PALETTE.navy,borderRadius:24,padding:14,
+          boxShadow:`5px 6px 0 ${PALETTE.navy}`,overflow:"hidden",display:"flex",flexDirection:"column",alignItems:"center"}}>
+          {/* Colored band at top */}
+          <div style={{position:"absolute",top:0,left:0,right:0,height:72,background:PALETTE.yellow,borderRadius:"21px 21px 0 0",borderBottom:"3px solid "+PALETTE.navy}}/>
+          <div style={{position:"relative",zIndex:1,marginTop:14,marginBottom:10}}>
+            <img src={IMG} alt="Kai"
+              style={{height:220,width:"auto",objectFit:"contain",objectPosition:"top center",
+                borderRadius:16,border:"3px solid "+PALETTE.navy,background:PALETTE.cream,
+                boxShadow:`4px 4px 0 ${PALETTE.navy}`,display:"block"}}
+            />
+          </div>
+          <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,textAlign:"center"}}>{CHARACTER.name}</div>
+          <div style={{fontSize:12,color:"#888",fontStyle:"italic",marginBottom:8}}>{CHARACTER.title}</div>
+          <p style={{fontSize:13,color:PALETTE.navy,lineHeight:1.7,textAlign:"center",margin:0}}>{CHARACTER.bio}</p>
+        </div>
+        {/* Deco stickers */}
+        <div style={{position:"absolute",top:-10,right:10,fontSize:22,transform:"rotate(10deg)"}}>⭐</div>
+        <div style={{position:"absolute",top:-8,left:10,fontSize:18,transform:"rotate(-8deg)"}}>💙</div>
       </div>
-      {/* Name + title card */}
-      <div style={{background:"white",border:"1.5px solid #1a1a1a",borderRadius:18,padding:"18px 20px",marginBottom:12,boxShadow:"3px 4px 0 #d4cfc8"}}>
-        <div style={{fontFamily:"'Playfair Display',serif",fontSize:24,fontWeight:900,color:"#1a1a1a",lineHeight:1}}>{CHARACTER.name}</div>
-        <div style={{fontSize:13,color:"#aaa",fontStyle:"italic",marginTop:4}}>{CHARACTER.title}</div>
-        <p style={{margin:"12px 0 0",fontSize:14,lineHeight:1.7,color:"#555"}}>{CHARACTER.bio}</p>
-      </div>
-      {/* Stats */}
-      {[
-        { label:"Age",   value:`${CHARACTER.age}` },
-        { label:"Sign",  value:CHARACTER.sign },
-        { label:"Likes", value:CHARACTER.likes },
-      ].map(row=>(
-        <div key={row.label} style={{background:"white",border:"1.5px solid #e0dbd4",borderRadius:14,padding:"12px 18px",marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <span style={{fontSize:11,letterSpacing:2,color:"#bbb",fontFamily:"sans-serif",textTransform:"uppercase"}}>{row.label}</span>
-          <span style={{fontSize:14,color:"#1a1a1a",fontWeight:600}}>{row.value}</span>
+      {/* Stat pills */}
+      {pills.map(p=>(
+        <div key={p.label} style={{background:p.color,border:"2.5px solid "+PALETTE.navy,borderRadius:14,
+          padding:"11px 18px",marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center",
+          boxShadow:`3px 3px 0 ${PALETTE.navy}`}}>
+          <span style={{fontSize:10,letterSpacing:2,color:PALETTE.navy,fontWeight:900,textTransform:"uppercase"}}>{p.label}</span>
+          <span style={{fontSize:14,color:PALETTE.navy,fontWeight:800}}>{p.value}</span>
         </div>
       ))}
     </div>
   );
 }
 
-// ── Main Game ─────────────────────────────────────────────────────────────────
+// ── Main ──────────────────────────────────────────────────────────────────────
 export default function OtomeGame(){
   const [affection,setAffection]=useState(0);
   const [level,setLevel]=useState(1);
@@ -219,75 +285,141 @@ export default function OtomeGame(){
   }
 
   const stories=CHARACTER.stories.map(s=>({...s,locked:s.level>level}));
-  const moodEmoji={tired:"😴",neutral:"😶",happy:"😌",flustered:"🫣",pumped:"😤"};
-  const TABS=[{id:"home",label:"Home",icon:"🏠"},{id:"bio",label:"Profile",icon:"👤"},{id:"dates",label:"Dates",icon:"💌"},{id:"stories",label:"Stories",icon:"📖"}];
+  const moodEmoji={tired:"😴",neutral:"😶",happy:"😊",flustered:"🫣",pumped:"🔥"};
+  const moodColor={tired:PALETTE.blue,neutral:PALETTE.navy,happy:PALETTE.green,flustered:PALETTE.pink,pumped:PALETTE.red};
+  const TABS=[
+    {id:"home",   label:"Home",    icon:"🏠", color:PALETTE.yellow},
+    {id:"bio",    label:"Profile", icon:"👤", color:PALETTE.green},
+    {id:"dates",  label:"Dates",   icon:"💌", color:PALETTE.red},
+    {id:"stories",label:"Stories", icon:"📖", color:PALETTE.blue},
+  ];
+
+  const headerColors=[PALETTE.yellow,PALETTE.red,PALETTE.green,PALETTE.blue];
+  const activeTabColor=TABS.find(t=>t.id===tab)?.color||PALETTE.yellow;
 
   return(
-    <div style={{minHeight:"100vh",maxWidth:420,margin:"0 auto",background:"#faf8f4",fontFamily:"'Lora',serif",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
+    <div style={{minHeight:"100vh",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
+      fontFamily:"'Nunito',sans-serif",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');
-        @keyframes hf{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-52px) scale(1.6)}}
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
+        @keyframes hf{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-55px) scale(1.8)}}
         @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+        @keyframes wiggle{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
         *{box-sizing:border-box} ::-webkit-scrollbar{width:0}
       `}</style>
 
-      {/* Header */}
-      <div style={{padding:"18px 20px 13px",display:"flex",justifyContent:"space-between",alignItems:"flex-start",borderBottom:"1.5px solid #1a1a1a",flexShrink:0}}>
+      {/* ── Header ── */}
+      <div style={{background:activeTabColor,borderBottom:"3px solid "+PALETTE.navy,padding:"14px 18px 12px",
+        display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexShrink:0,
+        transition:"background 0.3s ease",position:"relative",overflow:"hidden"}}>
+        {/* Deco dots */}
+        <div style={{position:"absolute",top:6,left:"50%",width:12,height:12,borderRadius:"50%",background:"rgba(255,255,255,0.35)",transform:"translateX(-50%)"}}/>
         <div>
-          <div style={{fontSize:10,letterSpacing:3,color:"#bbb",textTransform:"uppercase",fontFamily:"sans-serif",marginBottom:2}}>Your Companion</div>
-          <div style={{fontSize:24,fontFamily:"'Playfair Display',serif",fontWeight:900,color:"#1a1a1a",lineHeight:1}}>{CHARACTER.name}</div>
-          <div style={{fontSize:11,color:"#bbb",fontStyle:"italic",marginTop:2}}>{CHARACTER.title}</div>
+          <div style={{fontSize:10,letterSpacing:3,color:PALETTE.navy+"bb",textTransform:"uppercase",fontWeight:900,marginBottom:1}}>Your Companion</div>
+          <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,lineHeight:1}}>{CHARACTER.name}</div>
+          <div style={{fontSize:11,color:PALETTE.navy+"99",marginTop:1,fontStyle:"italic"}}>{CHARACTER.title}</div>
         </div>
-        <div style={{background:"white",border:"1.5px solid #1a1a1a",borderRadius:99,padding:"6px 14px",display:"flex",alignItems:"center",gap:5,boxShadow:"2px 2px 0 #1a1a1a"}}>
-          <span style={{fontSize:13}}>🌸</span>
-          <span style={{fontWeight:700,fontSize:14,color:"#1a1a1a"}}>{coins}</span>
-        </div>
-      </div>
-
-      {/* Bars */}
-      <div style={{padding:"11px 20px 0",flexShrink:0}}>
-        <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-          <span style={{fontSize:10,fontFamily:"sans-serif",letterSpacing:2,color:"#666"}}>LEVEL {level}</span>
-          <span style={{fontSize:10,fontFamily:"sans-serif",color:"#ccc"}}>{xp}/{XP_PER_LEVEL}</span>
-        </div>
-        <div style={{height:5,background:"#e8e4de",borderRadius:99,border:"1px solid #d4cfc8",overflow:"hidden",marginBottom:8}}>
-          <div style={{height:"100%",borderRadius:99,width:`${(xp/XP_PER_LEVEL)*100}%`,background:"#1a1a1a",transition:"width 0.5s ease"}}/>
-        </div>
-        <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
-          <span style={{fontSize:10,fontFamily:"sans-serif",letterSpacing:2,color:"#c0392b"}}>♡ AFFECTION</span>
-          <span style={{fontSize:10,fontFamily:"sans-serif",color:"#ccc"}}>{affection}%</span>
-        </div>
-        <div style={{height:5,background:"#f0ddd9",borderRadius:99,border:"1px solid #e0c8c2",overflow:"hidden"}}>
-          <div style={{height:"100%",borderRadius:99,width:`${affection}%`,background:"#c0392b",transition:"width 0.5s ease"}}/>
+        <div style={{background:"white",border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
+          display:"flex",alignItems:"center",gap:5,boxShadow:`3px 3px 0 ${PALETTE.navy}`}}>
+          <span style={{fontSize:14}}>🌸</span>
+          <span style={{fontWeight:900,fontSize:15,color:PALETTE.navy}}>{coins}</span>
         </div>
       </div>
 
-      {/* Content */}
+      {/* ── XP + Affection bars ── */}
+      <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"2px solid #e8e0d8"}}>
+        {/* Level row */}
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <div style={{background:PALETTE.navy,color:"white",borderRadius:99,padding:"1px 8px",fontSize:9,fontWeight:900,letterSpacing:1}}>LV{level}</div>
+            <span style={{fontSize:10,color:"#888"}}>XP</span>
+          </div>
+          <span style={{fontSize:10,color:"#ccc",fontWeight:700}}>{xp}/{XP_PER_LEVEL}</span>
+        </div>
+        <div style={{height:8,background:"#ede8e0",borderRadius:99,border:"1.5px solid #d4cfc8",overflow:"hidden",marginBottom:8}}>
+          <div style={{height:"100%",borderRadius:99,width:`${(xp/XP_PER_LEVEL)*100}%`,
+            background:`linear-gradient(90deg,${PALETTE.yellow},${PALETTE.orange})`,
+            transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(255,180,0,0.5)"}}/>
+        </div>
+        {/* Affection row */}
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+          <span style={{fontSize:10,color:PALETTE.red,fontWeight:900,letterSpacing:1}}>♡ AFFECTION</span>
+          <span style={{fontSize:10,color:"#ccc",fontWeight:700}}>{affection}%</span>
+        </div>
+        <div style={{height:8,background:"#f5e0e5",borderRadius:99,border:"1.5px solid #e8c0ca",overflow:"hidden",marginBottom:8}}>
+          <div style={{height:"100%",borderRadius:99,width:`${affection}%`,
+            background:`linear-gradient(90deg,${PALETTE.pink},${PALETTE.red})`,
+            transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(239,71,111,0.4)"}}/>
+        </div>
+      </div>
+
+      {/* ── Content ── */}
       <div style={{flex:1,overflow:"auto",minHeight:0}}>
 
         {/* HOME */}
         {tab==="home"&&(
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center"}}>
-            <div onClick={tapChar} style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",justifyContent:"center",paddingTop:14,transform:pulse?"scale(1.025)":"scale(1)",transition:"transform 0.25s ease"}}>
-              <img
-                src={IMG} alt={CHARACTER.name}
-                style={{height:290,width:"auto",maxWidth:"100%",objectFit:"contain",objectPosition:"top center",borderRadius:22,border:"2px solid #e0dbd4",boxShadow:"4px 6px 0 #d4cfc8",background:"#f0ede8"}}
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
+            {/* Tap area */}
+            <div onClick={tapChar}
+              style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
+                justifyContent:"center",paddingTop:16,
+                transform:pulse?"scale(1.03)":"scale(1)",transition:"transform 0.25s cubic-bezier(.4,2,.6,1)"}}>
+              {/* Yellow band bg */}
+              <div style={{position:"absolute",top:0,left:0,right:0,height:130,background:PALETTE.yellow,opacity:0.18}}/>
+              <img src={IMG} alt={CHARACTER.name}
+                style={{
+                  height:295,
+                  width:"auto",
+                  maxWidth:"88%",
+                  objectFit:"contain",
+                  objectPosition:"top center",
+                  display:"block",
+                  position:"relative",
+                  zIndex:1,
+                  borderRadius:20,
+                  border:"3px solid "+PALETTE.navy,
+                  background:PALETTE.cream,
+                  boxShadow:`5px 7px 0 ${PALETTE.navy}`,
+                }}
               />
+              {/* Hearts */}
               {hearts.map(h=>(
-                <div key={h.id} style={{position:"absolute",left:h.x+h.ox,top:h.y-8,fontSize:20,pointerEvents:"none",animation:"hf 1.1s ease-out forwards",zIndex:10,color:"#c0392b"}}>♡</div>
+                <div key={h.id} style={{position:"absolute",left:h.x+h.ox,top:h.y-8,fontSize:22,
+                  pointerEvents:"none",animation:"hf 1.1s ease-out forwards",zIndex:10,color:PALETTE.red}}>♡</div>
               ))}
               {tapHint&&(
-                <div style={{position:"absolute",bottom:16,background:"white",border:"1px solid #ddd",borderRadius:99,padding:"5px 13px",fontSize:11,color:"#aaa",letterSpacing:1,fontFamily:"sans-serif"}}>
+                <div style={{position:"absolute",bottom:18,zIndex:2,background:"white",
+                  border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 14px",
+                  fontSize:11,color:PALETTE.navy,fontWeight:800,boxShadow:`2px 2px 0 ${PALETTE.navy}`,
+                  animation:"bounce 1.6s ease-in-out infinite"}}>
                   tap to show affection ♡
                 </div>
               )}
             </div>
-            <div style={{margin:"14px 18px 12px",background:"white",border:"1.5px solid #1a1a1a",borderRadius:18,padding:"15px 19px",width:"calc(100% - 36px)",boxShadow:"3px 4px 0 #d4cfc8",animation:"fi 0.3s ease"}}>
-              <p style={{margin:0,fontSize:16,color:"#1a1a1a",fontStyle:"italic",lineHeight:1.65}}>"{message}"</p>
+
+            {/* Speech bubble */}
+            <div style={{margin:"14px 16px 10px",background:"white",border:"2.5px solid "+PALETTE.navy,
+              borderRadius:18,padding:"14px 18px",width:"calc(100% - 32px)",
+              boxShadow:`4px 5px 0 ${PALETTE.navy}`,animation:"fi 0.3s ease",position:"relative"}}>
+              {/* Bubble triangle */}
+              <div style={{position:"absolute",top:-11,left:36,width:0,height:0,
+                borderLeft:"10px solid transparent",borderRight:"10px solid transparent",
+                borderBottom:`11px solid ${PALETTE.navy}`}}/>
+              <div style={{position:"absolute",top:-8,left:37,width:0,height:0,
+                borderLeft:"9px solid transparent",borderRight:"9px solid transparent",
+                borderBottom:"10px solid white"}}/>
+              <p style={{margin:0,fontSize:15,color:PALETTE.navy,fontStyle:"italic",lineHeight:1.65,fontWeight:600}}>
+                "{message}"
+              </p>
             </div>
-            <div style={{display:"inline-flex",alignItems:"center",gap:7,background:"white",border:"1.5px solid #1a1a1a",borderRadius:99,padding:"6px 15px",boxShadow:"2px 2px 0 #d4cfc8",marginBottom:22}}>
-              <span style={{fontSize:14}}>{moodEmoji[mood]}</span>
-              <span style={{fontSize:10,textTransform:"capitalize",color:"#666",fontFamily:"sans-serif",letterSpacing:1}}>{mood}</span>
+
+            {/* Mood pill */}
+            <div style={{display:"inline-flex",alignItems:"center",gap:7,
+              background:moodColor[mood],border:"2.5px solid "+PALETTE.navy,
+              borderRadius:99,padding:"6px 16px",boxShadow:`3px 3px 0 ${PALETTE.navy}`,marginBottom:16}}>
+              <span style={{fontSize:15}}>{moodEmoji[mood]}</span>
+              <span style={{fontSize:11,textTransform:"capitalize",color:"white",fontWeight:900,letterSpacing:1}}>{mood}</span>
             </div>
           </div>
         )}
@@ -297,19 +429,29 @@ export default function OtomeGame(){
 
         {/* DATES */}
         {tab==="dates"&&(
-          <div style={{padding:"20px 18px"}}>
-            <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:20,color:"#1a1a1a",marginTop:0,marginBottom:5}}>Plan a Date</h3>
-            <p style={{color:"#aaa",fontSize:13,marginBottom:16}}>Spending time together grows your bond.</p>
+          <div style={{padding:"18px 16px"}}>
+            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:22,color:PALETTE.navy,marginBottom:4}}>Plan a Date 💌</div>
+            <p style={{color:"#aaa",fontSize:13,marginBottom:16,fontWeight:600}}>Spending time together grows your bond.</p>
             {DATES.map(date=>{
               const ok=coins>=date.cost;
               return(
-                <div key={date.id} onClick={()=>ok&&goDate(date)} style={{background:ok?"white":"#f5f3ef",border:`1.5px solid ${ok?"#1a1a1a":"#ddd"}`,borderRadius:18,padding:"14px 18px",marginBottom:12,display:"flex",alignItems:"center",gap:14,cursor:ok?"pointer":"not-allowed",opacity:ok?1:0.45,boxShadow:ok?"3px 4px 0 #d4cfc8":"none",transition:"all 0.15s"}}>
-                  <span style={{fontSize:28}}>{date.emoji}</span>
+                <div key={date.id} onClick={()=>ok&&goDate(date)}
+                  style={{background:ok?date.color:"#f0ece8",border:`2.5px solid ${ok?PALETTE.navy:"#ddd"}`,
+                    borderRadius:18,padding:"14px 16px",marginBottom:12,
+                    display:"flex",alignItems:"center",gap:14,
+                    cursor:ok?"pointer":"not-allowed",opacity:ok?1:0.45,
+                    boxShadow:ok?`4px 4px 0 ${PALETTE.navy}`:"none",
+                    transition:"all 0.15s"}}>
+                  <span style={{fontSize:30}}>{date.emoji}</span>
                   <div style={{flex:1}}>
-                    <div style={{fontWeight:700,fontSize:14,color:"#1a1a1a"}}>{date.label}</div>
-                    <div style={{fontSize:11,color:"#bbb",marginTop:2}}>+{date.xp} affection</div>
+                    <div style={{fontWeight:900,fontSize:15,color:PALETTE.navy,fontFamily:"'Fredoka One',cursive"}}>{date.label}</div>
+                    <div style={{fontSize:11,color:PALETTE.navy+"99",marginTop:2,fontWeight:700}}>+{date.xp} affection</div>
                   </div>
-                  <div style={{background:ok?"#1a1a1a":"#eee",color:ok?"white":"#bbb",borderRadius:99,padding:"4px 12px",fontSize:11,fontFamily:"sans-serif",display:"flex",alignItems:"center",gap:3}}>🌸 {date.cost}</div>
+                  <div style={{background:ok?"white":"#eee",border:`2px solid ${ok?PALETTE.navy:"#ddd"}`,
+                    color:ok?PALETTE.navy:"#bbb",borderRadius:99,padding:"4px 12px",
+                    fontSize:11,fontWeight:900,display:"flex",alignItems:"center",gap:3}}>
+                    🌸 {date.cost}
+                  </div>
                 </div>
               );
             })}
@@ -318,30 +460,53 @@ export default function OtomeGame(){
 
         {/* STORIES */}
         {tab==="stories"&&(
-          <div style={{padding:"20px 18px"}}>
-            <h3 style={{fontFamily:"'Playfair Display',serif",fontSize:20,color:"#1a1a1a",marginTop:0,marginBottom:5}}>{CHARACTER.name}'s Story</h3>
-            <p style={{color:"#aaa",fontSize:13,marginBottom:16}}>Unlock chapters by leveling up together.</p>
-            {stories.map(s=>(
-              <div key={s.id} onClick={()=>!s.locked&&setOpenStory(s)} style={{background:s.locked?"#f5f3ef":"white",border:`1.5px solid ${s.locked?"#e4dfd8":"#1a1a1a"}`,borderRadius:18,padding:"14px 18px",marginBottom:12,cursor:s.locked?"default":"pointer",opacity:s.locked?0.55:1,boxShadow:s.locked?"none":"3px 4px 0 #d4cfc8"}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                  <div style={{fontWeight:700,fontSize:14,color:s.locked?"#bbb":"#1a1a1a"}}>{s.locked?"🔒 ":"📖 "}{s.title}</div>
-                  <div style={{fontSize:10,color:"#ccc",fontFamily:"sans-serif",letterSpacing:1}}>LV{s.level}</div>
+          <div style={{padding:"18px 16px"}}>
+            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:22,color:PALETTE.navy,marginBottom:4}}>{CHARACTER.name}'s Story 📖</div>
+            <p style={{color:"#aaa",fontSize:13,marginBottom:16,fontWeight:600}}>Unlock chapters by leveling up.</p>
+            {stories.map((s,i)=>{
+              const colors2=[PALETTE.yellow,PALETTE.red,PALETTE.green,PALETTE.blue,PALETTE.pink,PALETTE.orange];
+              const col2=s.locked?"#f0ece8":colors2[i%colors2.length];
+              return(
+                <div key={s.id} onClick={()=>!s.locked&&setOpenStory(s)}
+                  style={{background:col2,border:`2.5px solid ${s.locked?"#ddd":PALETTE.navy}`,
+                    borderRadius:18,padding:"14px 18px",marginBottom:12,
+                    cursor:s.locked?"default":"pointer",opacity:s.locked?0.45:1,
+                    boxShadow:s.locked?"none":`4px 4px 0 ${PALETTE.navy}`}}>
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                    <div style={{fontWeight:900,fontSize:14,color:s.locked?"#bbb":PALETTE.navy,fontFamily:"'Fredoka One',cursive"}}>
+                      {s.locked?"🔒 ":"📖 "}{s.title}
+                    </div>
+                    <div style={{background:s.locked?"#ddd":"white",border:`1.5px solid ${s.locked?"#ddd":PALETTE.navy}`,
+                      borderRadius:99,padding:"2px 9px",fontSize:9,fontWeight:900,color:s.locked?"#bbb":PALETTE.navy}}>LV{s.level}</div>
+                  </div>
+                  <p style={{margin:"5px 0 0",fontSize:13,color:s.locked?"#bbb":PALETTE.navy+"cc",fontStyle:"italic",lineHeight:1.5}}>
+                    {s.locked?`Reach level ${s.level} to unlock`:s.preview}
+                  </p>
                 </div>
-                <p style={{margin:"5px 0 0",fontSize:13,color:s.locked?"#ccc":"#888",fontStyle:"italic",lineHeight:1.5}}>{s.locked?`Reach level ${s.level} to unlock`:s.preview}</p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
 
-      {/* Bottom Nav — 4 tabs */}
-      <div style={{display:"flex",borderTop:"1.5px solid #1a1a1a",background:"white",position:"sticky",bottom:0,zIndex:30,flexShrink:0}}>
-        {TABS.map((t,i)=>(
-          <button key={t.id} onClick={()=>setTab(t.id)} style={{flex:1,padding:"12px 0 10px",background:tab===t.id?"#1a1a1a":"transparent",border:"none",borderRight:i<TABS.length-1?"1.5px solid #1a1a1a":"none",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:3,transition:"all 0.15s"}}>
-            <span style={{fontSize:16}}>{t.icon}</span>
-            <span style={{fontSize:8,letterSpacing:0.8,textTransform:"uppercase",fontFamily:"sans-serif",fontWeight:700,color:tab===t.id?"white":"#999"}}>{t.label}</span>
-          </button>
-        ))}
+      {/* ── Bottom Nav ── */}
+      <div style={{display:"flex",borderTop:"3px solid "+PALETTE.navy,background:"white",
+        position:"sticky",bottom:0,zIndex:30,flexShrink:0}}>
+        {TABS.map((t,i)=>{
+          const active=tab===t.id;
+          return(
+            <button key={t.id} onClick={()=>setTab(t.id)}
+              style={{flex:1,padding:"11px 0 9px",background:active?t.color:"white",border:"none",
+                borderRight:i<TABS.length-1?"2.5px solid "+PALETTE.navy:"none",
+                cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,
+                transition:"all 0.15s",position:"relative"}}>
+              {active&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:PALETTE.navy}}/>}
+              <span style={{fontSize:18}}>{t.icon}</span>
+              <span style={{fontSize:8,letterSpacing:0.8,textTransform:"uppercase",
+                fontWeight:900,color:active?PALETTE.navy:"#bbb"}}>{t.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       {activeDate&&<DateScreen date={activeDate} onComplete={()=>finishDate(activeDate)}/>}
