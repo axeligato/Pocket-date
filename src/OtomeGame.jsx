@@ -474,6 +474,16 @@ export default function OtomeGame(){
       fontFamily:"'Nunito',sans-serif",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
+        :root{--pocket-ink:#073B4C;--pocket-paper:#fffaf2;--pocket-outline:3px solid var(--pocket-ink);--pocket-shadow:4px 5px 0 var(--pocket-ink)}
+        .pocket-tabs{gap:5px;padding:9px 10px 10px;align-items:stretch}
+        .pocket-tabs .pocket-tab{border:2px solid transparent !important;border-radius:14px !important;min-width:0;min-height:55px;transition:transform .16s ease,background .16s ease,box-shadow .16s ease !important}
+        .pocket-tabs .pocket-tab[aria-current="page"]{border-color:var(--pocket-ink) !important;box-shadow:3px 3px 0 var(--pocket-ink);transform:translateY(-2px)}
+        .pocket-tabs .pocket-tab:not([aria-current="page"]):hover{background:#fff5de !important;transform:translateY(-2px)}
+        .pocket-tabs .pocket-tab-label{font-size:10px !important;letter-spacing:.4px !important}
+        .pocket-tabs .pocket-tab-icon{font-size:21px !important;line-height:1.25}
+        .pocket-content{scrollbar-width:thin;scrollbar-color:#c8bcb0 transparent}
+        .pocket-content button:not(:disabled):active{filter:brightness(.97)}
+        @media(prefers-reduced-motion:reduce){.pocket-tabs .pocket-tab{transition:none !important}.pocket-tabs .pocket-tab:hover{transform:none !important}}
         .pocket-home{position:relative;isolation:isolate;background:radial-gradient(circle at 12% 17%,#fff4bf 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#ffe0e9 0 14%,transparent 14.5%),#fffaf2}
         .pocket-character{isolation:isolate}
         .pocket-sticker{position:absolute;z-index:3;pointer-events:none;font-family:"Fredoka One",cursive;color:#073B4C}
@@ -503,7 +513,7 @@ export default function OtomeGame(){
           .pocket-bio { max-width: 740px; margin: 0 auto; }
           .pocket-dates, .pocket-stories { max-width: 740px; margin: 0 auto; padding: 32px 28px !important; }
           .pocket-tabs { justify-content: center; }
-          .pocket-tabs button { flex: 0 1 200px !important; }
+          .pocket-tabs button { flex: 0 1 180px !important; }
         }
         @media (min-width: 768px) and (max-height: 650px) {
           .pocket-app { min-height: 480px !important; height: calc(100dvh - 24px); margin: 12px auto !important; }
@@ -546,11 +556,11 @@ export default function OtomeGame(){
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
           <div style={{display:"flex",alignItems:"center",gap:6}}>
             <div style={{background:PALETTE.navy,color:"white",borderRadius:99,padding:"1px 8px",fontSize:9,fontWeight:900,letterSpacing:1}}>LV{level}</div>
-            <span style={{fontSize:10,color:"#888"}}>XP</span>
+            <span style={{fontSize:11,color:"#536672"}}>XP</span>
           </div>
-          <span style={{fontSize:10,color:"#ccc",fontWeight:700}}>{xp}/{XP_PER_LEVEL}</span>
+          <span style={{fontSize:11,color:"#536672",fontWeight:900}}>{xp}/{XP_PER_LEVEL}</span>
         </div>
-        <div style={{height:8,background:"#ede8e0",borderRadius:99,border:"1.5px solid #d4cfc8",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:"#ede8e0",borderRadius:99,border:"1.5px solid #d4cfc8",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${(xp/XP_PER_LEVEL)*100}%`,
             background:`linear-gradient(90deg,${PALETTE.yellow},${PALETTE.orange})`,
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(255,180,0,0.5)"}}/>
@@ -560,7 +570,7 @@ export default function OtomeGame(){
           <span style={{fontSize:10,color:PALETTE.red,fontWeight:900,letterSpacing:1}}>♡ AFFECTION</span>
           <span style={{fontSize:10,color:"#ccc",fontWeight:700}}>{affection}%</span>
         </div>
-        <div style={{height:8,background:"#f5e0e5",borderRadius:99,border:"1.5px solid #e8c0ca",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:"#f5e0e5",borderRadius:99,border:"1.5px solid #e8c0ca",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${affection}%`,
             background:`linear-gradient(90deg,${PALETTE.pink},${PALETTE.red})`,
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(239,71,111,0.4)"}}/>
@@ -715,24 +725,16 @@ export default function OtomeGame(){
       </div>
 
       {/* ── Bottom Nav ── */}
-      <div className="pocket-tabs" style={{display:"flex",borderTop:"3px solid "+PALETTE.navy,background:"white",
-        position:"sticky",bottom:0,zIndex:30,flexShrink:0}}>
-        {TABS.map((t,i)=>{
+      <nav className="pocket-tabs" aria-label="Main navigation" style={{display:"flex",borderTop:"3px solid "+PALETTE.navy,background:"#fffaf2",position:"sticky",bottom:0,zIndex:30,flexShrink:0}}>
+        {TABS.map(t=>{
           const active=tab===t.id;
-          return(
-            <button key={t.id} onClick={()=>setTab(t.id)}
-              style={{flex:1,padding:"11px 0 9px",background:active?t.color:"white",border:"none",
-                borderRight:i<TABS.length-1?"2.5px solid "+PALETTE.navy:"none",
-                cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",gap:2,
-                transition:"all 0.15s",position:"relative"}}>
-              {active&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:PALETTE.navy}}/>}
-              <span style={{fontSize:18}}>{t.icon}</span>
-              <span style={{fontSize:8,letterSpacing:0.8,textTransform:"uppercase",
-                fontWeight:900,color:active?PALETTE.navy:"#bbb"}}>{t.label}</span>
-            </button>
-          );
+          return <button className="pocket-tab" type="button" key={t.id} aria-current={active?"page":undefined} onClick={()=>setTab(t.id)}
+            style={{flex:1,padding:"8px 3px 7px",background:active?t.color:"transparent",border:"2px solid transparent",borderRadius:14,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,color:PALETTE.navy,fontFamily:"'Nunito',sans-serif",fontWeight:900}}>
+            <span className="pocket-tab-icon" aria-hidden="true">{t.icon}</span>
+            <span className="pocket-tab-label" style={{fontSize:10,letterSpacing:.4,textTransform:"uppercase",fontWeight:900,color:PALETTE.navy}}>{t.label}</span>
+          </button>;
         })}
-      </div>
+      </nav>
 
       {activeDate&&(activeDate.id==="jog"?<MorningJog date={activeDate} onComplete={finishDate} previousChoice={jogMemory}/>:<BranchingDate date={activeDate} onComplete={finishDate}/>)}
       {openStory&&<StoryReader story={openStory} onClose={()=>setOpenStory(null)}/>}
