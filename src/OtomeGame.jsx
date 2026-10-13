@@ -137,6 +137,46 @@ function StoryReader({story, onClose}){
 }
 
 // ── Date Screen ───────────────────────────────────────────────────────────────
+const JOG_CHOICES = [
+  {id:"tease",label:"Someone has to keep you honest.",reply:"Hey! I was only five minutes late yesterday. ...Okay, maybe ten.",expression:"laughing",chibi:"excited",bonus:5,ending:"You spend the run laughing and trading playful challenges."},
+  {id:"sweet",label:"I wanted to spend time with you.",reply:"...You remembered our plan? That's kind of unfair. Now I can't stop smiling.",expression:"flirty",chibi:"embarrassed",bonus:8,ending:"The morning feels quieter, warmer, and unexpectedly special."},
+  {id:"challenge",label:"Less talking. Race you to the bridge!",reply:"Oh, it's on! Try to keep up!",expression:"surprised",chibi:"happy",bonus:3,ending:"You reach the bridge breathless, victorious, and grinning."}
+];
+
+function MorningJog({date,onComplete}){
+  const [choice,setChoice]=useState(null);
+  const selected=JOG_CHOICES.find(c=>c.id===choice);
+  return(
+    <div role="dialog" aria-modal="true" aria-label="Morning Jog with Kai" style={{position:"fixed",inset:0,zIndex:80,background:PALETTE.cream,display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflowY:"auto"}}>
+      <div style={{background:date.color,padding:"16px 20px",borderBottom:`3px solid ${PALETTE.navy}`,flexShrink:0}}>
+        <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>🌅 Morning Jog</div>
+        <div style={{fontSize:12,color:PALETTE.navy}}>A little time together, a choice that matters.</div>
+      </div>
+      <div style={{flex:"1 1 auto",minHeight:140,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",background:"linear-gradient(180deg,#FFE5AA,#FFF8F0)"}}>
+        <img key={selected?.expression||"curious"} src={PORTRAITS[selected?.expression||"curious"]} alt={`Kai — ${selected?.expression||"curious"}`} style={{height:"min(42dvh,340px)",maxWidth:"82%",objectFit:"contain",filter:"drop-shadow(3px 6px 3px #073B4C33)"}}/>
+        {selected&&<img src={CHIBIS[selected.chibi]} alt="" style={{position:"absolute",right:"8%",bottom:10,width:90,maxHeight:110,objectFit:"contain",filter:"drop-shadow(2px 4px 2px #073B4C33)"}}/>}
+      </div>
+      <div style={{background:"white",borderTop:`3px solid ${PALETTE.navy}`,padding:"18px clamp(16px,5vw,32px) 26px",flexShrink:0}}>
+        <div style={{maxWidth:560,margin:"0 auto"}}>
+          <div style={{fontSize:12,fontWeight:900,color:PALETTE.red,letterSpacing:1,marginBottom:6}}>KAI</div>
+          <p aria-live="polite" style={{fontSize:16,fontWeight:700,lineHeight:1.6,color:PALETTE.navy,margin:"0 0 16px"}}>{selected?selected.reply:"You actually showed up at 6 AM? I didn't think you'd come."}</p>
+          {!selected?(
+            <div style={{display:"grid",gap:9}}>
+              {JOG_CHOICES.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",border:`2px solid ${PALETTE.navy}`,borderRadius:14,background:PALETTE.paper,color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer",minHeight:48}}>{c.label}</button>)}
+            </div>
+          ):(
+            <div>
+              <p style={{color:PALETTE.navy,fontSize:13,lineHeight:1.6,margin:"0 0 14px"}}>{selected.ending}</p>
+              <div style={{fontSize:12,color:PALETTE.navy,fontWeight:800,marginBottom:12}}>+{date.xp} XP · +{selected.bonus} bonus XP · +{Math.floor((date.xp+selected.bonus)/4)} affection</div>
+              <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer"}}>Finish date ♡</button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function DateScreen({date, onComplete}){
   const [progress,setProgress]=useState(0);
   const [done,setDone]=useState(false);
@@ -184,7 +224,7 @@ function DateScreen({date, onComplete}){
             style={{background:date.color,color:PALETTE.navy,border:"3px solid "+PALETTE.navy,borderRadius:99,
               padding:"12px 32px",fontSize:15,fontFamily:"'Fredoka One',cursive",cursor:"pointer",
               boxShadow:`4px 4px 0 ${PALETTE.navy}`,letterSpacing:0.5}}>
-            +{date.xp} affection ♡
+            +{date.xp} XP ♡
           </button>
         )}
       </div>
@@ -507,7 +547,7 @@ export default function OtomeGame(){
         {tab==="dates"&&(
           <div className="pocket-dates" style={{padding:"18px 16px"}}>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:22,color:PALETTE.navy,marginBottom:4}}>Plan a Date 💌</div>
-            <p style={{color:"#aaa",fontSize:13,marginBottom:16,fontWeight:600}}>Spending time together grows your bond.</p>
+            <p style={{color:"#aaa",fontSize:13,marginBottom:16,fontWeight:600}}>Choose how to connect with Kai. Your decisions can shape the rewards.</p>
             {DATES.map(date=>{
               const ok=coins>=date.cost;
               return(
@@ -585,7 +625,7 @@ export default function OtomeGame(){
         })}
       </div>
 
-      {activeDate&&<DateScreen date={activeDate} onComplete={()=>finishDate(activeDate)}/>}
+      {activeDate&&(activeDate.id==="jog"?<MorningJog date={activeDate} onComplete={finishDate}/>:<DateScreen date={activeDate} onComplete={()=>finishDate(activeDate)}/>)}
       {openStory&&<StoryReader story={openStory} onClose={()=>setOpenStory(null)}/>}
     </div>
   );
