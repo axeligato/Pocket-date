@@ -17,7 +17,7 @@ function readSave(){
     const data=JSON.parse(raw);
     if(!data||typeof data!=="object"||data.version!==1)return {};
     const bounded=(value,min,max,fallback)=>Number.isFinite(value)?Math.max(min,Math.min(max,Math.floor(value))):fallback;
-    return {affection:bounded(data.affection,0,100,0),level:bounded(data.level,1,10,1),xp:bounded(data.xp,0,49,0),coins:bounded(data.coins,0,999999,30),jogMemory:MEMORY_CHOICES.includes(data.jogMemory)?data.jogMemory:null,memoryAlbum:Array.isArray(data.memoryAlbum)?MEMORY_CHOICES.filter(id=>data.memoryAlbum.includes(id)):MEMORY_CHOICES.includes(data.jogMemory)?[data.jogMemory]:[]};
+    return {affection:bounded(data.affection,0,100,0),level:bounded(data.level,1,10,1),xp:bounded(data.xp,0,49,0),coins:bounded(data.coins,0,999999,30),jogMemory:MEMORY_CHOICES.includes(data.jogMemory)?data.jogMemory:null,memoryAlbum:Array.isArray(data.memoryAlbum)?ALL_MEMORY_IDS.filter(id=>data.memoryAlbum.includes(id)):MEMORY_CHOICES.includes(data.jogMemory)?[data.jogMemory]:[]};
   }catch{return {};}
 }
 
@@ -180,6 +180,62 @@ function MorningJog({date,onComplete,previousChoice}){
   );
 }
 
+const OTHER_DATE_SCENES = {
+  stadium:{
+    opening:"You made it! I was looking for you in the stands. Did you see that last play?",
+    choices:[
+      {id:"cheer",label:"I cheered so loudly for you!",reply:"I heard you! That's what kept me going.",expression:"happy",chibi:"excited",bonus:8,ending:"Kai spots you in the crowd and sends a secret wave.",title:"The loudest cheer"},
+      {id:"analyze",label:"Your final pass was incredible.",reply:"You noticed? I've been practicing that all week.",expression:"surprised",chibi:"focused",bonus:5,ending:"You talk tactics until the stadium lights dim.",title:"A perfect pass"},
+      {id:"tease",label:"You almost missed that shot!",reply:"Almost doesn't count! You were worried about me, huh?",expression:"laughing",chibi:"pouty",bonus:3,ending:"You trade jokes all the way out of the stadium.",title:"Almost counts"}
+    ]
+  },
+  ramen:{
+    opening:"It's my favorite ramen spot. You can have the last dumpling... maybe.",
+    choices:[
+      {id:"share",label:"Let's split it.",reply:"Okay, that's dangerously sweet of you.",expression:"flirty",chibi:"in-love",bonus:8,ending:"You share the last dumpling and a shy smile.",title:"The last dumpling"},
+      {id:"spicy",label:"Bet I can handle more spice.",reply:"Challenge accepted! ...Wait, that's really hot.",expression:"surprised",chibi:"excited",bonus:5,ending:"You laugh through the spiciest meal of the week.",title:"Spice challenge"},
+      {id:"listen",label:"Tell me about your day.",reply:"You really want to know? That means a lot.",expression:"happy",chibi:"happy",bonus:6,ending:"The conversation lasts longer than the noodles.",title:"An unhurried dinner"}
+    ]
+  },
+  gym:{
+    opening:"Ready for one more set? We can take it easy if you want.",
+    choices:[
+      {id:"spot",label:"I'll spot you.",reply:"Thanks. I feel like I can do anything with you here.",expression:"happy",chibi:"focused",bonus:8,ending:"You finish the workout as a team.",title:"Stronger together"},
+      {id:"compete",label:"Let's see who lasts longer.",reply:"You sure? I don't go easy on challengers!",expression:"laughing",chibi:"excited",bonus:5,ending:"Your friendly competition ends in a tie.",title:"One more rep"},
+      {id:"rest",label:"How about a water break together?",reply:"Best idea you've had all day. Come sit with me.",expression:"flirty",chibi:"sleepy",bonus:6,ending:"A quiet break becomes your favorite part of the session.",title:"Between sets"}
+    ]
+  }
+};
+const OTHER_MEMORY_IDS = Object.entries(OTHER_DATE_SCENES).flatMap(([date,scene])=>scene.choices.map(choice=>date+":"+choice.id));
+const ALL_MEMORY_IDS = [...MEMORY_CHOICES,...OTHER_MEMORY_IDS];
+
+function BranchingDate({date,onComplete}){
+  const [choice,setChoice]=useState(null);
+  const scene=OTHER_DATE_SCENES[date.id];
+  const selected=scene.choices.find(c=>c.id===choice);
+  return <div role="dialog" aria-modal="true" aria-label={date.label} style={{position:"fixed",inset:0,zIndex:80,background:PALETTE.cream,display:"flex",flexDirection:"column",overflowY:"auto",fontFamily:"'Nunito',sans-serif"}}>
+    <div style={{background:date.color,padding:"16px 20px",borderBottom:`3px solid ${PALETTE.navy}`}}>
+      <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>{date.emoji} {date.label}</div>
+      <div style={{fontSize:12,color:PALETTE.navy}}>A moment worth remembering ♡</div>
+    </div>
+    <div style={{flex:"1 1 auto",minHeight:140,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",background:`linear-gradient(180deg,${date.color}44,${PALETTE.cream})`}}>
+      <img src={PORTRAITS[selected?.expression||"curious"]} alt={`Kai — ${selected?.expression||"curious"}`} style={{height:"min(42dvh,340px)",maxWidth:"82%",objectFit:"contain",filter:"drop-shadow(3px 6px 3px #073B4C33)"}}/>
+      {selected&&<img src={CHIBIS[selected.chibi]} alt="" style={{position:"absolute",right:"8%",bottom:10,width:90,maxHeight:110,objectFit:"contain"}}/>}
+    </div>
+    <div style={{background:"white",borderTop:`3px solid ${PALETTE.navy}`,padding:"18px clamp(16px,5vw,32px) 26px"}}>
+      <div style={{maxWidth:560,margin:"0 auto"}}>
+        <div style={{fontSize:12,fontWeight:900,color:PALETTE.red,marginBottom:6}}>KAI</div>
+        <p aria-live="polite" style={{fontSize:16,fontWeight:700,lineHeight:1.6,color:PALETTE.navy,margin:"0 0 16px"}}>{selected?selected.reply:scene.opening}</p>
+        {!selected?<div style={{display:"grid",gap:9}}>{scene.choices.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",minHeight:48,border:`2px solid ${PALETTE.navy}`,borderRadius:14,background:PALETTE.paper,color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer"}}>{c.label}</button>)}</div>:<div>
+          <p style={{fontSize:13,color:PALETTE.navy,lineHeight:1.6}}>{selected.ending}</p>
+          <p style={{fontSize:12,fontWeight:800,color:PALETTE.navy}}>+{date.xp} XP · +{selected.bonus} bonus XP · +{Math.floor((date.xp+selected.bonus)/4)} affection</p>
+          <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:date.id+":"+selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:date.color,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer"}}>Finish date ♡</button>
+        </div>}
+      </div>
+    </div>
+  </div>;
+}
+
 function DateScreen({date, onComplete}){
   const [progress,setProgress]=useState(0);
   const [done,setDone]=useState(false);
@@ -246,20 +302,22 @@ function BioTab({jogMemory,memoryAlbum}){
     <div style={{padding:"18px 16px"}}>
       <section aria-label="Shared memories" style={{background:"#FFF5DE",border:`2px solid ${PALETTE.navy}`,borderRadius:16,padding:"14px",marginBottom:16}}>
         <div style={{fontWeight:900,color:PALETTE.navy,fontSize:16,marginBottom:4}}>♡ Memory Album</div>
-        <p style={{margin:"0 0 12px",fontSize:12,color:PALETTE.navy}}>Morning Jog · {memoryAlbum.length} of 3 moments discovered</p>
-        <div style={{display:"grid",gap:9}}>
-          {JOG_CHOICES.map(c=>{
-            const unlocked=memoryAlbum.includes(c.id);
-            return <div key={c.id} style={{display:"flex",alignItems:"center",gap:12,background:unlocked?"white":"#F3EDE5",border:`2px solid ${unlocked?PALETTE.navy:"#D6CCC0"}`,borderRadius:13,padding:"10px 12px",opacity:unlocked?1:.75}}>
-              <span aria-hidden="true" style={{fontSize:25}}>{unlocked?"💌":"🔒"}</span>
-              <div style={{minWidth:0}}>
-                <div style={{fontWeight:900,color:PALETTE.navy,fontSize:13}}>{unlocked?MEMORY_TITLES[c.id]:"Undiscovered moment"}</div>
-                <div style={{color:PALETTE.navy,fontSize:11,lineHeight:1.5}}>{unlocked?c.ending:"Replay Morning Jog and try a different response."}</div>
-              </div>
+        <p style={{margin:"0 0 12px",fontSize:12,color:PALETTE.navy}}>{memoryAlbum.length} of {ALL_MEMORY_IDS.length} moments discovered</p>
+        {[
+          {id:"jog",label:"Morning Jog",choices:JOG_CHOICES.map(c=>({...c,title:MEMORY_TITLES[c.id],memoryId:c.id}))},
+          ...Object.entries(OTHER_DATE_SCENES).map(([id,scene])=>({id,label:DATES.find(d=>d.id===id)?.label||id,choices:scene.choices.map(c=>({...c,memoryId:id+":"+c.id}))}))
+        ].map(group=><div key={group.id} style={{marginBottom:14}}>
+          <div style={{fontSize:13,fontWeight:900,color:PALETTE.navy,marginBottom:7}}>{group.label}</div>
+          <div style={{display:"grid",gap:8}}>{group.choices.map(c=>{
+            const unlocked=memoryAlbum.includes(c.memoryId);
+            return <div key={c.memoryId} style={{display:"flex",gap:10,alignItems:"center",background:unlocked?"white":"#F3EDE5",border:`2px solid ${unlocked?PALETTE.navy:"#D6CCC0"}`,borderRadius:12,padding:"9px 11px"}}>
+              <span aria-hidden="true" style={{fontSize:22}}>{unlocked?"💌":"🔒"}</span>
+              <div><div style={{fontWeight:900,fontSize:12,color:PALETTE.navy}}>{unlocked?c.title:"Undiscovered moment"}</div>
+              <div style={{fontSize:11,lineHeight:1.5,color:PALETTE.navy}}>{unlocked?c.ending:"Replay this date and choose a different response."}</div></div>
             </div>;
-          })}
-        </div>
-        {jogMemory&&<p style={{margin:"12px 0 0",fontSize:11,color:PALETTE.navy}}>Most recent: {MEMORY_TITLES[jogMemory]}</p>}
+          })}</div>
+        </div>)}
+        {jogMemory&&<p style={{margin:"8px 0 0",fontSize:11,color:PALETTE.navy}}>Latest Morning Jog choice: {MEMORY_TITLES[jogMemory]}</p>}
       </section>
       {/* Portrait card with sticker vibe */}
       <div style={{position:"relative",marginBottom:16}}>
@@ -373,9 +431,9 @@ export default function OtomeGame(){
   function finishDate(date){
     setActiveDate(null);
     if(date.memoryChoice){
-      setJogMemory(date.memoryChoice);
+      if(MEMORY_CHOICES.includes(date.memoryChoice))setJogMemory(date.memoryChoice);
       setMemoryAlbum(prev=>prev.includes(date.memoryChoice)?prev:[...prev,date.memoryChoice]);
-      setMessage(JOG_MEMORY_LINES[date.memoryChoice]);
+      if(JOG_MEMORY_LINES[date.memoryChoice])setMessage(JOG_MEMORY_LINES[date.memoryChoice]);
     }
     setAffection(a=>Math.min(a+Math.floor(date.xp/4),100));
     setXp(prev=>{
@@ -652,7 +710,7 @@ export default function OtomeGame(){
         })}
       </div>
 
-      {activeDate&&(activeDate.id==="jog"?<MorningJog date={activeDate} onComplete={finishDate} previousChoice={jogMemory}/>:<DateScreen date={activeDate} onComplete={()=>finishDate(activeDate)}/>)}
+      {activeDate&&(activeDate.id==="jog"?<MorningJog date={activeDate} onComplete={finishDate} previousChoice={jogMemory}/>:<BranchingDate date={activeDate} onComplete={finishDate}/>)}
       {openStory&&<StoryReader story={openStory} onClose={()=>setOpenStory(null)}/>}
     </div>
   );
