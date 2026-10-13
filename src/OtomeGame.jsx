@@ -642,62 +642,63 @@ export default function OtomeGame(){
 
         {/* DATES */}
         {tab==="dates"&&(
-          <div className="pocket-dates" style={{padding:"18px 16px"}}>
-            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:22,color:PALETTE.navy,marginBottom:4}}>Plan a Date 💌</div>
-            <p style={{color:"#aaa",fontSize:13,marginBottom:16,fontWeight:600}}>Choose how to connect with Kai. Your decisions can shape the rewards.</p>
-            {DATES.map(date=>{
-              const ok=coins>=date.cost;
-              return(
-                <div key={date.id} onClick={()=>ok&&goDate(date)}
-                  style={{background:ok?date.color:"#f0ece8",border:`2.5px solid ${ok?PALETTE.navy:"#ddd"}`,
-                    borderRadius:18,padding:"14px 16px",marginBottom:12,
-                    display:"flex",alignItems:"center",gap:14,
-                    cursor:ok?"pointer":"not-allowed",opacity:ok?1:0.45,
-                    boxShadow:ok?`4px 4px 0 ${PALETTE.navy}`:"none",
-                    transition:"all 0.15s"}}>
-                  <span style={{fontSize:30}}>{date.emoji}</span>
-                  <div style={{flex:1}}>
-                    <div style={{fontWeight:900,fontSize:15,color:PALETTE.navy,fontFamily:"'Fredoka One',cursive"}}>{date.label}</div>
-                    <div style={{fontSize:11,color:PALETTE.navy+"99",marginTop:2,fontWeight:700}}>+{date.xp} affection</div>
+          <div className="pocket-dates" style={{padding:"22px 16px 32px"}}>
+            <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE DATE BOOK</div>
+            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Pick our next adventure! 💌</div>
+            <p style={{color:"#536672",fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Four little plans, a whole lot of butterflies.</p>
+            <div style={{display:"grid",gap:16}}>
+              {DATES.map((date,i)=>{
+                const ok=coins>=date.cost;
+                return <button type="button" key={date.id} disabled={!ok} onClick={()=>goDate(date)}
+                  aria-label={date.label+", "+date.cost+" flowers"+(ok?"":", not enough flowers")}
+                  style={{display:"flex",width:"100%",position:"relative",textAlign:"left",alignItems:"stretch",padding:0,background:ok?"#fff":"#f5f0e9",border:"3px solid "+(ok?PALETTE.navy:"#a9a9a9"),borderRadius:19,boxShadow:ok?"5px 6px 0 "+PALETTE.navy:"none",cursor:ok?"pointer":"not-allowed",opacity:ok?1:.78,overflow:"hidden",transform:"rotate("+(i%2===0?-1:1)+"deg)",fontFamily:"'Nunito',sans-serif"}}>
+                  <div aria-hidden="true" style={{width:96,minWidth:96,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:ok?date.color:"#e1dcd5",borderRight:"3px dashed "+PALETTE.navy,padding:"16px 7px"}}>
+                    <span style={{fontSize:40,lineHeight:1.2}}>{date.emoji}</span>
+                    <span style={{fontSize:9,fontWeight:900,letterSpacing:1,color:PALETTE.navy,marginTop:8}}>DATE 0{i+1}</span>
                   </div>
-                  <div style={{background:ok?"white":"#eee",border:`2px solid ${ok?PALETTE.navy:"#ddd"}`,
-                    color:ok?PALETTE.navy:"#bbb",borderRadius:99,padding:"4px 12px",
-                    fontSize:11,fontWeight:900,display:"flex",alignItems:"center",gap:3}}>
-                    🌸 {date.cost}
+                  <div style={{padding:"16px 12px 15px 15px",flex:1,minWidth:0}}>
+                    <div style={{fontFamily:"'Fredoka One',cursive",fontSize:17,color:PALETTE.navy,lineHeight:1.25}}>{date.label}</div>
+                    <div style={{fontSize:11,color:"#536672",fontWeight:800,marginTop:8}}>✦ +{date.xp} base XP</div>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:6,marginTop:13,flexWrap:"wrap"}}>
+                      <span style={{background:ok?"#fff5dd":"#e8e2db",border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"4px 9px",fontSize:11,fontWeight:900,color:PALETTE.navy}}>🌸 {date.cost===0?"FREE":date.cost}</span>
+                      <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy}}>{ok?"LET'S GO ↗":"🔒 NEED FLOWERS"}</span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                </button>;
+              })}
+            </div>
           </div>
         )}
 
         {/* STORIES */}
         {tab==="stories"&&(
-          <div className="pocket-stories" style={{padding:"18px 16px"}}>
-            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:22,color:PALETTE.navy,marginBottom:4}}>{CHARACTER.name}'s Story 📖</div>
-            <p style={{color:"#aaa",fontSize:13,marginBottom:16,fontWeight:600}}>Unlock chapters by leveling up.</p>
-            {stories.map((s,i)=>{
-              const colors2=[PALETTE.yellow,PALETTE.red,PALETTE.green,PALETTE.blue,PALETTE.pink,PALETTE.orange];
-              const col2=s.locked?"#f0ece8":colors2[i%colors2.length];
-              return(
-                <div key={s.id} onClick={()=>!s.locked&&setOpenStory(s)}
-                  style={{background:col2,border:`2.5px solid ${s.locked?"#ddd":PALETTE.navy}`,
-                    borderRadius:18,padding:"14px 18px",marginBottom:12,
-                    cursor:s.locked?"default":"pointer",opacity:s.locked?0.45:1,
-                    boxShadow:s.locked?"none":`4px 4px 0 ${PALETTE.navy}`}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-                    <div style={{fontWeight:900,fontSize:14,color:s.locked?"#bbb":PALETTE.navy,fontFamily:"'Fredoka One',cursive"}}>
-                      {s.locked?"🔒 ":"📖 "}{s.title}
+          <div className="pocket-stories" style={{padding:"22px 16px 32px"}}>
+            <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE STORY JOURNAL</div>
+            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Kai's Story 📖</div>
+            <p style={{color:"#536672",fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Every chapter is another page in your story together.</p>
+            <div style={{display:"grid",gap:17}}>
+              {stories.map((story,i)=>{
+                const colors=[PALETTE.yellow,PALETTE.red,PALETTE.green,PALETTE.blue,PALETTE.pink,PALETTE.orange];
+                const paper=story.locked?"#f0eae2":colors[i%colors.length];
+                return <button type="button" key={story.id} disabled={story.locked} onClick={()=>setOpenStory(story)}
+                  style={{position:"relative",width:"100%",textAlign:"left",background:"white",border:"3px solid "+(story.locked?"#a9a9a9":PALETTE.navy),borderRadius:15,padding:"0 0 0 0",boxShadow:story.locked?"none":"5px 6px 0 "+PALETTE.navy,transform:"rotate("+(i%2===0?-.7:.7)+"deg)",cursor:story.locked?"not-allowed":"pointer",overflow:"hidden",fontFamily:"'Nunito',sans-serif",opacity:story.locked?.78:1}}>
+                  <div style={{display:"flex",alignItems:"stretch"}}>
+                    <div aria-hidden="true" style={{width:65,minWidth:65,background:paper,borderRight:"2px dashed "+PALETTE.navy,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:6}}>
+                      <span style={{fontSize:25}}>{story.locked?"🔒":"✉️"}</span>
+                      <span style={{fontWeight:900,fontSize:9,color:PALETTE.navy}}>#{String(i+1).padStart(2,"0")}</span>
                     </div>
-                    <div style={{background:s.locked?"#ddd":"white",border:`1.5px solid ${s.locked?"#ddd":PALETTE.navy}`,
-                      borderRadius:99,padding:"2px 9px",fontSize:9,fontWeight:900,color:s.locked?"#bbb":PALETTE.navy}}>LV{s.level}</div>
+                    <div style={{padding:"16px 14px",minWidth:0,flex:1}}>
+                      <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:8}}>
+                        <div style={{fontFamily:"'Fredoka One',cursive",fontSize:17,lineHeight:1.3,color:PALETTE.navy}}>{story.title}</div>
+                        <span style={{background:paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"3px 7px",fontSize:10,fontWeight:900,color:PALETTE.navy,whiteSpace:"nowrap"}}>LV {story.level}</span>
+                      </div>
+                      <p style={{fontSize:12,lineHeight:1.55,color:"#536672",margin:"8px 0 10px",fontWeight:700}}>{story.locked?`Reach level ${story.level} to unlock this chapter.`:story.preview}</p>
+                      <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy,letterSpacing:.6}}>{story.locked?"NOT YET UNLOCKED":"READ CHAPTER ↗"}</span>
+                    </div>
                   </div>
-                  <p style={{margin:"5px 0 0",fontSize:13,color:s.locked?"#bbb":PALETTE.navy+"cc",fontStyle:"italic",lineHeight:1.5}}>
-                    {s.locked?`Reach level ${s.level} to unlock`:s.preview}
-                  </p>
-                </div>
-              );
-            })}
+                </button>;
+              })}
+            </div>
           </div>
         )}
       </div>
