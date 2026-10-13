@@ -210,8 +210,8 @@ function BioTab(){
           <div style={{position:"relative",zIndex:1,marginTop:14,marginBottom:10}}>
             <img src={PORTRAITS.neutral} alt="Kai"
               style={{height:220,width:"auto",objectFit:"contain",objectPosition:"top center",
-                borderRadius:16,border:"3px solid "+PALETTE.navy,background:PALETTE.cream,
-                boxShadow:`4px 4px 0 ${PALETTE.navy}`,display:"block"}}
+                borderRadius:16,border:"4px solid white",background:PALETTE.cream,
+                boxShadow:`0 0 0 2px ${PALETTE.navy}, 4px 4px 0 ${PALETTE.navy}`,display:"block"}}
             />
           </div>
           <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,textAlign:"center"}}>{CHARACTER.name}</div>
@@ -342,8 +342,9 @@ export default function OtomeGame(){
         @keyframes hf{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-55px) scale(1.8)}}
         @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
         @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+        @keyframes portraitIn{from{opacity:.65;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
         @keyframes chibiPop{0%{opacity:0;transform:translateY(16px) scale(.55) rotate(-12deg)}20%{opacity:1;transform:translateY(-7px) scale(1.12) rotate(5deg)}35%{transform:translateY(0) scale(1) rotate(0)}78%{opacity:1}100%{opacity:0;transform:translateY(-24px) scale(.92)}}
-        @media (prefers-reduced-motion:reduce){.pocket-chibi-popup{animation:none !important}}
+        @media (prefers-reduced-motion:reduce){.pocket-chibi-popup,.pocket-character-portrait{animation:none !important}}
         @keyframes wiggle{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
         *{box-sizing:border-box} ::-webkit-scrollbar{width:0}
         @media (min-width: 768px) {
@@ -428,9 +429,13 @@ export default function OtomeGame(){
               style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
                 justifyContent:"center",paddingTop:16,
                 transform:pulse?"scale(1.03)":"scale(1)",transition:"transform 0.25s cubic-bezier(.4,2,.6,1)"}}>
+              {/* Illustrated portrait stage; removable once transparent cutouts are supplied */}
+              <div aria-hidden="true" style={{position:"absolute",inset:"22px 8% 12px",borderRadius:28,background:"linear-gradient(145deg,#FFE5AA 0%,#FFF8F0 68%)",border:`2px dashed ${PALETTE.navy}33`,transform:"rotate(-2deg)"}}/>
+              <div aria-hidden="true" style={{position:"absolute",top:22,left:"12%",fontSize:22,zIndex:2,transform:"rotate(-12deg)"}}>✦</div>
+              <div aria-hidden="true" style={{position:"absolute",bottom:22,right:"11%",fontSize:22,zIndex:2,transform:"rotate(12deg)"}}>♡</div>
               {/* Yellow band bg */}
               <div style={{position:"absolute",top:0,left:0,right:0,height:130,background:PALETTE.yellow,opacity:0.18}}/>
-              <img key={mood} src={PORTRAITS[MOOD_PORTRAIT[mood]]} alt={`${CHARACTER.name} — ${mood}`}
+              <img className="pocket-character-portrait" key={mood} src={PORTRAITS[MOOD_PORTRAIT[mood]]} alt={`${CHARACTER.name} — ${mood}`}
                 style={{
                   height:295,
                   width:"auto",
@@ -440,15 +445,16 @@ export default function OtomeGame(){
                   display:"block",
                   position:"relative",
                   zIndex:1,
-                  borderRadius:20,
-                  border:"3px solid "+PALETTE.navy,
+                  borderRadius:22,
+                  border:"4px solid white",
                   background:PALETTE.cream,
-                  boxShadow:`5px 7px 0 ${PALETTE.navy}`,
+                  boxShadow:`0 0 0 2px ${PALETTE.navy}, 5px 8px 0 ${PALETTE.navy}`,
+                  animation:"portraitIn .28s ease-out both",
                 }}
               />
               {chibiPopup&&(
                 <img className="pocket-chibi-popup" key={chibiPopup.id} src={CHIBIS[chibiPopup.emotion]} alt={`${CHARACTER.name} ${chibiPopup.emotion} reaction`}
-                  style={{position:"absolute",right:"4%",top:"9%",width:"clamp(88px,30%,142px)",height:"auto",maxHeight:160,objectFit:"contain",zIndex:12,pointerEvents:"none",filter:"drop-shadow(2px 5px 3px rgba(7,59,76,.2))",animation:"chibiPop 1.45s ease-out both"}}/>
+                  style={{position:"absolute",right:"4%",top:"9%",width:"clamp(88px,30%,142px)",height:"auto",maxHeight:160,objectFit:"contain",zIndex:12,pointerEvents:"none",border:"4px solid white",borderRadius:18,background:"#FFFDF7",boxShadow:`0 0 0 2px ${PALETTE.navy}, 4px 6px 0 ${PALETTE.navy}44`,animation:"chibiPop 1.45s ease-out both"}}/>
               )}
               {/* Hearts */}
               {hearts.map(h=>(
