@@ -294,62 +294,73 @@ function DateScreen({date, onComplete}){
 // ── Bio Tab ───────────────────────────────────────────────────────────────────
 function BioTab({jogMemory,memoryAlbum}){
   const pills=[
-    {label:"Age",    value:CHARACTER.age,  color:PALETTE.yellow},
-    {label:"Sign",   value:CHARACTER.sign, color:PALETTE.red},
-    {label:"Likes",  value:CHARACTER.likes,color:PALETTE.green},
+    {label:"Age",value:CHARACTER.age,color:PALETTE.yellow},
+    {label:"Sign",value:CHARACTER.sign,color:PALETTE.red},
+    {label:"Likes",value:CHARACTER.likes,color:PALETTE.green}
   ];
-  return(
-    <div style={{padding:"18px 16px"}}>
-      <section aria-label="Shared memories" style={{background:"#FFF5DE",border:`2px solid ${PALETTE.navy}`,borderRadius:16,padding:"14px",marginBottom:16}}>
-        <div style={{fontWeight:900,color:PALETTE.navy,fontSize:16,marginBottom:4}}>♡ Memory Album</div>
-        <p style={{margin:"0 0 12px",fontSize:12,color:PALETTE.navy}}>{memoryAlbum.length} of {ALL_MEMORY_IDS.length} moments discovered</p>
-        {[
-          {id:"jog",label:"Morning Jog",choices:JOG_CHOICES.map(c=>({...c,title:MEMORY_TITLES[c.id],memoryId:c.id}))},
-          ...Object.entries(OTHER_DATE_SCENES).map(([id,scene])=>({id,label:DATES.find(d=>d.id===id)?.label||id,choices:scene.choices.map(c=>({...c,memoryId:id+":"+c.id}))}))
-        ].map(group=><div key={group.id} style={{marginBottom:14}}>
-          <div style={{fontSize:13,fontWeight:900,color:PALETTE.navy,marginBottom:7}}>{group.label}</div>
-          <div style={{display:"grid",gap:8}}>{group.choices.map(c=>{
-            const unlocked=memoryAlbum.includes(c.memoryId);
-            return <div key={c.memoryId} style={{display:"flex",gap:10,alignItems:"center",background:unlocked?"white":"#F3EDE5",border:`2px solid ${unlocked?PALETTE.navy:"#D6CCC0"}`,borderRadius:12,padding:"9px 11px"}}>
-              <span aria-hidden="true" style={{fontSize:22}}>{unlocked?"💌":"🔒"}</span>
-              <div><div style={{fontWeight:900,fontSize:12,color:PALETTE.navy}}>{unlocked?c.title:"Undiscovered moment"}</div>
-              <div style={{fontSize:11,lineHeight:1.5,color:PALETTE.navy}}>{unlocked?c.ending:"Replay this date and choose a different response."}</div></div>
-            </div>;
-          })}</div>
-        </div>)}
-        {jogMemory&&<p style={{margin:"8px 0 0",fontSize:11,color:PALETTE.navy}}>Latest Morning Jog choice: {MEMORY_TITLES[jogMemory]}</p>}
-      </section>
-      {/* Portrait card with sticker vibe */}
-      <div style={{position:"relative",marginBottom:16}}>
-        <div style={{background:"white",border:"3px solid "+PALETTE.navy,borderRadius:24,padding:14,
-          boxShadow:`5px 6px 0 ${PALETTE.navy}`,overflow:"hidden",display:"flex",flexDirection:"column",alignItems:"center"}}>
-          {/* Colored band at top */}
-          <div style={{position:"absolute",top:0,left:0,right:0,height:72,background:PALETTE.yellow,borderRadius:"21px 21px 0 0",borderBottom:"3px solid "+PALETTE.navy}}/>
-          <div style={{position:"relative",zIndex:1,marginTop:14,marginBottom:10}}>
-            <img src={PORTRAITS.neutral} alt="Kai"
-              style={{height:220,width:"auto",objectFit:"contain",objectPosition:"top center",
-                filter:"drop-shadow(3px 5px 2px rgba(7,59,76,.22))",display:"block"}}
-            />
-          </div>
-          <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,textAlign:"center"}}>{CHARACTER.name}</div>
-          <div style={{fontSize:12,color:"#888",fontStyle:"italic",marginBottom:8}}>{CHARACTER.title}</div>
-          <p style={{fontSize:13,color:PALETTE.navy,lineHeight:1.7,textAlign:"center",margin:0}}>{CHARACTER.bio}</p>
-        </div>
-        {/* Deco stickers */}
-        <div style={{position:"absolute",top:-10,right:10,fontSize:22,transform:"rotate(10deg)"}}>⭐</div>
-        <div style={{position:"absolute",top:-8,left:10,fontSize:18,transform:"rotate(-8deg)"}}>💙</div>
+  const groups=[
+    {id:"jog",label:"Morning Jog",emoji:"🌅",color:PALETTE.yellow,choices:JOG_CHOICES.map(c=>({...c,title:MEMORY_TITLES[c.id],memoryId:c.id}))},
+    ...Object.entries(OTHER_DATE_SCENES).map(([id,scene])=>({id,label:DATES.find(d=>d.id===id)?.label||id,emoji:DATES.find(d=>d.id===id)?.emoji||"💌",color:DATES.find(d=>d.id===id)?.color||PALETTE.yellow,choices:scene.choices.map(c=>({...c,memoryId:id+":"+c.id}))}))
+  ];
+  return <div className="pocket-bio" style={{padding:"22px 16px 32px",background:"#fffaf2"}}>
+    <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.2,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE KAI COLLECTION</div>
+    <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 17px"}}>Your little scrapbook ♡</h2>
+    <section aria-label="Kai's profile" style={{position:"relative",background:"white",border:"3px solid "+PALETTE.navy,borderRadius:23,boxShadow:"6px 7px 0 "+PALETTE.navy,marginBottom:27,overflow:"hidden"}}>
+      <div style={{background:PALETTE.yellow,minHeight:225,display:"flex",justifyContent:"center",alignItems:"end",position:"relative",overflow:"hidden",borderBottom:"3px solid "+PALETTE.navy}}>
+        <span aria-hidden="true" style={{position:"absolute",top:15,left:18,fontSize:30,transform:"rotate(-15deg)"}}>✦</span>
+        <span aria-hidden="true" style={{position:"absolute",top:16,right:17,fontSize:28,transform:"rotate(12deg)"}}>💙</span>
+        <span aria-hidden="true" style={{position:"absolute",bottom:25,right:17,fontSize:25}}>✿</span>
+        <img src={PORTRAITS.neutral} alt="Kai" style={{height:225,maxWidth:"83%",objectFit:"contain",objectPosition:"bottom center",position:"relative",zIndex:1,filter:"drop-shadow(3px 5px 2px rgba(7,59,76,.2))"}}/>
       </div>
-      {/* Stat pills */}
-      {pills.map(p=>(
-        <div key={p.label} style={{background:p.color,border:"2.5px solid "+PALETTE.navy,borderRadius:14,
-          padding:"11px 18px",marginBottom:10,display:"flex",justifyContent:"space-between",alignItems:"center",
-          boxShadow:`3px 3px 0 ${PALETTE.navy}`}}>
-          <span style={{fontSize:10,letterSpacing:2,color:PALETTE.navy,fontWeight:900,textTransform:"uppercase"}}>{p.label}</span>
-          <span style={{fontSize:14,color:PALETTE.navy,fontWeight:800}}>{p.value}</span>
+      <div style={{padding:"19px 18px 20px"}}>
+        <div style={{display:"flex",alignItems:"start",justifyContent:"space-between",gap:10}}>
+          <div>
+            <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:0}}>{CHARACTER.name}</h3>
+            <div style={{fontSize:12,color:"#536672",fontWeight:800,marginTop:2}}>{CHARACTER.title}</div>
+          </div>
+          <span style={{background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"6px 9px",fontSize:10,fontWeight:900,color:PALETTE.navy,transform:"rotate(7deg)",whiteSpace:"nowrap"}}>♡ FAVE PERSON</span>
         </div>
-      ))}
-    </div>
-  );
+        <p style={{fontSize:13,color:PALETTE.navy,lineHeight:1.7,margin:"13px 0 16px"}}>{CHARACTER.bio}</p>
+        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{pills.map(p=><div key={p.label} style={{background:p.color,border:"2px solid "+PALETTE.navy,borderRadius:11,padding:"7px 10px",boxShadow:"2px 2px 0 "+PALETTE.navy}}>
+          <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy}}>{p.label}: </span><span style={{fontSize:11,fontWeight:800,color:PALETTE.navy}}>{p.value}</span>
+        </div>)}</div>
+      </div>
+    </section>
+    <section aria-label="Shared memories">
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
+        <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:24,color:PALETTE.navy,margin:"0 0 6px"}}>Memory Album 💌</h3>
+        <span style={{fontSize:12,fontWeight:900,color:PALETTE.navy,background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px"}}>{memoryAlbum.length} / {ALL_MEMORY_IDS.length} found</span>
+      </div>
+      <div role="progressbar" aria-label="Memories collected" aria-valuenow={memoryAlbum.length} aria-valuemin={0} aria-valuemax={ALL_MEMORY_IDS.length} style={{height:13,border:"2px solid "+PALETTE.navy,borderRadius:99,background:"white",overflow:"hidden",margin:"8px 0 22px"}}>
+        <div style={{height:"100%",width:(memoryAlbum.length/ALL_MEMORY_IDS.length*100)+"%",background:PALETTE.red,transition:"width .3s ease"}}/>
+      </div>
+      {groups.map((group,groupIndex)=>{
+        const found=group.choices.filter(c=>memoryAlbum.includes(c.memoryId)).length;
+        return <div key={group.id} style={{marginBottom:24}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,marginBottom:11}}>
+            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:17,color:PALETTE.navy}}>{group.emoji} {group.label}</div>
+            <span style={{fontSize:11,fontWeight:900,color:"#536672"}}>{found} / {group.choices.length}</span>
+          </div>
+          <div className="pocket-memory-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,140px),1fr))",gap:13}}>
+            {group.choices.map((c,i)=>{
+              const unlocked=memoryAlbum.includes(c.memoryId);
+              return <article key={c.memoryId} aria-label={unlocked?c.title:"Undiscovered memory"} style={{background:unlocked?"white":"#f1ede6",border:"2.5px solid "+(unlocked?PALETTE.navy:"#b8b1a8"),borderRadius:13,overflow:"hidden",boxShadow:unlocked?"3px 4px 0 "+PALETTE.navy:"none",transform:"rotate("+((i+groupIndex)%2===0?-1.5:1.5)+"deg)"}}>
+                <div style={{height:91,background:unlocked?group.color:"#ddd8d1",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",borderBottom:"2px dashed "+(unlocked?PALETTE.navy:"#b8b1a8")}}>
+                  <span aria-hidden="true" style={{fontSize:37}}>{unlocked?"💌":"🔒"}</span>
+                  <span style={{position:"absolute",top:7,right:8,fontSize:10,fontWeight:900,color:PALETTE.navy}}>#{i+1}</span>
+                </div>
+                <div style={{padding:"12px 10px 14px"}}>
+                  <div style={{fontFamily:"'Fredoka One',cursive",fontSize:13,lineHeight:1.3,color:PALETTE.navy}}>{unlocked?c.title:"Secret memory"}</div>
+                  <p style={{fontSize:11,lineHeight:1.5,color:"#536672",margin:"7px 0 0",fontWeight:700}}>{unlocked?c.ending:"Replay this date to discover another moment."}</p>
+                </div>
+              </article>;
+            })}
+          </div>
+        </div>;
+      })}
+      {jogMemory&&<p style={{fontSize:11,color:"#536672",fontWeight:800}}>♡ Last Morning Jog moment: {MEMORY_TITLES[jogMemory]}</p>}
+    </section>
+  </div>;
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
