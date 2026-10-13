@@ -463,6 +463,13 @@ export default function OtomeGame(){
       fontFamily:"'Nunito',sans-serif",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
+        .pocket-home{position:relative;isolation:isolate;background:radial-gradient(circle at 12% 17%,#fff4bf 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#ffe0e9 0 14%,transparent 14.5%),#fffaf2}
+        .pocket-character{isolation:isolate}
+        .pocket-sticker{position:absolute;z-index:3;pointer-events:none;font-family:"Fredoka One",cursive;color:#073B4C}
+        .pocket-home .pocket-dialogue{transform:rotate(-1deg);border-width:3px !important;border-radius:20px 20px 22px 12px !important;box-shadow:5px 6px 0 #073B4C !important}
+        .pocket-home .pocket-mood{transform:rotate(3deg);margin-top:4px}
+        @media (min-width:768px){.pocket-home .pocket-home-heading{grid-column:2;align-self:end;margin-bottom:8px}}
+        @media (max-width:767px){.pocket-home-heading{padding-top:15px}.pocket-home .pocket-dialogue{margin-top:8px !important}}
         @keyframes hf{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-55px) scale(1.8)}}
         @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
         @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
@@ -555,20 +562,24 @@ export default function OtomeGame(){
         {/* HOME */}
         {tab==="home"&&(
           <div className="pocket-home" style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
+            <div className="pocket-home-heading" style={{width:"100%",padding:"18px 22px 0",position:"relative",zIndex:4}}>
+              <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.4,color:PALETTE.navy}}>✦ YOUR LITTLE LOVE STORY</div>
+              <div style={{fontFamily:"'Fredoka One',cursive",fontSize:"clamp(22px,5vw,30px)",lineHeight:1.1,color:PALETTE.navy,marginTop:10}}>Hang out with Kai <span aria-hidden="true">♡</span></div>
+              <div style={{fontSize:12,fontWeight:700,color:"#526773",marginTop:5}}>Every tap makes the day a little sweeter.</div>
+            </div>
             {/* Tap area */}
             <div className="pocket-character" role="button" tabIndex={0} aria-label={`Show affection to ${CHARACTER.name}`} onClick={tapChar} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tapChar(e);}}}
               style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
                 justifyContent:"center",paddingTop:16,
                 transform:pulse?"scale(1.03)":"scale(1)",transition:"transform 0.25s cubic-bezier(.4,2,.6,1)"}}>
-              {/* Illustrated portrait stage; removable once transparent cutouts are supplied */}
-              <div aria-hidden="true" style={{position:"absolute",inset:"22px 8% 12px",borderRadius:28,background:"linear-gradient(145deg,#FFE5AA 0%,#FFF8F0 68%)",border:`2px dashed ${PALETTE.navy}33`,transform:"rotate(-2deg)"}}/>
-              <div aria-hidden="true" style={{position:"absolute",top:22,left:"12%",fontSize:22,zIndex:2,transform:"rotate(-12deg)"}}>✦</div>
-              <div aria-hidden="true" style={{position:"absolute",bottom:22,right:"11%",fontSize:22,zIndex:2,transform:"rotate(12deg)"}}>♡</div>
-              {/* Yellow band bg */}
-              <div style={{position:"absolute",top:0,left:0,right:0,height:130,background:PALETTE.yellow,opacity:0.18}}/>
+              <div aria-hidden="true" style={{position:"absolute",inset:"9% 9% 6%",background:"#FFD166",border:"3px solid "+PALETTE.navy,borderRadius:"46% 54% 50% 48% / 44% 42% 58% 56%",transform:"rotate(-8deg)",boxShadow:"7px 9px 0 #073B4C",zIndex:0}}/>
+              <div aria-hidden="true" style={{position:"absolute",inset:"15% 14% 13%",border:"2px dashed rgba(7,59,76,.38)",borderRadius:"48%",transform:"rotate(9deg)",zIndex:0}}/>
+              <span className="pocket-sticker" aria-hidden="true" style={{top:"12%",left:"7%",fontSize:27,transform:"rotate(-13deg)",textShadow:"2px 2px 0 white"}}>✦</span>
+              <span className="pocket-sticker" aria-hidden="true" style={{right:"8%",bottom:"24%",fontSize:30,transform:"rotate(12deg)",color:"#EF476F",textShadow:"2px 2px 0 white"}}>♥</span>
+              <span className="pocket-sticker" aria-hidden="true" style={{top:"22%",right:"6%",background:"white",border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px",fontSize:11,transform:"rotate(12deg)",boxShadow:"3px 3px 0 #073B4C"}}>SO CUTE!</span>
               <img className="pocket-character-portrait" key={mood} src={PORTRAITS[MOOD_PORTRAIT[mood]]} alt={`${CHARACTER.name} — ${mood}`}
                 style={{
-                  height:295,
+                  height:315,
                   width:"auto",
                   maxWidth:"88%",
                   objectFit:"contain",
@@ -594,7 +605,7 @@ export default function OtomeGame(){
                   border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 14px",
                   fontSize:11,color:PALETTE.navy,fontWeight:800,boxShadow:`2px 2px 0 ${PALETTE.navy}`,
                   animation:"bounce 1.6s ease-in-out infinite"}}>
-                  tap to show affection ♡
+                  ♡ tap Kai to show affection
                 </div>
               )}
             </div>
@@ -610,6 +621,7 @@ export default function OtomeGame(){
               <div style={{position:"absolute",top:-8,left:37,width:0,height:0,
                 borderLeft:"9px solid transparent",borderRight:"9px solid transparent",
                 borderBottom:"10px solid white"}}/>
+              <div style={{fontFamily:"Fredoka One, cursive",fontSize:11,color:PALETTE.red,letterSpacing:1.5,marginBottom:5}}>KAI SAYS...</div>
               <p style={{margin:0,fontSize:15,color:PALETTE.navy,fontStyle:"italic",lineHeight:1.65,fontWeight:600}}>
                 "{message}"
               </p>
