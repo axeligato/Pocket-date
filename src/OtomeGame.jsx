@@ -7,6 +7,8 @@ const MOOD_PORTRAIT = {tired:"sad",neutral:"neutral",happy:"happy",flustered:"fl
 const STORY_EXPRESSIONS = {1:["neutral","curious","neutral","concerned","flirty"],2:["neutral","nervous","curious","flirty"],3:["sad","sad","concerned","sad","flirty"]};
 
 const SAVE_KEY = "pocket-date-save-v1";
+const MEMORY_CHOICES = ["tease","sweet","challenge"];
+const MEMORY_TITLES = {tease:"A playful promise",sweet:"An honest confession",challenge:"Race to the bridge"};
 const JOG_MEMORY_LINES = {tease:"Still keeping track of how late I am? I was early today!",sweet:"I keep thinking about what you said on our morning run...",challenge:"Next time we race, I’m definitely winning."};
 function readSave(){
   try {
@@ -15,7 +17,7 @@ function readSave(){
     const data=JSON.parse(raw);
     if(!data||typeof data!=="object"||data.version!==1)return {};
     const bounded=(value,min,max,fallback)=>Number.isFinite(value)?Math.max(min,Math.min(max,Math.floor(value))):fallback;
-    return {affection:bounded(data.affection,0,100,0),level:bounded(data.level,1,10,1),xp:bounded(data.xp,0,49,0),coins:bounded(data.coins,0,999999,30),jogMemory:["tease","sweet","challenge"].includes(data.jogMemory)?data.jogMemory:null};
+    return {affection:bounded(data.affection,0,100,0),level:bounded(data.level,1,10,1),xp:bounded(data.xp,0,49,0),coins:bounded(data.coins,0,999999,30),jogMemory:MEMORY_CHOICES.includes(data.jogMemory)?data.jogMemory:null,memoryAlbum:Array.isArray(data.memoryAlbum)?MEMORY_CHOICES.filter(id=>data.memoryAlbum.includes(id)):MEMORY_CHOICES.includes(data.jogMemory)?[data.jogMemory]:[]};
   }catch{return {};}
 }
 
@@ -234,7 +236,7 @@ function DateScreen({date, onComplete}){
 }
 
 // ── Bio Tab ───────────────────────────────────────────────────────────────────
-function BioTab({jogMemory}){
+function BioTab({jogMemory,memoryAlbum}){
   const pills=[
     {label:"Age",    value:CHARACTER.age,  color:PALETTE.yellow},
     {label:"Sign",   value:CHARACTER.sign, color:PALETTE.red},
@@ -242,10 +244,23 @@ function BioTab({jogMemory}){
   ];
   return(
     <div style={{padding:"18px 16px"}}>
-      <div style={{background:"#FFF5DE",border:`2px solid ${PALETTE.navy}`,borderRadius:16,padding:"12px 14px",marginBottom:16}}>
-        <div style={{fontWeight:900,color:PALETTE.navy,fontSize:14,marginBottom:4}}>♡ Shared memories</div>
-        <p style={{margin:0,color:PALETTE.navy,fontSize:12,lineHeight:1.6}}>{jogMemory?`Morning Jog — ${JOG_CHOICES.find(c=>c.id===jogMemory)?.ending||"A special morning together."}`:"Your first shared memory will appear after you finish Morning Jog."}</p>
-      </div>
+      <section aria-label="Shared memories" style={{background:"#FFF5DE",border:`2px solid ${PALETTE.navy}`,borderRadius:16,padding:"14px",marginBottom:16}}>
+        <div style={{fontWeight:900,color:PALETTE.navy,fontSize:16,marginBottom:4}}>♡ Memory Album</div>
+        <p style={{margin:"0 0 12px",fontSize:12,color:PALETTE.navy}}>Morning Jog · {memoryAlbum.length} of 3 moments discovered</p>
+        <div style={{display:"grid",gap:9}}>
+          {JOG_CHOICES.map(c=>{
+            const unlocked=memoryAlbum.includes(c.id);
+            return <div key={c.id} style={{display:"flex",alignItems:"center",gap:12,background:unlocked?"white":"#F3EDE5",border:`2px solid ${unlocked?PALETTE.navy:"#D6CCC0"}`,borderRadius:13,padding:"10px 12px",opacity:unlocked?1:.75}}>
+              <span aria-hidden="true" style={{fontSize:25}}>{unlocked?"💌":"🔒"}</span>
+              <div style={{minWidth:0}}>
+                <div style={{fontWeight:900,color:PALETTE.navy,fontSize:13}}>{unlocked?MEMORY_TITLES[c.id]:"Undiscovered moment"}</div>
+                <div style={{color:PALETTE.navy,fontSize:11,lineHeight:1.5}}>{unlocked?c.ending:"Replay Morning Jog and try a different response."}</div>
+              </div>
+            </div>;
+          })}
+        </div>
+        {jogMemory&&<p style={{margin:"12px 0 0",fontSize:11,color:PALETTE.navy}}>Most recent: {MEMORY_TITLES[jogMemory]}</p>}
+      </section>
       {/* Portrait card with sticker vibe */}
       <div style={{position:"relative",marginBottom:16}}>
         <div style={{background:"white",border:"3px solid "+PALETTE.navy,borderRadius:24,padding:14,
@@ -287,6 +302,7 @@ export default function OtomeGame(){
   const [xp,setXp]=useState(savedStart.xp??0);
   const [coins,setCoins]=useState(savedStart.coins??30);
   const [jogMemory,setJogMemory]=useState(savedStart.jogMemory??null);
+  const [memoryAlbum,setMemoryAlbum]=useState(savedStart.memoryAlbum??[]);
   const [mood,setMood]=useState("neutral");
   const [message,setMessage]=useState("Oh. Hey.");
   const [pulse,setPulse]=useState(false);
@@ -301,8 +317,8 @@ export default function OtomeGame(){
   const hid=useRef(0);
 
   useEffect(()=>{
-    try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,affection,level,xp,coins,jogMemory}));}catch{/* Private browsing or storage disabled */}
-  },[affection,level,xp,coins,jogMemory]);
+    try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,affection,level,xp,coins,jogMemory,memoryAlbum}));}catch{/* Private browsing or storage disabled */}
+  },[affection,level,xp,coins,jogMemory,memoryAlbum]);
 
   useEffect(()=>{
     const m=getMood(affection);
@@ -358,6 +374,7 @@ export default function OtomeGame(){
     setActiveDate(null);
     if(date.memoryChoice){
       setJogMemory(date.memoryChoice);
+      setMemoryAlbum(prev=>prev.includes(date.memoryChoice)?prev:[...prev,date.memoryChoice]);
       setMessage(JOG_MEMORY_LINES[date.memoryChoice]);
     }
     setAffection(a=>Math.min(a+Math.floor(date.xp/4),100));
@@ -551,7 +568,7 @@ export default function OtomeGame(){
         )}
 
         {/* BIO */}
-        {tab==="bio"&&<div className="pocket-bio"><BioTab jogMemory={jogMemory}/></div>}
+        {tab==="bio"&&<div className="pocket-bio"><BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum}/></div>}
 
         {/* DATES */}
         {tab==="dates"&&(
