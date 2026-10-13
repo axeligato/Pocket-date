@@ -7,6 +7,7 @@ const MOOD_PORTRAIT = {tired:"sad",neutral:"neutral",happy:"happy",flustered:"fl
 const STORY_EXPRESSIONS = {1:["neutral","curious","neutral","concerned","flirty"],2:["neutral","nervous","curious","flirty"],3:["sad","sad","concerned","sad","flirty"]};
 
 const SAVE_KEY = "pocket-date-save-v1";
+const JOG_MEMORY_LINES = {tease:"Still keeping track of how late I am? I was early today!",sweet:"I keep thinking about what you said on our morning run...",challenge:"Next time we race, I’m definitely winning."};
 function readSave(){
   try {
     const raw=localStorage.getItem(SAVE_KEY);
@@ -14,7 +15,7 @@ function readSave(){
     const data=JSON.parse(raw);
     if(!data||typeof data!=="object"||data.version!==1)return {};
     const bounded=(value,min,max,fallback)=>Number.isFinite(value)?Math.max(min,Math.min(max,Math.floor(value))):fallback;
-    return {affection:bounded(data.affection,0,100,0),level:bounded(data.level,1,10,1),xp:bounded(data.xp,0,49,0),coins:bounded(data.coins,0,999999,30)};
+    return {affection:bounded(data.affection,0,100,0),level:bounded(data.level,1,10,1),xp:bounded(data.xp,0,49,0),coins:bounded(data.coins,0,999999,30),jogMemory:["tease","sweet","challenge"].includes(data.jogMemory)?data.jogMemory:null};
   }catch{return {};}
 }
 
@@ -143,7 +144,7 @@ const JOG_CHOICES = [
   {id:"challenge",label:"Less talking. Race you to the bridge!",reply:"Oh, it's on! Try to keep up!",expression:"surprised",chibi:"happy",bonus:3,ending:"You reach the bridge breathless, victorious, and grinning."}
 ];
 
-function MorningJog({date,onComplete}){
+function MorningJog({date,onComplete,previousChoice}){
   const [choice,setChoice]=useState(null);
   const selected=JOG_CHOICES.find(c=>c.id===choice);
   return(
@@ -168,7 +169,7 @@ function MorningJog({date,onComplete}){
             <div>
               <p style={{color:PALETTE.navy,fontSize:13,lineHeight:1.6,margin:"0 0 14px"}}>{selected.ending}</p>
               <div style={{fontSize:12,color:PALETTE.navy,fontWeight:800,marginBottom:12}}>+{date.xp} XP · +{selected.bonus} bonus XP · +{Math.floor((date.xp+selected.bonus)/4)} affection</div>
-              <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer"}}>Finish date ♡</button>
+              <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer"}}>Finish date ♡</button>
             </div>
           )}
         </div>
@@ -233,7 +234,7 @@ function DateScreen({date, onComplete}){
 }
 
 // ── Bio Tab ───────────────────────────────────────────────────────────────────
-function BioTab(){
+function BioTab({jogMemory}){
   const pills=[
     {label:"Age",    value:CHARACTER.age,  color:PALETTE.yellow},
     {label:"Sign",   value:CHARACTER.sign, color:PALETTE.red},
@@ -241,6 +242,10 @@ function BioTab(){
   ];
   return(
     <div style={{padding:"18px 16px"}}>
+      <div style={{background:"#FFF5DE",border:`2px solid ${PALETTE.navy}`,borderRadius:16,padding:"12px 14px",marginBottom:16}}>
+        <div style={{fontWeight:900,color:PALETTE.navy,fontSize:14,marginBottom:4}}>♡ Shared memories</div>
+        <p style={{margin:0,color:PALETTE.navy,fontSize:12,lineHeight:1.6}}>{jogMemory?`Morning Jog — ${JOG_CHOICES.find(c=>c.id===jogMemory)?.ending||"A special morning together."}`:"Your first shared memory will appear after you finish Morning Jog."}</p>
+      </div>
       {/* Portrait card with sticker vibe */}
       <div style={{position:"relative",marginBottom:16}}>
         <div style={{background:"white",border:"3px solid "+PALETTE.navy,borderRadius:24,padding:14,
@@ -281,6 +286,7 @@ export default function OtomeGame(){
   const [level,setLevel]=useState(savedStart.level??1);
   const [xp,setXp]=useState(savedStart.xp??0);
   const [coins,setCoins]=useState(savedStart.coins??30);
+  const [jogMemory,setJogMemory]=useState(savedStart.jogMemory??null);
   const [mood,setMood]=useState("neutral");
   const [message,setMessage]=useState("Oh. Hey.");
   const [pulse,setPulse]=useState(false);
@@ -295,8 +301,8 @@ export default function OtomeGame(){
   const hid=useRef(0);
 
   useEffect(()=>{
-    try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,affection,level,xp,coins}));}catch{/* Private browsing or storage disabled */}
-  },[affection,level,xp,coins]);
+    try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,affection,level,xp,coins,jogMemory}));}catch{/* Private browsing or storage disabled */}
+  },[affection,level,xp,coins,jogMemory]);
 
   useEffect(()=>{
     const m=getMood(affection);
@@ -339,7 +345,7 @@ export default function OtomeGame(){
       if(next>=XP_PER_LEVEL&&level<10){setLevel(l=>l+1);setCoins(c=>c+20);return next-XP_PER_LEVEL;}
       return next;
     });
-    setMessage(rand(CHARACTER.messages[getMood(Math.min(affection+gain,100))]));
+    setMessage(jogMemory&&Math.random()<0.35?JOG_MEMORY_LINES[jogMemory]:rand(CHARACTER.messages[getMood(Math.min(affection+gain,100))]));
   }
 
   function goDate(date){
@@ -350,6 +356,10 @@ export default function OtomeGame(){
 
   function finishDate(date){
     setActiveDate(null);
+    if(date.memoryChoice){
+      setJogMemory(date.memoryChoice);
+      setMessage(JOG_MEMORY_LINES[date.memoryChoice]);
+    }
     setAffection(a=>Math.min(a+Math.floor(date.xp/4),100));
     setXp(prev=>{
       const next=prev+date.xp;
@@ -541,7 +551,7 @@ export default function OtomeGame(){
         )}
 
         {/* BIO */}
-        {tab==="bio"&&<div className="pocket-bio"><BioTab/></div>}
+        {tab==="bio"&&<div className="pocket-bio"><BioTab jogMemory={jogMemory}/></div>}
 
         {/* DATES */}
         {tab==="dates"&&(
@@ -625,7 +635,7 @@ export default function OtomeGame(){
         })}
       </div>
 
-      {activeDate&&(activeDate.id==="jog"?<MorningJog date={activeDate} onComplete={finishDate}/>:<DateScreen date={activeDate} onComplete={()=>finishDate(activeDate)}/>)}
+      {activeDate&&(activeDate.id==="jog"?<MorningJog date={activeDate} onComplete={finishDate} previousChoice={jogMemory}/>:<DateScreen date={activeDate} onComplete={()=>finishDate(activeDate)}/>)}
       {openStory&&<StoryReader story={openStory} onClose={()=>setOpenStory(null)}/>}
     </div>
   );
