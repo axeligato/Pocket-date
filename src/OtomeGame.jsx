@@ -298,7 +298,7 @@ export default function OtomeGame(){
   const activeTabColor=TABS.find(t=>t.id===tab)?.color||PALETTE.yellow;
 
   return(
-    <div style={{minHeight:"100vh",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
+    <div className="pocket-app" style={{minHeight:"100vh",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
       fontFamily:"'Nunito',sans-serif",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
@@ -307,6 +307,30 @@ export default function OtomeGame(){
         @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
         @keyframes wiggle{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
         *{box-sizing:border-box} ::-webkit-scrollbar{width:0}
+        @media (min-width: 768px) {
+          body { background: #f3eee7; }
+          .pocket-app { max-width: 920px !important; min-height: min(860px, calc(100dvh - 48px)) !important; height: calc(100dvh - 48px); margin: 24px auto !important; border: 3px solid #073B4C; border-radius: 24px; box-shadow: 10px 12px 0 #073B4C; }
+          .pocket-content { scrollbar-width: thin; }
+          .pocket-home { display: grid !important; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: 1fr auto; align-items: center !important; align-content: center; column-gap: 30px; padding: 32px 40px !important; min-height: 100%; }
+          .pocket-character { grid-row: 1 / 3; min-height: 360px; align-items: center; }
+          .pocket-character img { height: min(46vh, 410px) !important; max-height: 410px; }
+          .pocket-dialogue { grid-column: 2; width: 100% !important; margin: 0 0 20px !important; align-self: end; }
+          .pocket-dialogue > div:nth-child(-n+2) { display: none; }
+          .pocket-mood { grid-column: 2; justify-self: start; align-self: start; }
+          .pocket-bio { max-width: 740px; margin: 0 auto; }
+          .pocket-dates, .pocket-stories { max-width: 740px; margin: 0 auto; padding: 32px 28px !important; }
+          .pocket-tabs { justify-content: center; }
+          .pocket-tabs button { flex: 0 1 200px !important; }
+        }
+        @media (min-width: 768px) and (max-height: 650px) {
+          .pocket-app { min-height: 480px !important; height: calc(100dvh - 24px); margin: 12px auto !important; }
+          .pocket-home { padding-top: 12px !important; padding-bottom: 12px !important; }
+          .pocket-character { min-height: 280px; }
+          .pocket-character img { height: 270px !important; }
+        }
+        @media (max-width: 767px) {
+          .pocket-app { width: 100%; }
+        }
       `}</style>
 
       {/* ── Header ── */}
@@ -355,13 +379,13 @@ export default function OtomeGame(){
       </div>
 
       {/* ── Content ── */}
-      <div style={{flex:1,overflow:"auto",minHeight:0}}>
+      <div className="pocket-content" style={{flex:1,overflow:"auto",minHeight:0}}>
 
         {/* HOME */}
         {tab==="home"&&(
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
+          <div className="pocket-home" style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
             {/* Tap area */}
-            <div onClick={tapChar}
+            <div className="pocket-character" onClick={tapChar}
               style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
                 justifyContent:"center",paddingTop:16,
                 transform:pulse?"scale(1.03)":"scale(1)",transition:"transform 0.25s cubic-bezier(.4,2,.6,1)"}}>
@@ -399,7 +423,7 @@ export default function OtomeGame(){
             </div>
 
             {/* Speech bubble */}
-            <div style={{margin:"14px 16px 10px",background:"white",border:"2.5px solid "+PALETTE.navy,
+            <div className="pocket-dialogue" style={{margin:"14px 16px 10px",background:"white",border:"2.5px solid "+PALETTE.navy,
               borderRadius:18,padding:"14px 18px",width:"calc(100% - 32px)",
               boxShadow:`4px 5px 0 ${PALETTE.navy}`,animation:"fi 0.3s ease",position:"relative"}}>
               {/* Bubble triangle */}
@@ -415,7 +439,7 @@ export default function OtomeGame(){
             </div>
 
             {/* Mood pill */}
-            <div style={{display:"inline-flex",alignItems:"center",gap:7,
+            <div className="pocket-mood" style={{display:"inline-flex",alignItems:"center",gap:7,
               background:moodColor[mood],border:"2.5px solid "+PALETTE.navy,
               borderRadius:99,padding:"6px 16px",boxShadow:`3px 3px 0 ${PALETTE.navy}`,marginBottom:16}}>
               <span style={{fontSize:15}}>{moodEmoji[mood]}</span>
@@ -425,11 +449,11 @@ export default function OtomeGame(){
         )}
 
         {/* BIO */}
-        {tab==="bio"&&<BioTab/>}
+        {tab==="bio"&&<div className="pocket-bio"><BioTab/></div>}
 
         {/* DATES */}
         {tab==="dates"&&(
-          <div style={{padding:"18px 16px"}}>
+          <div className="pocket-dates" style={{padding:"18px 16px"}}>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:22,color:PALETTE.navy,marginBottom:4}}>Plan a Date 💌</div>
             <p style={{color:"#aaa",fontSize:13,marginBottom:16,fontWeight:600}}>Spending time together grows your bond.</p>
             {DATES.map(date=>{
@@ -460,7 +484,7 @@ export default function OtomeGame(){
 
         {/* STORIES */}
         {tab==="stories"&&(
-          <div style={{padding:"18px 16px"}}>
+          <div className="pocket-stories" style={{padding:"18px 16px"}}>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:22,color:PALETTE.navy,marginBottom:4}}>{CHARACTER.name}'s Story 📖</div>
             <p style={{color:"#aaa",fontSize:13,marginBottom:16,fontWeight:600}}>Unlock chapters by leveling up.</p>
             {stories.map((s,i)=>{
@@ -490,7 +514,7 @@ export default function OtomeGame(){
       </div>
 
       {/* ── Bottom Nav ── */}
-      <div style={{display:"flex",borderTop:"3px solid "+PALETTE.navy,background:"white",
+      <div className="pocket-tabs" style={{display:"flex",borderTop:"3px solid "+PALETTE.navy,background:"white",
         position:"sticky",bottom:0,zIndex:30,flexShrink:0}}>
         {TABS.map((t,i)=>{
           const active=tab===t.id;
