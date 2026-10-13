@@ -104,7 +104,7 @@ function StoryReader({story, onClose}){
       </div>
       {/* Character image — full display */}
       <div style={{flex:1,display:"flex",alignItems:"flex-end",justifyContent:"center",overflow:"hidden",minHeight:0,background:`linear-gradient(180deg, ${col}22 0%, ${PALETTE.cream} 100%)`}}>
-        <img key={done?"happy":date.id} src={done?CHIBIS.happy:PORTRAITS[date.id==="jog"?"happy":date.id==="stadium"?"happy":date.id==="ramen"?"happy":"neutral"]} alt="Kai on a date"
+        <img key={expression} src={PORTRAITS[expression]} alt={`Kai — ${expression}`}
           style={{height:"78%",width:"auto",maxWidth:"100%",objectFit:"contain",objectPosition:"top center",display:"block"}}
         />
       </div>
@@ -151,7 +151,7 @@ function DateScreen({date, onComplete}){
       </div>
       {/* Character — big display */}
       <div style={{flex:1,display:"flex",alignItems:"flex-end",justifyContent:"center",overflow:"hidden",minHeight:0,background:`linear-gradient(180deg,${date.color}33 0%,${PALETTE.cream} 100%)`}}>
-        <img src={PORTRAITS.neutral} alt="Kai"
+        <img key={done?"date-done":date.id} src={done?CHIBIS.happy:PORTRAITS[date.id==="gym"?"neutral":"happy"]} alt="Kai on a date"
           style={{height:"78%",width:"auto",maxWidth:"100%",objectFit:"contain",objectPosition:"top center",display:"block"}}
         />
       </div>
@@ -196,7 +196,7 @@ function BioTab(){
           {/* Colored band at top */}
           <div style={{position:"absolute",top:0,left:0,right:0,height:72,background:PALETTE.yellow,borderRadius:"21px 21px 0 0",borderBottom:"3px solid "+PALETTE.navy}}/>
           <div style={{position:"relative",zIndex:1,marginTop:14,marginBottom:10}}>
-            <img src={IMG} alt="Kai"
+            <img src={PORTRAITS.neutral} alt="Kai"
               style={{height:220,width:"auto",objectFit:"contain",objectPosition:"top center",
                 borderRadius:16,border:"3px solid "+PALETTE.navy,background:PALETTE.cream,
                 boxShadow:`4px 4px 0 ${PALETTE.navy}`,display:"block"}}
