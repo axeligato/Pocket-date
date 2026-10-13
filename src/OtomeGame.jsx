@@ -102,7 +102,7 @@ function Deco(){
 }
 
 // ── Story Reader ──────────────────────────────────────────────────────────────
-function StoryReader({story, onClose}){
+function StoryReader({story,onClose}){
   const [idx,setIdx]=useState(0);
   const lines=STORIES_CONTENT[story.id]||[{speaker:null,text:story.preview}];
   const cur=lines[idx];
@@ -110,33 +110,38 @@ function StoryReader({story, onClose}){
   const done=idx>=lines.length-1;
   const colors=[PALETTE.red,PALETTE.blue,PALETTE.green,PALETTE.yellow,PALETTE.pink];
   const col=colors[story.id%colors.length];
-  return(
-    <div style={{position:"fixed",inset:0,zIndex:100,background:PALETTE.cream,display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflow:"hidden"}}>
-      {/* Colorful top bar */}
-      <div style={{background:col,padding:"14px 20px",display:"flex",justifyContent:"space-between",alignItems:"center",borderBottom:"3px solid "+PALETTE.navy,flexShrink:0}}>
-        <div style={{fontSize:13,letterSpacing:2,color:PALETTE.navy,textTransform:"uppercase",fontWeight:900,fontFamily:"'Fredoka One',cursive"}}>✦ {story.title} ✦</div>
-        <button onClick={onClose} style={{background:"white",border:"2.5px solid "+PALETTE.navy,borderRadius:99,width:32,height:32,cursor:"pointer",color:PALETTE.navy,fontSize:16,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+  const advance=()=>done?onClose():setIdx(i=>i+1);
+  return <div role="dialog" aria-modal="true" aria-label={story.title} className="pocket-story-reader" style={{position:"fixed",inset:0,zIndex:100,background:"#fffaf2",display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflow:"hidden"}}>
+    <div style={{background:col,padding:"12px clamp(14px,4vw,24px)",display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,borderBottom:"3px solid "+PALETTE.navy,flexShrink:0}}>
+      <div style={{minWidth:0}}>
+        <div style={{fontSize:10,letterSpacing:1.6,color:PALETTE.navy,fontWeight:900,marginBottom:3}}>✦ STORY TIME · CHAPTER {story.level}</div>
+        <div style={{fontSize:19,color:PALETTE.navy,fontWeight:900,fontFamily:"'Fredoka One',cursive",lineHeight:1.2}}>{story.title}</div>
       </div>
-      {/* Character image — full display */}
-      <div style={{flex:1,display:"flex",alignItems:"flex-end",justifyContent:"center",overflow:"hidden",minHeight:0,background:`linear-gradient(180deg, ${col}22 0%, ${PALETTE.cream} 100%)`}}>
-        <img key={expression} src={PORTRAITS[expression]} alt={`Kai — ${expression}`}
-          style={{height:"78%",width:"auto",maxWidth:"100%",objectFit:"contain",objectPosition:"top center",display:"block"}}
-        />
+      <button type="button" onClick={onClose} aria-label="Close story" style={{background:"white",border:"2.5px solid "+PALETTE.navy,borderRadius:12,width:40,height:40,flexShrink:0,cursor:"pointer",color:PALETTE.navy,fontSize:19,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"3px 3px 0 "+PALETTE.navy}}>✕</button>
+    </div>
+    <div style={{padding:"11px 18px 8px",background:"#fffaf2",flexShrink:0}}>
+      <div style={{maxWidth:620,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
+        <span style={{fontSize:11,fontWeight:900,color:PALETTE.navy,letterSpacing:.5}}>PAGE {idx+1} / {lines.length}</span>
+        <span aria-hidden="true" style={{fontSize:13}}>✦ ♡ ✦</span>
       </div>
-      {/* Dialogue */}
-      <div onClick={()=>done?onClose():setIdx(i=>i+1)} role="button" tabIndex={0} aria-label={done?"Close story":"Continue story"} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();done?onClose():setIdx(i=>i+1);}}}
-        style={{flexShrink:0,margin:"0 14px 24px",background:"white",border:"3px solid "+PALETTE.navy,borderRadius:20,padding:"16px 20px 14px",cursor:"pointer",
-          boxShadow:`4px 5px 0 ${PALETTE.navy}`,minHeight:86}}>
-        {cur?.speaker&&(
-          <div style={{fontSize:11,letterSpacing:2,fontWeight:900,color:cur.speaker==="You"?PALETTE.blue:col,marginBottom:8,textTransform:"uppercase"}}>
-            {cur.speaker==="You"?"You":CHARACTER.name}
-          </div>
-        )}
-        <p style={{margin:0,fontSize:15,lineHeight:1.7,color:PALETTE.navy}}>{cur?.text}</p>
-        <div style={{textAlign:"right",marginTop:8,fontSize:11,color:"#bbb",letterSpacing:1}}>{done?"[ close ]":"[ tap to continue ]"}</div>
+      <div role="progressbar" aria-label="Chapter reading progress" aria-valuemin={0} aria-valuemax={lines.length} aria-valuenow={idx+1} style={{height:9,maxWidth:620,margin:"7px auto 0",border:"2px solid "+PALETTE.navy,borderRadius:99,background:"white",overflow:"hidden"}}>
+        <div style={{height:"100%",width:((idx+1)/lines.length*100)+"%",background:col,transition:"width .2s ease"}}/>
       </div>
     </div>
-  );
+    <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",minHeight:0,position:"relative",isolation:"isolate",background:"radial-gradient(circle at 20% 25%,#fff0c8,transparent 45%),#fffaf2"}}>
+      <div aria-hidden="true" style={{position:"absolute",height:"min(50dvh,370px)",width:"min(78vw,370px)",background:col,border:"3px solid "+PALETTE.navy,borderRadius:"46% 54% 50% 50% / 54% 44% 56% 46%",transform:"rotate(-9deg)",boxShadow:"7px 9px 0 "+PALETTE.navy,opacity:.75}}/>
+      <span aria-hidden="true" style={{position:"absolute",top:"13%",left:"12%",fontSize:28,transform:"rotate(-13deg)"}}>✦</span>
+      <span aria-hidden="true" style={{position:"absolute",top:"19%",right:"11%",fontSize:25,transform:"rotate(13deg)"}}>💗</span>
+      <img key={expression} src={PORTRAITS[expression]} alt={`Kai — ${expression}`} style={{height:"min(100%,430px)",width:"auto",maxWidth:"86%",objectFit:"contain",objectPosition:"center",display:"block",position:"relative",zIndex:1,filter:"drop-shadow(3px 6px 3px #073B4C33)"}}/>
+    </div>
+    <div style={{padding:"0 16px max(22px,env(safe-area-inset-bottom,0px))",flexShrink:0,background:"#fffaf2"}}>
+      <button type="button" onClick={advance} aria-label={done?"Close story":"Continue story"} style={{display:"block",width:"100%",maxWidth:620,margin:"0 auto",textAlign:"left",background:"white",border:"3px solid "+PALETTE.navy,borderRadius:18,padding:"17px 19px 14px",cursor:"pointer",boxShadow:"5px 6px 0 "+PALETTE.navy,fontFamily:"'Nunito',sans-serif",color:PALETTE.navy}}>
+        <span style={{display:"inline-block",fontSize:11,letterSpacing:1.5,fontWeight:900,color:PALETTE.navy,marginBottom:10,background:cur?.speaker==="You"?PALETTE.blue:col,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 9px",transform:"rotate(-2deg)"}}>{cur?.speaker?(cur.speaker==="You"?"YOU":CHARACTER.name.toUpperCase()):"✦ NARRATOR"}</span>
+        <span aria-live="polite" style={{display:"block",fontSize:15,lineHeight:1.65,fontWeight:700,color:PALETTE.navy,whiteSpace:"normal"}}>{cur?.text}</span>
+        <span style={{display:"flex",justifyContent:"flex-end",alignItems:"center",gap:7,marginTop:13,fontSize:11,fontWeight:900,letterSpacing:.5,color:PALETTE.navy}}>{done?"FINISH CHAPTER":"NEXT PAGE"} <span aria-hidden="true" style={{fontSize:16}}>↗</span></span>
+      </button>
+    </div>
+  </div>;
 }
 
 // ── Date Screen ───────────────────────────────────────────────────────────────
