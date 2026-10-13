@@ -6,6 +6,18 @@ const CHIBIS = Object.fromEntries(["neutral","happy","excited","focused","confus
 const MOOD_PORTRAIT = {tired:"sad",neutral:"neutral",happy:"happy",flustered:"flirty",pumped:"laughing"};
 const STORY_EXPRESSIONS = {1:["neutral","curious","neutral","concerned","flirty"],2:["neutral","nervous","curious","flirty"],3:["sad","sad","concerned","sad","flirty"]};
 
+const SAVE_KEY = "pocket-date-save-v1";
+function readSave(){
+  try {
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(!raw)return {};
+    const data=JSON.parse(raw);
+    if(!data||typeof data!=="object"||data.version!==1)return {};
+    const bounded=(value,min,max,fallback)=>Number.isFinite(value)?Math.max(min,Math.min(max,Math.floor(value))):fallback;
+    return {affection:bounded(data.affection,0,100,0),level:bounded(data.level,1,10,1),xp:bounded(data.xp,0,49,0),coins:bounded(data.coins,0,999999,30)};
+  }catch{return {};}
+}
+
 const CHARACTER = {
   name: "Kai", title: "The Athlete Next Door",
   bio: "Loud laugh, terrible liar, makes you soup when you're sick and never admits it. Runs ten miles every morning and still shows up for everything that matters.",
@@ -225,10 +237,11 @@ function BioTab(){
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function OtomeGame(){
-  const [affection,setAffection]=useState(0);
-  const [level,setLevel]=useState(1);
-  const [xp,setXp]=useState(0);
-  const [coins,setCoins]=useState(30);
+  const [savedStart]=useState(readSave);
+  const [affection,setAffection]=useState(savedStart.affection??0);
+  const [level,setLevel]=useState(savedStart.level??1);
+  const [xp,setXp]=useState(savedStart.xp??0);
+  const [coins,setCoins]=useState(savedStart.coins??30);
   const [mood,setMood]=useState("neutral");
   const [message,setMessage]=useState("Oh. Hey.");
   const [pulse,setPulse]=useState(false);
@@ -241,6 +254,10 @@ export default function OtomeGame(){
   const chibiTimer=useRef(null);
   const lastChibi=useRef(0);
   const hid=useRef(0);
+
+  useEffect(()=>{
+    try{localStorage.setItem(SAVE_KEY,JSON.stringify({version:1,affection,level,xp,coins}));}catch{/* Private browsing or storage disabled */}
+  },[affection,level,xp,coins]);
 
   useEffect(()=>{
     const m=getMood(affection);
