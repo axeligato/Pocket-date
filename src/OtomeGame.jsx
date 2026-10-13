@@ -121,7 +121,7 @@ function StoryReader({story, onClose}){
         />
       </div>
       {/* Dialogue */}
-      <div onClick={()=>done?onClose():setIdx(i=>i+1)}
+      <div onClick={()=>done?onClose():setIdx(i=>i+1)} role="button" tabIndex={0} aria-label={done?"Close story":"Continue story"} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();done?onClose():setIdx(i=>i+1);}}}
         style={{flexShrink:0,margin:"0 14px 24px",background:"white",border:"3px solid "+PALETTE.navy,borderRadius:20,padding:"16px 20px 14px",cursor:"pointer",
           boxShadow:`4px 5px 0 ${PALETTE.navy}`,minHeight:86}}>
         {cur?.speaker&&(
@@ -210,8 +210,7 @@ function BioTab(){
           <div style={{position:"relative",zIndex:1,marginTop:14,marginBottom:10}}>
             <img src={PORTRAITS.neutral} alt="Kai"
               style={{height:220,width:"auto",objectFit:"contain",objectPosition:"top center",
-                borderRadius:16,border:"4px solid white",background:PALETTE.cream,
-                boxShadow:`0 0 0 2px ${PALETTE.navy}, 4px 4px 0 ${PALETTE.navy}`,display:"block"}}
+                filter:"drop-shadow(3px 5px 2px rgba(7,59,76,.22))",display:"block"}}
             />
           </div>
           <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,textAlign:"center"}}>{CHARACTER.name}</div>
@@ -281,7 +280,7 @@ export default function OtomeGame(){
   function tapChar(e){
     setTapHint(false);
     const rect=e.currentTarget.getBoundingClientRect();
-    spawnHeart(e.clientX-rect.left,e.clientY-rect.top);
+    spawnHeart(typeof e.clientX==="number"&&e.clientX!==0?e.clientX-rect.left:rect.width/2,typeof e.clientY==="number"&&e.clientY!==0?e.clientY-rect.top:rect.height/2);
     const now=Date.now();
     if(now-lastChibi.current>1100){
       lastChibi.current=now;
@@ -353,7 +352,8 @@ export default function OtomeGame(){
           .pocket-content { scrollbar-width: thin; }
           .pocket-home { display: grid !important; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: 1fr auto; align-items: center !important; align-content: center; column-gap: 30px; padding: 32px 40px !important; min-height: 100%; }
           .pocket-character { grid-row: 1 / 3; min-height: 360px; align-items: center; }
-          .pocket-character img { height: min(46vh, 410px) !important; max-height: 410px; }
+          .pocket-character-portrait { height: min(46vh, 410px) !important; max-height: 410px; }
+          .pocket-chibi-popup { height: auto !important; max-height: 160px !important; }
           .pocket-dialogue { grid-column: 2; width: 100% !important; margin: 0 0 20px !important; align-self: end; }
           .pocket-dialogue > div:nth-child(-n+2) { display: none; }
           .pocket-mood { grid-column: 2; justify-self: start; align-self: start; }
@@ -366,10 +366,16 @@ export default function OtomeGame(){
           .pocket-app { min-height: 480px !important; height: calc(100dvh - 24px); margin: 12px auto !important; }
           .pocket-home { padding-top: 12px !important; padding-bottom: 12px !important; }
           .pocket-character { min-height: 280px; }
-          .pocket-character img { height: 270px !important; }
+          .pocket-character-portrait { height: 270px !important; }
         }
+        .pocket-character:focus-visible,button:focus-visible,[role="button"]:focus-visible{outline:3px solid #118AB2;outline-offset:4px}
+        button{touch-action:manipulation}
+        @media (prefers-reduced-motion:reduce){.pocket-character-portrait,.pocket-chibi-popup{animation:none !important}.pocket-character{transition:none !important}}
         @media (max-width: 767px) {
-          .pocket-app { width: 100%; }
+          .pocket-app { width: 100%; min-height:100dvh !important; }
+          .pocket-character-portrait { max-height: min(42dvh,340px); }
+          .pocket-tabs { padding-bottom: env(safe-area-inset-bottom, 0px); }
+          .pocket-tabs button { min-height: 48px; }
         }
       `}</style>
 
@@ -425,7 +431,7 @@ export default function OtomeGame(){
         {tab==="home"&&(
           <div className="pocket-home" style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
             {/* Tap area */}
-            <div className="pocket-character" onClick={tapChar}
+            <div className="pocket-character" role="button" tabIndex={0} aria-label={`Show affection to ${CHARACTER.name}`} onClick={tapChar} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tapChar(e);}}}
               style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
                 justifyContent:"center",paddingTop:16,
                 transform:pulse?"scale(1.03)":"scale(1)",transition:"transform 0.25s cubic-bezier(.4,2,.6,1)"}}>
@@ -445,16 +451,13 @@ export default function OtomeGame(){
                   display:"block",
                   position:"relative",
                   zIndex:1,
-                  borderRadius:22,
-                  border:"4px solid white",
-                  background:PALETTE.cream,
-                  boxShadow:`0 0 0 2px ${PALETTE.navy}, 5px 8px 0 ${PALETTE.navy}`,
+                  filter:"drop-shadow(3px 6px 2px rgba(7,59,76,.22))",
                   animation:"portraitIn .28s ease-out both",
                 }}
               />
               {chibiPopup&&(
                 <img className="pocket-chibi-popup" key={chibiPopup.id} src={CHIBIS[chibiPopup.emotion]} alt={`${CHARACTER.name} ${chibiPopup.emotion} reaction`}
-                  style={{position:"absolute",right:"4%",top:"9%",width:"clamp(88px,30%,142px)",height:"auto",maxHeight:160,objectFit:"contain",zIndex:12,pointerEvents:"none",border:"4px solid white",borderRadius:18,background:"#FFFDF7",boxShadow:`0 0 0 2px ${PALETTE.navy}, 4px 6px 0 ${PALETTE.navy}44`,animation:"chibiPop 1.45s ease-out both"}}/>
+                  style={{position:"absolute",right:"4%",top:"9%",width:"clamp(88px,30%,142px)",height:"auto",maxHeight:160,objectFit:"contain",zIndex:12,pointerEvents:"none",filter:"drop-shadow(2px 5px 3px rgba(7,59,76,.24))",animation:"chibiPop 1.45s ease-out both"}}/>
               )}
               {/* Hearts */}
               {hearts.map(h=>(
