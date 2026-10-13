@@ -237,6 +237,9 @@ export default function OtomeGame(){
   const [activeDate,setActiveDate]=useState(null);
   const [openStory,setOpenStory]=useState(null);
   const [tapHint,setTapHint]=useState(true);
+  const [chibiPopup,setChibiPopup]=useState(null);
+  const chibiTimer=useRef(null);
+  const lastChibi=useRef(0);
   const hid=useRef(0);
 
   useEffect(()=>{
@@ -250,6 +253,8 @@ export default function OtomeGame(){
     return()=>clearInterval(t);
   },[]);
 
+  useEffect(()=>()=>clearTimeout(chibiTimer.current),[]);
+
   function spawnHeart(x,y){
     const id=hid.current++;
     setHearts(h=>[...h,{id,x,y,ox:(Math.random()-0.5)*50}]);
@@ -260,6 +265,15 @@ export default function OtomeGame(){
     setTapHint(false);
     const rect=e.currentTarget.getBoundingClientRect();
     spawnHeart(e.clientX-rect.left,e.clientY-rect.top);
+    const now=Date.now();
+    if(now-lastChibi.current>1100){
+      lastChibi.current=now;
+      const options={tired:["sleepy","pouty"],neutral:["neutral","confused"],happy:["happy","excited"],flustered:["embarrassed","in-love"],pumped:["excited","happy"]};
+      const emotion=rand(options[getMood(affection)]||options.neutral);
+      setChibiPopup({id:now,emotion});
+      clearTimeout(chibiTimer.current);
+      chibiTimer.current=setTimeout(()=>setChibiPopup(null),1450);
+    }
     setPulse(true);
     setTimeout(()=>setPulse(false),300);
     const gain=3;
@@ -311,6 +325,8 @@ export default function OtomeGame(){
         @keyframes hf{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-55px) scale(1.8)}}
         @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
         @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+        @keyframes chibiPop{0%{opacity:0;transform:translateY(16px) scale(.55) rotate(-12deg)}20%{opacity:1;transform:translateY(-7px) scale(1.12) rotate(5deg)}35%{transform:translateY(0) scale(1) rotate(0)}78%{opacity:1}100%{opacity:0;transform:translateY(-24px) scale(.92)}}
+        @media (prefers-reduced-motion:reduce){.pocket-chibi-popup{animation:none !important}}
         @keyframes wiggle{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
         *{box-sizing:border-box} ::-webkit-scrollbar{width:0}
         @media (min-width: 768px) {
@@ -413,6 +429,10 @@ export default function OtomeGame(){
                   boxShadow:`5px 7px 0 ${PALETTE.navy}`,
                 }}
               />
+              {chibiPopup&&(
+                <img className="pocket-chibi-popup" key={chibiPopup.id} src={CHIBIS[chibiPopup.emotion]} alt={`${CHARACTER.name} ${chibiPopup.emotion} reaction`}
+                  style={{position:"absolute",right:"4%",top:"9%",width:"clamp(88px,30%,142px)",height:"auto",maxHeight:160,objectFit:"contain",zIndex:12,pointerEvents:"none",filter:"drop-shadow(2px 5px 3px rgba(7,59,76,.2))",animation:"chibiPop 1.45s ease-out both"}}/>
+              )}
               {/* Hearts */}
               {hearts.map(h=>(
                 <div key={h.id} style={{position:"absolute",left:h.x+h.ox,top:h.y-8,fontSize:22,
