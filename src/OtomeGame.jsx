@@ -150,28 +150,31 @@ function MorningJog({date,onComplete,previousChoice}){
   const [choice,setChoice]=useState(null);
   const selected=JOG_CHOICES.find(c=>c.id===choice);
   return(
-    <div role="dialog" aria-modal="true" aria-label="Morning Jog with Kai" style={{position:"fixed",inset:0,zIndex:80,background:PALETTE.cream,display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflowY:"auto"}}>
-      <div style={{background:date.color,padding:"16px 20px",borderBottom:`3px solid ${PALETTE.navy}`,flexShrink:0}}>
+    <div role="dialog" aria-modal="true" aria-label="Morning Jog with Kai" style={{position:"fixed",inset:0,zIndex:80,background:"#fffaf2",display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflowY:"auto"}}>
+      <div style={{background:date.color,padding:"16px 20px",borderBottom:`3px solid ${PALETTE.navy}`,boxShadow:"0 4px 0 rgba(7,59,76,.08)",flexShrink:0}}>
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>🌅 Morning Jog</div>
         <div style={{fontSize:12,color:PALETTE.navy}}>A little time together, a choice that matters.</div>
       </div>
-      <div style={{flex:"1 1 auto",minHeight:140,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",background:"linear-gradient(180deg,#FFE5AA,#FFF8F0)"}}>
-        <img key={selected?.expression||"curious"} src={PORTRAITS[selected?.expression||"curious"]} alt={`Kai — ${selected?.expression||"curious"}`} style={{height:"min(42dvh,340px)",maxWidth:"82%",objectFit:"contain",filter:"drop-shadow(3px 6px 3px #073B4C33)"}}/>
-        {selected&&<img src={CHIBIS[selected.chibi]} alt="" style={{position:"absolute",right:"8%",bottom:10,width:90,maxHeight:110,objectFit:"contain",filter:"drop-shadow(2px 4px 2px #073B4C33)"}}/>}
+      <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#FFE5AA,#FFF8F0)"}}>
+        <div aria-hidden="true" style={{position:"absolute",width:"min(75vw,290px)",height:"min(75vw,290px)",background:date.color,border:"3px solid "+PALETTE.navy,borderRadius:"48% 52% 44% 56%",transform:"rotate(-9deg)",boxShadow:"7px 8px 0 "+PALETTE.navy,opacity:.85}}/>
+        <span aria-hidden="true" style={{position:"absolute",top:18,left:"10%",fontSize:27,transform:"rotate(-15deg)"}}>✦</span>
+        <span aria-hidden="true" style={{position:"absolute",right:"10%",top:"18%",fontSize:26,transform:"rotate(15deg)"}}>💗</span>
+        <img key={selected?.expression||"curious"} src={PORTRAITS[selected?.expression||"curious"]} alt={`Kai — ${selected?.expression||"curious"}`} style={{height:"min(42dvh,340px)",maxWidth:"82%",objectFit:"contain",position:"relative",zIndex:1,filter:"drop-shadow(3px 6px 3px #073B4C33)"}}/>
+        {selected&&<img src={CHIBIS[selected.chibi]} alt="" style={{position:"absolute",right:"8%",bottom:10,zIndex:2,width:90,maxHeight:110,objectFit:"contain",filter:"drop-shadow(2px 4px 2px #073B4C33)"}}/>}
       </div>
-      <div style={{background:"white",borderTop:`3px solid ${PALETTE.navy}`,padding:"18px clamp(16px,5vw,32px) 26px",flexShrink:0}}>
+      <div style={{background:"#fffdf8",borderTop:`3px solid ${PALETTE.navy}`,padding:"18px clamp(16px,5vw,32px) 26px",flexShrink:0}}>
         <div style={{maxWidth:560,margin:"0 auto"}}>
-          <div style={{fontSize:12,fontWeight:900,color:PALETTE.red,letterSpacing:1,marginBottom:6}}>KAI</div>
-          <p aria-live="polite" style={{fontSize:16,fontWeight:700,lineHeight:1.6,color:PALETTE.navy,margin:"0 0 16px"}}>{selected?selected.reply:"You actually showed up at 6 AM? I didn't think you'd come."}</p>
+          <div style={{fontSize:11,fontWeight:900,color:PALETTE.red,letterSpacing:1.5,marginBottom:9,display:"inline-block",background:"#ffe1e9",border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"3px 9px",transform:"rotate(-2deg)"}}>KAI</div>
+          <p aria-live="polite" style={{fontSize:16,fontWeight:700,lineHeight:1.6,color:PALETTE.navy,margin:"0 0 18px"}}>{selected?selected.reply:"You actually showed up at 6 AM? I didn't think you'd come."}</p>
           {!selected?(
             <div style={{display:"grid",gap:9}}>
-              {JOG_CHOICES.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",border:`2px solid ${PALETTE.navy}`,borderRadius:14,background:PALETTE.paper,color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer",minHeight:48}}>{c.label}</button>)}
+              {JOG_CHOICES.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",border:`2px solid ${PALETTE.navy}`,borderRadius:13,boxShadow:"3px 3px 0 "+PALETTE.navy,background:"#fff6df",color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer",minHeight:52}}>{c.label}</button>)}
             </div>
           ):(
             <div>
               <p style={{color:PALETTE.navy,fontSize:13,lineHeight:1.6,margin:"0 0 14px"}}>{selected.ending}</p>
               <div style={{fontSize:12,color:PALETTE.navy,fontWeight:800,marginBottom:12}}>+{date.xp} XP · +{selected.bonus} bonus XP · +{Math.floor((date.xp+selected.bonus)/4)} affection</div>
-              <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer"}}>Finish date ♡</button>
+              <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>Finish date ♡</button>
             </div>
           )}
         </div>
@@ -213,23 +216,26 @@ function BranchingDate({date,onComplete}){
   const [choice,setChoice]=useState(null);
   const scene=OTHER_DATE_SCENES[date.id];
   const selected=scene.choices.find(c=>c.id===choice);
-  return <div role="dialog" aria-modal="true" aria-label={date.label} style={{position:"fixed",inset:0,zIndex:80,background:PALETTE.cream,display:"flex",flexDirection:"column",overflowY:"auto",fontFamily:"'Nunito',sans-serif"}}>
-    <div style={{background:date.color,padding:"16px 20px",borderBottom:`3px solid ${PALETTE.navy}`}}>
+  return <div role="dialog" aria-modal="true" aria-label={date.label} style={{position:"fixed",inset:0,zIndex:80,background:"#fffaf2",display:"flex",flexDirection:"column",overflowY:"auto",fontFamily:"'Nunito',sans-serif"}}>
+    <div style={{background:date.color,padding:"16px 20px",borderBottom:`3px solid ${PALETTE.navy}`,boxShadow:"0 4px 0 rgba(7,59,76,.08)"}}>
       <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>{date.emoji} {date.label}</div>
       <div style={{fontSize:12,color:PALETTE.navy}}>A moment worth remembering ♡</div>
     </div>
-    <div style={{flex:"1 1 auto",minHeight:140,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",background:`linear-gradient(180deg,${date.color}44,${PALETTE.cream})`}}>
-      <img src={PORTRAITS[selected?.expression||"curious"]} alt={`Kai — ${selected?.expression||"curious"}`} style={{height:"min(42dvh,340px)",maxWidth:"82%",objectFit:"contain",filter:"drop-shadow(3px 6px 3px #073B4C33)"}}/>
-      {selected&&<img src={CHIBIS[selected.chibi]} alt="" style={{position:"absolute",right:"8%",bottom:10,width:90,maxHeight:110,objectFit:"contain"}}/>}
+    <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:`linear-gradient(180deg,${date.color}44,${PALETTE.cream})`}}>
+      <div aria-hidden="true" style={{position:"absolute",width:"min(75vw,290px)",height:"min(75vw,290px)",background:date.color,border:"3px solid "+PALETTE.navy,borderRadius:"48% 52% 44% 56%",transform:"rotate(-9deg)",boxShadow:"7px 8px 0 "+PALETTE.navy,opacity:.85}}/>
+      <span aria-hidden="true" style={{position:"absolute",top:18,left:"10%",fontSize:27,transform:"rotate(-15deg)"}}>✦</span>
+      <span aria-hidden="true" style={{position:"absolute",right:"10%",top:"18%",fontSize:26,transform:"rotate(15deg)"}}>💗</span>
+      <img src={PORTRAITS[selected?.expression||"curious"]} alt={`Kai — ${selected?.expression||"curious"}`} style={{height:"min(42dvh,340px)",maxWidth:"82%",objectFit:"contain",position:"relative",zIndex:1,filter:"drop-shadow(3px 6px 3px #073B4C33)"}}/>
+      {selected&&<img src={CHIBIS[selected.chibi]} alt="" style={{position:"absolute",right:"8%",bottom:10,zIndex:2,width:90,maxHeight:110,objectFit:"contain"}}/>}
     </div>
-    <div style={{background:"white",borderTop:`3px solid ${PALETTE.navy}`,padding:"18px clamp(16px,5vw,32px) 26px"}}>
+    <div style={{background:"#fffdf8",borderTop:`3px solid ${PALETTE.navy}`,padding:"18px clamp(16px,5vw,32px) 26px"}}>
       <div style={{maxWidth:560,margin:"0 auto"}}>
-        <div style={{fontSize:12,fontWeight:900,color:PALETTE.red,marginBottom:6}}>KAI</div>
-        <p aria-live="polite" style={{fontSize:16,fontWeight:700,lineHeight:1.6,color:PALETTE.navy,margin:"0 0 16px"}}>{selected?selected.reply:scene.opening}</p>
-        {!selected?<div style={{display:"grid",gap:9}}>{scene.choices.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",minHeight:48,border:`2px solid ${PALETTE.navy}`,borderRadius:14,background:PALETTE.paper,color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer"}}>{c.label}</button>)}</div>:<div>
+        <div style={{fontSize:11,fontWeight:900,color:PALETTE.red,letterSpacing:1.5,marginBottom:9,display:"inline-block",background:"#ffe1e9",border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"3px 9px",transform:"rotate(-2deg)"}}>KAI</div>
+        <p aria-live="polite" style={{fontSize:16,fontWeight:700,lineHeight:1.6,color:PALETTE.navy,margin:"0 0 18px"}}>{selected?selected.reply:scene.opening}</p>
+        {!selected?<div style={{display:"grid",gap:9}}>{scene.choices.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",minHeight:52,border:`2px solid ${PALETTE.navy}`,borderRadius:13,boxShadow:"3px 3px 0 "+PALETTE.navy,background:"#fff6df",color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer"}}>{c.label}</button>)}</div>:<div>
           <p style={{fontSize:13,color:PALETTE.navy,lineHeight:1.6}}>{selected.ending}</p>
           <p style={{fontSize:12,fontWeight:800,color:PALETTE.navy}}>+{date.xp} XP · +{selected.bonus} bonus XP · +{Math.floor((date.xp+selected.bonus)/4)} affection</p>
-          <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:date.id+":"+selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:date.color,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer"}}>Finish date ♡</button>
+          <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:date.id+":"+selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:date.color,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>Finish date ♡</button>
         </div>}
       </div>
     </div>
