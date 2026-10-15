@@ -130,7 +130,7 @@ function StoryReader({story,onClose}){
         <div style={{height:"100%",width:((idx+1)/lines.length*100)+"%",background:col,transition:"width .2s ease"}}/>
       </div>
     </div>
-    <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",minHeight:0,position:"relative",isolation:"isolate",background:"radial-gradient(circle at 20% 25%,#fff0c8,transparent 45%),#fffaf2"}}>
+    <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",minHeight:0,position:"relative",isolation:"isolate",background:"radial-gradient(circle at 20% 25%,#FFFAF2,transparent 45%),#FFFAF2"}}>
       <div aria-hidden="true" style={{position:"absolute",height:"min(50dvh,370px)",width:"min(78vw,370px)",background:col,border:"3px solid "+PALETTE.navy,borderRadius:"46% 54% 50% 50% / 54% 44% 56% 46%",transform:"rotate(-9deg)",boxShadow:"7px 9px 0 "+PALETTE.navy,opacity:.75}}/>
       <span aria-hidden="true" style={{position:"absolute",top:"13%",left:"12%",fontSize:28,transform:"rotate(-13deg)"}}>✦</span>
       <span aria-hidden="true" style={{position:"absolute",top:"19%",right:"11%",fontSize:25,transform:"rotate(13deg)"}}>💗</span>
@@ -162,7 +162,7 @@ function MorningJog({date,onComplete,previousChoice}){
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>🌅 Morning Jog</div>
         <div style={{fontSize:12,color:PALETTE.navy}}>A little time together, a choice that matters.</div>
       </div>
-      <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#FFE5AA,#FFF8F0)"}}>
+      <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#FFD166,#FFFAF2)"}}>
         <div aria-hidden="true" style={{position:"absolute",width:"min(75vw,290px)",height:"min(75vw,290px)",background:date.color,border:"3px solid "+PALETTE.navy,borderRadius:"48% 52% 44% 56%",transform:"rotate(-9deg)",boxShadow:"7px 8px 0 "+PALETTE.navy,opacity:.85}}/>
         <span aria-hidden="true" style={{position:"absolute",top:18,left:"10%",fontSize:27,transform:"rotate(-15deg)"}}>✦</span>
         <span aria-hidden="true" style={{position:"absolute",right:"10%",top:"18%",fontSize:26,transform:"rotate(15deg)"}}>💗</span>
@@ -492,13 +492,13 @@ export default function OtomeGame(){
         .pocket-tabs{gap:5px;padding:9px 10px 10px;align-items:stretch}
         .pocket-tabs .pocket-tab{border:2px solid transparent !important;border-radius:14px !important;min-width:0;min-height:55px;transition:transform .16s ease,background .16s ease,box-shadow .16s ease !important}
         .pocket-tabs .pocket-tab[aria-current="page"]{border-color:var(--pocket-ink) !important;box-shadow:3px 3px 0 var(--pocket-ink);transform:translateY(-2px)}
-        .pocket-tabs .pocket-tab:not([aria-current="page"]):hover{background:#fff5de !important;transform:translateY(-2px)}
+        .pocket-tabs .pocket-tab:not([aria-current="page"]):hover{background:#FFFAF2 !important;transform:translateY(-2px)}
         .pocket-tabs .pocket-tab-label{font-size:10px !important;letter-spacing:.4px !important}
         .pocket-tabs .pocket-tab-icon{font-size:21px !important;line-height:1.25}
-        .pocket-content{scrollbar-width:thin;scrollbar-color:#c8bcb0 transparent}
+        .pocket-content{scrollbar-width:thin;scrollbar-color:#526773 transparent}
         .pocket-content button:not(:disabled):active{filter:brightness(.97)}
         @media(prefers-reduced-motion:reduce){.pocket-tabs .pocket-tab{transition:none !important}.pocket-tabs .pocket-tab:hover{transform:none !important}}
-        .pocket-home{position:relative;isolation:isolate;background:radial-gradient(circle at 12% 17%,#fff4bf 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#ffe0e9 0 14%,transparent 14.5%),#fffaf2}
+        .pocket-home{position:relative;isolation:isolate;background:radial-gradient(circle at 12% 17%,#FFFAF2 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#FFE1E9 0 14%,transparent 14.5%),#FFFAF2}
         .pocket-character{isolation:isolate}
         .pocket-sticker{position:absolute;z-index:3;pointer-events:none;font-family:"Fredoka One",cursive;color:#073B4C}
         .pocket-home .pocket-dialogue{transform:rotate(-1deg);border-width:3px !important;border-radius:20px 20px 22px 12px !important;box-shadow:5px 6px 0 #073B4C !important}
@@ -512,9 +512,9 @@ export default function OtomeGame(){
         @keyframes chibiPop{0%{opacity:0;transform:translateY(16px) scale(.55) rotate(-12deg)}20%{opacity:1;transform:translateY(-7px) scale(1.12) rotate(5deg)}35%{transform:translateY(0) scale(1) rotate(0)}78%{opacity:1}100%{opacity:0;transform:translateY(-24px) scale(.92)}}
         @media (prefers-reduced-motion:reduce){.pocket-chibi-popup,.pocket-character-portrait{animation:none !important}}
         @keyframes wiggle{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
-        *{box-sizing:border-box} .pocket-content::-webkit-scrollbar{width:7px} .pocket-content::-webkit-scrollbar-thumb{background:#c8bcb0;border-radius:10px}
+        *{box-sizing:border-box} .pocket-content::-webkit-scrollbar{width:7px} .pocket-content::-webkit-scrollbar-thumb{background:#526773;border-radius:10px}
         @media (min-width: 768px) {
-          body { background: #f3eee7; }
+          body { background: #FFFAF2; }
           .pocket-app { max-width: 920px !important; min-height: min(860px, calc(100dvh - 48px)) !important; height: calc(100dvh - 48px); margin: 24px auto !important; border: 3px solid #073B4C; border-radius: 24px; box-shadow: 10px 12px 0 #073B4C; }
           .pocket-content { scrollbar-width: thin; }
           .pocket-home { display: grid !important; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: auto auto auto; align-items: center !important; align-content: center; column-gap: 30px; row-gap: 12px; padding: 28px 40px !important; min-height: 100%; }
@@ -562,7 +562,7 @@ export default function OtomeGame(){
           .pocket-home .pocket-dialogue{padding:10px 14px !important}
           .pocket-home .pocket-mood{margin-bottom:5px !important}
         }
-        .pocket-character:focus-visible,button:focus-visible,[role="button"]:focus-visible{outline:3px solid #118AB2;outline-offset:4px}
+        .pocket-character:focus-visible,button:focus-visible,[role="button"]:focus-visible{outline:3px solid #FFE1E9;outline-offset:4px}
         button{touch-action:manipulation}
         @media (prefers-reduced-motion:reduce){.pocket-character-portrait,.pocket-chibi-popup{animation:none !important}.pocket-character{transition:none !important}}
         @media (max-width: 767px) {
@@ -592,7 +592,7 @@ export default function OtomeGame(){
       </div>
 
       {/* ── XP + Affection bars ── */}
-      <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"2px solid #e8e0d8"}}>
+      <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"2px solid #FFFAF2"}}>
         {/* Level row */}
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
           <div style={{display:"flex",alignItems:"center",gap:6}}>
@@ -601,7 +601,7 @@ export default function OtomeGame(){
           </div>
           <span style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:900}}>{xp}/{XP_PER_LEVEL}</span>
         </div>
-        <div style={{height:10,background:CARE_COLORS.paper,borderRadius:99,border:"1.5px solid #d4cfc8",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:CARE_COLORS.paper,borderRadius:99,border:"1.5px solid #526773",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${(xp/XP_PER_LEVEL)*100}%`,
             background:`linear-gradient(90deg,${PALETTE.yellow},${PALETTE.orange})`,
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(255,180,0,0.5)"}}/>
@@ -611,7 +611,7 @@ export default function OtomeGame(){
           <span style={{fontSize:10,color:PALETTE.red,fontWeight:900,letterSpacing:1}}>♡ AFFECTION</span>
           <span style={{fontSize:10,color:CARE_COLORS.muted,fontWeight:700}}>{affection}%</span>
         </div>
-        <div style={{height:10,background:CARE_COLORS.rose,borderRadius:99,border:"1.5px solid #e8c0ca",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:CARE_COLORS.rose,borderRadius:99,border:"1.5px solid #FFE1E9",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${affection}%`,
             background:`linear-gradient(90deg,${PALETTE.pink},${PALETTE.red})`,
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(239,71,111,0.4)"}}/>
