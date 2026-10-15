@@ -1,3 +1,4 @@
+import {STORIES_CONTENT, STORY_EXPRESSIONS} from "./narrativeChapters.js";
 import {CARE_COLORS} from "./careTheme.js";
 import CareMode from "./CareMode.jsx";
 import React, { useState, useEffect, useRef } from "react";
@@ -6,7 +7,6 @@ const IMG = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAYEBQYFBAYG
 const PORTRAITS = Object.fromEntries(["neutral","happy","laughing","flirty","curious","surprised","nervous","concerned","sad","angry"].map(x=>[x,`/assets/characters/main/${x}.webp`]));
 const CHIBIS = Object.fromEntries(["neutral","happy","excited","focused","confused","embarrassed","pouty","sleepy","in-love","sad"].map(x=>[x,`/assets/characters/chibi/${x}.webp`]));
 const MOOD_PORTRAIT = {tired:"sad",neutral:"neutral",happy:"happy",flustered:"flirty",pumped:"laughing"};
-const STORY_EXPRESSIONS = {1:["neutral","curious","neutral","concerned","flirty"],2:["neutral","nervous","curious","flirty"],3:["sad","sad","concerned","sad","flirty"]};
 
 const SAVE_KEY = "pocket-date-save-v1";
 const MEMORY_CHOICES = ["tease","sweet","challenge"];
@@ -53,29 +53,6 @@ const DATES = [
 ];
 
 const XP_PER_LEVEL = 50;
-
-const STORIES_CONTENT = {
-  1:[
-    {speaker:null,  text:"The gym is almost empty. He's on the bench, elbows on knees, head down."},
-    {speaker:"Kai", text:"...You're still here?"},
-    {speaker:"You", text:"I waited."},
-    {speaker:"Kai", text:"That was a dumb idea."},
-    {speaker:"Kai", text:"...Thanks though."},
-  ],
-  2:[
-    {speaker:null,  text:"You hand it back. He stares at it for a second."},
-    {speaker:"Kai", text:"You can just... keep it."},
-    {speaker:"You", text:"It's your favourite one."},
-    {speaker:"Kai", text:"Yeah. I know."},
-  ],
-  3:[
-    {speaker:null,  text:"He doesn't say anything on the drive back. Neither do you."},
-    {speaker:"You", text:"You played well."},
-    {speaker:"Kai", text:"We lost."},
-    {speaker:"You", text:"I know. You still played well."},
-    {speaker:"Kai", text:"...Stop being like that."},
-  ],
-};
 
 const PALETTE = {
   cream: CARE_COLORS.paper,
