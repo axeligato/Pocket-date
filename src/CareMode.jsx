@@ -55,9 +55,9 @@ export default function CareMode({mode="home",onOpenPreferences}){
     <p style={{fontSize:13,lineHeight:1.65,color:CARE_COLORS.muted,fontWeight:700,margin:"0 0 20px"}}>A cozy space for gentle check-ins. You set the pace, always.</p>
     {mode==="home"&&<FeelingCheckIn/>}
     {mode==="home"&&<button type="button" onClick={onOpenPreferences} style={{width:"100%",padding:13,border:"2px solid "+INK,borderRadius:12,background:CARE_COLORS.paper,color:INK,fontWeight:900,cursor:"pointer",marginBottom:18}}>⚙ Care preferences & reminders →</button>}
-    {mode==="preferences"&&(!care.enabled||editing)&&<>
+    {mode==="preferences"&&<>
       <div style={{background:"white",border:"3px solid "+INK,borderRadius:20,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:18}}>
-        <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{editing?"Your care preferences":"Want me to look after you?"}</div>
+        <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{care.enabled?"Your care preferences":"Want me to look after you?"}</div>
         <p style={{fontSize:12,lineHeight:1.65,margin:"0 0 15px",color:CARE_COLORS.muted}}>Choose any topics you enjoy. Check-ins appear only while you visit this page. Frequent options are opt-in and never send background notifications.</p>
         <div style={{display:"grid",gap:9}}>
           {TOPICS.map(t=><label key={t.id} style={{display:"flex",alignItems:"center",gap:11,padding:"11px 12px",border:"2px solid "+INK,borderRadius:13,background:selected.includes(t.id)?CARE_COLORS.paper:CARE_COLORS.paper,cursor:"pointer"}}>
@@ -73,7 +73,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
           </select>
           <p style={{fontSize:11,color:CARE_COLORS.muted,lineHeight:1.5,margin:"7px 0 0"}}>Check-ins only appear while you're visiting Care Mode during your chosen time of day. Nothing is sent outside the game.</p>
         </div>
-        <button type="button" onClick={start} disabled={!selected.length} style={{marginTop:17,width:"100%",minHeight:48,background:CARE_COLORS.gold,border:"3px solid "+INK,borderRadius:14,boxShadow:"3px 4px 0 "+INK,color:INK,fontSize:14,fontWeight:900,cursor:selected.length?"pointer":"not-allowed",opacity:selected.length?1:.5}}>{editing?"Save preferences ♡":"Turn on Care Mode ♡"}</button>
+        <button type="button" onClick={start} disabled={!selected.length} style={{marginTop:17,width:"100%",minHeight:48,background:CARE_COLORS.gold,border:"3px solid "+INK,borderRadius:14,boxShadow:"3px 4px 0 "+INK,color:INK,fontSize:14,fontWeight:900,cursor:selected.length?"pointer":"not-allowed",opacity:selected.length?1:.5}}>{care.enabled?"Save preferences ♡":"Turn on Care Mode ♡"}</button>
         {editing&&<button type="button" onClick={()=>setEditing(false)} style={{marginTop:10,width:"100%",background:"transparent",border:0,color:INK,fontWeight:900,cursor:"pointer",padding:10}}>Cancel</button>}
       </div>
     </>}
