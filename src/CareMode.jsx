@@ -1,3 +1,4 @@
+import CycleCare from "./CycleCare.jsx";
 import Milestones from "./Milestones.jsx";
 import React, {useState} from "react";
 
@@ -97,6 +98,7 @@ export default function CareMode(){
       </div>
     </>}
     <Milestones/>
-    <p style={{margin:"23px 0 0",fontSize:11,lineHeight:1.65,color:"#526773"}}>♡ Privacy: Only your selected everyday care topics, preferred check-in time, and dismissal/snooze state are saved in this browser's local storage, not sent to an account or server by this feature. You can clear them at any time. Shared devices and browser backups may expose locally stored preferences. Birthday and personal dates are separately optional and deletable; menstrual-cycle information is not collected. This is friendly encouragement, not medical guidance.</p>
+    <CycleCare/>
+    <p style={{margin:"23px 0 0",fontSize:11,lineHeight:1.65,color:"#526773"}}>♡ Privacy: Only your selected everyday care topics, preferred check-in time, and dismissal/snooze state are saved in this browser's local storage, not sent to an account or server by this feature. You can clear them at any time. Shared devices and browser backups may expose locally stored preferences. Birthday and personal dates are separately optional and deletable; cycle-related feelings are only used temporarily on screen and are not saved. This is friendly encouragement, not medical guidance.</p>
   </section>;
 }
