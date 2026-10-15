@@ -283,7 +283,7 @@ function DateScreen({date, onComplete}){
       <div style={{flexShrink:0,padding:"20px 24px 32px",display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
         <div style={{position:"relative",width:90,height:90}}>
           <svg width="90" height="90" style={{transform:"rotate(-90deg)"}}>
-            <circle cx="45" cy="45" r="40" fill="none" stroke=CARE_COLORS.paper strokeWidth="7"/>
+            <circle cx="45" cy="45" r="40" fill="none" stroke={CARE_COLORS.paper} strokeWidth="7"/>
             <circle cx="45" cy="45" r="40" fill="none" stroke={date.color} strokeWidth="7"
               strokeDasharray={circ} strokeDashoffset={circ*(1-progress/100)}
               strokeLinecap="round" style={{transition:"stroke-dashoffset 0.1s linear"}}/>
