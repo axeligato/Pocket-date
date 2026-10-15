@@ -26,7 +26,7 @@ export default function CareMemories(){
  const save=()=>{if(!key)return;persist([...saved.filter(x=>x!==key),key].slice(-6));setRemember(true);};
  const reset=()=>{setScene(null);setChoice(null);setRemember(false);};
  const memoryLabel=(id)=>{const [s,c]=id.split(":");return SCENES.find(x=>x.id===s)?.choices[Number(c)]?.memory||"";};
- return <section aria-label="Kai's little moments" style={{marginTop:22,background:CARE_COLORS.surface,border:"3px solid "+INK,borderRadius:19,padding:17,boxShadow:"4px 5px 0 "+INK}}>
+ return <section aria-label="Kai's little moments" style={{marginTop:0,background:"transparent",border:0,borderRadius:0,padding:"0 4px 4px",boxShadow:"none"}}>
   <span style={{display:"inline-block",background:CARE_COLORS.rose,border:"2px solid "+INK,borderRadius:8,padding:"4px 9px",fontSize:10,fontWeight:900,letterSpacing:1}}>💌 LITTLE MOMENTS</span>
   <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:20,margin:"12px 0 6px",color:INK}}>Just you & Kai ♡</h3>
   <p style={{fontSize:12,lineHeight:1.6,color:CARE_COLORS.muted,margin:"0 0 14px"}}>Pick a moment together. Kai reacts to what you say. Saving a happy memory is always your choice.</p>
