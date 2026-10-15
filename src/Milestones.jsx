@@ -49,7 +49,7 @@ export default function Milestones(){
     <span id="milestone-format" style={{fontSize:11,color:"#526773"}}>Use MM-DD (for example 04-21). No year or account required.</span>
     {((birthday&&!valid(birthday))||(special&&!valid(special)))&&<span role="alert" style={{fontSize:12,color:"#a32945",fontWeight:800}}>Enter a valid MM-DD date or leave the field empty.</span>}
     <div style={{display:"flex",gap:9,flexWrap:"wrap"}}>
-      <button type="button" disabled={(birthday&&!valid(birthday))||(special&&!valid(special))} onClick={update} style={{...btn,background:"#06D6A0",opacity:(birthday&&!valid(birthday))||(special&&!valid(special))?.5:1}}>Save dates ♡</button>
+      <button type="button" disabled={(birthday&&!valid(birthday))||(special&&!valid(special))} onClick={update} style={{...btn,background:"#06D6A0",opacity:((birthday&&!valid(birthday))||(special&&!valid(special)))?0.5:1}}>Save dates ♡</button>
       <button type="button" onClick={()=>setEditing(false)} style={btn}>Cancel</button>
     </div>
   </div>}
