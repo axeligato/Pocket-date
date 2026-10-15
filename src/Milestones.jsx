@@ -18,7 +18,7 @@ export default function Milestones(){
  const update=()=>{if((birthday&&!valid(birthday))||(special&&!valid(special)))return;save({birthday,special,label:special?(label.trim().slice(0,36)||"Our special day"):""});setEditing(false);setMessage("");};
  const clear=(field)=>{const next={...dates,[field]:""};if(field==="special")next.label="";save(next);if(field==="birthday")setBirthday("");else{setSpecial("");setLabel("");}setMessage("");};
  const celebration=dates.birthday===today()?"birthday":dates.special===today()?"special":null;
- return <section aria-label="Special Days" style={{marginTop:23,background:CARE_COLORS.surface,border:"3px solid "+INK,borderRadius:19,padding:17,boxShadow:"4px 5px 0 "+INK}}>
+ return <section aria-label="Special Days" style={{marginTop:0,background:"transparent",border:0,borderRadius:0,padding:"0 4px 4px",boxShadow:"none"}}>
   <div style={{display:"inline-block",background:CARE_COLORS.rose,border:"2px solid "+INK,borderRadius:8,padding:"4px 9px",fontSize:10,fontWeight:900,letterSpacing:1}}>🎂 SPECIAL DAYS</div>
   <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:20,margin:"12px 0 6px",color:INK}}>Dates worth remembering ♡</h3>
   <p style={{fontSize:12,lineHeight:1.6,color:CARE_COLORS.muted,margin:"0 0 13px"}}>Only if you want to share. Kai remembers the month and day, never your birth year.</p>
