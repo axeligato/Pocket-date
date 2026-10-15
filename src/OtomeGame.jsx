@@ -457,8 +457,9 @@ export default function OtomeGame(){
     if(canReward){
       setLastTapReward(now);
       awardXp(TAP_REWARD_XP);
+      setAffection(a=>Math.min(a+1,100));
     }
-    const gain=0;
+    const gain=canReward?1:0;
     setMessage(jogMemory&&Math.random()<0.35?JOG_MEMORY_LINES[jogMemory]:rand(CHARACTER.messages[getMood(Math.min(affection+gain,100))]));
   }
 
@@ -611,10 +612,10 @@ export default function OtomeGame(){
             <div style={{background:PALETTE.navy,color:"white",borderRadius:99,padding:"1px 8px",fontSize:9,fontWeight:900,letterSpacing:1}}>LV{level}</div>
             <span style={{fontSize:11,color:CARE_COLORS.muted}}>XP</span>
           </div>
-          <span style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:900}}>{xp}/{XP_PER_LEVEL}</span>
+          <span style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:900}}>{level>=MAX_LEVEL?"MAX":`${xp}/${XP_PER_LEVEL}`}</span>
         </div>
         <div style={{height:10,background:CARE_COLORS.paper,borderRadius:99,border:"1.5px solid #526773",overflow:"hidden",marginBottom:8}}>
-          <div style={{height:"100%",borderRadius:99,width:`${(xp/XP_PER_LEVEL)*100}%`,
+          <div style={{height:"100%",borderRadius:99,width:`${level>=MAX_LEVEL?100:(xp/XP_PER_LEVEL)*100}%`,
             background:`linear-gradient(90deg,${PALETTE.yellow},${PALETTE.orange})`,
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(255,180,0,0.5)"}}/>
         </div>
