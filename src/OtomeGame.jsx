@@ -500,7 +500,7 @@ export default function OtomeGame(){
         .pocket-sticker{position:absolute;z-index:3;pointer-events:none;font-family:"Fredoka One",cursive;color:#073B4C}
         .pocket-home .pocket-dialogue{transform:rotate(-1deg);border-width:3px !important;border-radius:20px 20px 22px 12px !important;box-shadow:5px 6px 0 #073B4C !important}
         .pocket-home .pocket-mood{transform:rotate(3deg);margin-top:4px}
-        @media (min-width:768px){.pocket-home .pocket-home-heading{grid-column:2;align-self:end;margin-bottom:8px}}
+        @media (min-width:768px){.pocket-home .pocket-home-heading{grid-column:2;grid-row:1;align-self:end;margin-bottom:8px}}
         @media (max-width:767px){.pocket-home-heading{padding-top:15px}.pocket-home .pocket-dialogue{margin-top:8px !important}}
         @keyframes hf{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-55px) scale(1.8)}}
         @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -514,13 +514,13 @@ export default function OtomeGame(){
           body { background: #f3eee7; }
           .pocket-app { max-width: 920px !important; min-height: min(860px, calc(100dvh - 48px)) !important; height: calc(100dvh - 48px); margin: 24px auto !important; border: 3px solid #073B4C; border-radius: 24px; box-shadow: 10px 12px 0 #073B4C; }
           .pocket-content { scrollbar-width: thin; }
-          .pocket-home { display: grid !important; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: 1fr auto; align-items: center !important; align-content: center; column-gap: 30px; padding: 32px 40px !important; min-height: 100%; }
-          .pocket-character { grid-row: 1 / 3; min-height: 360px; align-items: center; }
+          .pocket-home { display: grid !important; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: auto auto auto; align-items: center !important; align-content: center; column-gap: 30px; row-gap: 12px; padding: 28px 40px !important; min-height: 100%; }
+          .pocket-character { grid-column:1; grid-row:1 / 4; min-height: 360px; align-items: center; }
           .pocket-character-portrait { height: min(46vh, 410px) !important; max-height: 410px; }
           .pocket-chibi-popup { height: auto !important; max-height: 160px !important; }
-          .pocket-dialogue { grid-column: 2; width: 100% !important; margin: 0 0 20px !important; align-self: end; }
+          .pocket-dialogue { grid-column: 2; grid-row:2; width: 100% !important; margin: 0 0 10px !important; align-self: center; }
           .pocket-dialogue > div:nth-child(-n+2) { display: none; }
-          .pocket-mood { grid-column: 2; justify-self: start; align-self: start; }
+          .pocket-mood { grid-column: 2; grid-row:3; justify-self: start; align-self: start; }
           .pocket-bio { max-width: 740px; margin: 0 auto; }
           .pocket-dates, .pocket-stories { max-width: 740px; margin: 0 auto; padding: 32px 28px !important; }
           .pocket-tabs { justify-content: center; }
@@ -528,9 +528,34 @@ export default function OtomeGame(){
         }
         @media (min-width: 768px) and (max-height: 650px) {
           .pocket-app { min-height: 480px !important; height: calc(100dvh - 24px); margin: 12px auto !important; }
-          .pocket-home { padding-top: 12px !important; padding-bottom: 12px !important; }
+          .pocket-home { padding-top: 12px !important; padding-bottom: 12px !important; row-gap:5px; }
           .pocket-character { min-height: 280px; }
           .pocket-character-portrait { height: 270px !important; }
+        }
+        /* Responsive QA: prevent clipping on small phones and short landscape viewports */
+        .pocket-story-reader{overscroll-behavior:contain}
+        .pocket-story-reader button{touch-action:manipulation}
+        @media (max-width: 380px){
+          .pocket-home-heading{padding-left:16px !important;padding-right:16px !important}
+          .pocket-home .pocket-character-portrait{height:min(39dvh,280px) !important}
+          .pocket-home .pocket-dialogue{padding:12px 14px !important;margin-top:8px !important}
+          .pocket-tabs{gap:2px;padding-left:5px;padding-right:5px}
+          .pocket-tabs .pocket-tab{min-height:50px;padding:5px 2px !important}
+          .pocket-tabs .pocket-tab-label{font-size:9px !important}
+          .pocket-dates,.pocket-stories{padding-left:12px !important;padding-right:12px !important}
+        }
+        @media (max-height: 580px) and (max-width:767px){
+          .pocket-home .pocket-character-portrait{height:min(34dvh,230px) !important}
+          .pocket-home-heading{padding-top:8px !important}
+          .pocket-tabs .pocket-tab{min-height:45px}
+          .pocket-story-reader>div:nth-child(2){padding-top:6px !important;padding-bottom:4px !important}
+          .pocket-story-reader>div:last-child{padding-bottom:12px !important}
+          .pocket-story-reader>div:last-child button{padding:11px 14px !important}
+        }
+        @media (min-width:768px) and (max-height:650px){
+          .pocket-home .pocket-home-heading{padding-top:0 !important}
+          .pocket-home .pocket-dialogue{padding:10px 14px !important}
+          .pocket-home .pocket-mood{margin-bottom:5px !important}
         }
         .pocket-character:focus-visible,button:focus-visible,[role="button"]:focus-visible{outline:3px solid #118AB2;outline-offset:4px}
         button{touch-action:manipulation}
