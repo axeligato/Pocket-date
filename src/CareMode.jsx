@@ -1,3 +1,4 @@
+import {careSectionStyle,careSummaryStyle} from "./careTheme.js";
 import {CARE_COLORS} from "./careTheme.js";
 import CareMemories from "./CareMemories.jsx";
 import CycleCare from "./CycleCare.jsx";
@@ -99,9 +100,24 @@ export default function CareMode(){
         <button type="button" onClick={stop} style={{border:"2px solid #b7a9a9",borderRadius:12,background:"transparent",padding:"10px 13px",fontWeight:900,color:CARE_COLORS.muted,cursor:"pointer"}}>Turn off & clear Care Mode</button>
       </div>
     </>}
-    <Milestones/>
-    <CycleCare/>
-    <CareMemories/>
+    <div style={{marginTop:26}}>
+      <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:21,margin:"0 0 6px"}}>More ways to feel close ♡</h3>
+      <p style={{fontSize:12,color:CARE_COLORS.muted,lineHeight:1.6,margin:"0 0 14px"}}>Open what feels right today. Everything here is optional.</p>
+      <div style={{display:"grid",gap:13}}>
+        <details style={careSectionStyle}>
+          <summary style={careSummaryStyle}><span>🎂 Special days</span><span aria-hidden="true">＋</span></summary>
+          <div style={{padding:"0 12px 15px"}}><Milestones/></div>
+        </details>
+        <details style={careSectionStyle}>
+          <summary style={careSummaryStyle}><span>🌷 Comfort corner</span><span aria-hidden="true">＋</span></summary>
+          <div style={{padding:"0 12px 15px"}}><CycleCare/></div>
+        </details>
+        <details style={careSectionStyle}>
+          <summary style={careSummaryStyle}><span>💌 Little moments & memories</span><span aria-hidden="true">＋</span></summary>
+          <div style={{padding:"0 12px 15px"}}><CareMemories/></div>
+        </details>
+      </div>
+    </div>
     <p style={{margin:"23px 0 0",fontSize:11,lineHeight:1.65,color:CARE_COLORS.muted}}>♡ Privacy: Only your selected everyday care topics, preferred check-in time, and dismissal/snooze state are saved in this browser's local storage, not sent to an account or server by this feature. You can clear them at any time. Shared devices and browser backups may expose locally stored preferences. Birthday and personal dates are separately optional and deletable; cycle-related feelings are only used temporarily on screen and are not saved. This is friendly encouragement, not medical guidance.</p>
   </section>;
 }
