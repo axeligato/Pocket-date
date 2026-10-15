@@ -74,6 +74,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
           <p style={{fontSize:11,color:CARE_COLORS.muted,lineHeight:1.5,margin:"7px 0 0"}}>Check-ins only appear while you're visiting Care Mode during your chosen time of day. Nothing is sent outside the game.</p>
         </div>
         <button type="button" onClick={start} disabled={!selected.length} style={{marginTop:17,width:"100%",minHeight:48,background:CARE_COLORS.gold,border:"3px solid "+INK,borderRadius:14,boxShadow:"3px 4px 0 "+INK,color:INK,fontSize:14,fontWeight:900,cursor:selected.length?"pointer":"not-allowed",opacity:selected.length?1:.5}}>{care.enabled?"Save preferences ♡":"Turn on Care Mode ♡"}</button>
+        {care.enabled&&<button type="button" onClick={stop} style={{marginTop:12,width:"100%",padding:12,border:"2px solid "+INK,borderRadius:12,background:"transparent",color:INK,fontWeight:900,cursor:"pointer"}}>Turn off & clear Care Mode</button>}
         {editing&&<button type="button" onClick={()=>setEditing(false)} style={{marginTop:10,width:"100%",background:"transparent",border:0,color:INK,fontWeight:900,cursor:"pointer",padding:10}}>Cancel</button>}
       </div>
     </>}
