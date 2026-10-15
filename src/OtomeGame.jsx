@@ -482,7 +482,7 @@ export default function OtomeGame(){
     {id:"bio",    label:"Profile", icon:"👤", color:PALETTE.green},
     {id:"dates",  label:"Dates",   icon:"💌", color:PALETTE.red},
     {id:"stories",label:"Stories", icon:"📖", color:PALETTE.blue},
-    {id:"care",label:"Care",icon:"💗",color:PALETTE.pink},
+    {id:"care",label:"Settings",icon:"⚙️",color:PALETTE.pink},
   ];
 
   const headerColors=[CARE_COLORS.rose];
@@ -706,10 +706,12 @@ export default function OtomeGame(){
           </div>
         )}
 
+        {tab==="home"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
+
         {/* BIO */}
         {tab==="bio"&&<div className="pocket-bio"><BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum}/></div>}
 
-        {tab==="care"&&<CareMode/>}
+        {tab==="care"&&<CareMode mode="preferences"/>}
 
         {/* DATES */}
         {tab==="dates"&&(

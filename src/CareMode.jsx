@@ -24,7 +24,7 @@ function loadCare(){
     return {enabled:true,topics:TOPICS.filter(t=>data.topics?.includes(t.id)).map(t=>t.id),last:null,rhythm:RHYTHMS.some(r=>r.id===data.rhythm)?data.rhythm:"off",dismissed:typeof data.dismissed==="string"?data.dismissed:"",snoozed:typeof data.snoozed==="string"?data.snoozed:"",lastCheck:Number.isFinite(data.lastCheck)?data.lastCheck:0};
   }catch{return {enabled:false,topics:[],last:null};}
 }
-export default function CareMode(){
+export default function CareMode({mode="home",onOpenPreferences}){
   const [care,setCare]=useState(loadCare);
   const [selected,setSelected]=useState(()=>{const saved=loadCare();return saved.enabled?saved.topics:["water","food","rest"];});
   const [response,setResponse]=useState(null);
@@ -53,10 +53,11 @@ export default function CareMode(){
     <span style={{display:"inline-block",padding:"5px 11px",background:CARE_COLORS.gold,border:"2px solid "+INK,borderRadius:9,boxShadow:"3px 3px 0 "+INK,fontSize:10,fontWeight:900,letterSpacing:1,transform:"rotate(-2deg)"}}>✦ A LITTLE EXTRA LOVE</span>
     <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>Kai's Care Corner ♡</h2>
     <p style={{fontSize:13,lineHeight:1.65,color:CARE_COLORS.muted,fontWeight:700,margin:"0 0 20px"}}>A cozy space for gentle check-ins. You set the pace, always.</p>
-    <FeelingCheckIn/>
-    {!care.enabled||editing?<>
+    {mode==="home"&&<FeelingCheckIn/>}
+    {mode==="home"&&<button type="button" onClick={onOpenPreferences} style={{width:"100%",padding:13,border:"2px solid "+INK,borderRadius:12,background:CARE_COLORS.paper,color:INK,fontWeight:900,cursor:"pointer",marginBottom:18}}>⚙ Care preferences & reminders →</button>}
+    {mode==="preferences"&&<>
       <div style={{background:"white",border:"3px solid "+INK,borderRadius:20,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:18}}>
-        <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{editing?"Your care preferences":"Want me to look after you?"}</div>
+        <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{care.enabled?"Your care preferences":"Want me to look after you?"}</div>
         <p style={{fontSize:12,lineHeight:1.65,margin:"0 0 15px",color:CARE_COLORS.muted}}>Choose any topics you enjoy. Check-ins appear only while you visit this page. Frequent options are opt-in and never send background notifications.</p>
         <div style={{display:"grid",gap:9}}>
           {TOPICS.map(t=><label key={t.id} style={{display:"flex",alignItems:"center",gap:11,padding:"11px 12px",border:"2px solid "+INK,borderRadius:13,background:selected.includes(t.id)?CARE_COLORS.paper:CARE_COLORS.paper,cursor:"pointer"}}>
@@ -72,10 +73,12 @@ export default function CareMode(){
           </select>
           <p style={{fontSize:11,color:CARE_COLORS.muted,lineHeight:1.5,margin:"7px 0 0"}}>Check-ins only appear while you're visiting Care Mode during your chosen time of day. Nothing is sent outside the game.</p>
         </div>
-        <button type="button" onClick={start} disabled={!selected.length} style={{marginTop:17,width:"100%",minHeight:48,background:CARE_COLORS.gold,border:"3px solid "+INK,borderRadius:14,boxShadow:"3px 4px 0 "+INK,color:INK,fontSize:14,fontWeight:900,cursor:selected.length?"pointer":"not-allowed",opacity:selected.length?1:.5}}>{editing?"Save preferences ♡":"Turn on Care Mode ♡"}</button>
+        <button type="button" onClick={start} disabled={!selected.length} style={{marginTop:17,width:"100%",minHeight:48,background:CARE_COLORS.gold,border:"3px solid "+INK,borderRadius:14,boxShadow:"3px 4px 0 "+INK,color:INK,fontSize:14,fontWeight:900,cursor:selected.length?"pointer":"not-allowed",opacity:selected.length?1:.5}}>{care.enabled?"Save preferences ♡":"Turn on Care Mode ♡"}</button>
+        {care.enabled&&<button type="button" onClick={stop} style={{marginTop:12,width:"100%",padding:12,border:"2px solid "+INK,borderRadius:12,background:"transparent",color:INK,fontWeight:900,cursor:"pointer"}}>Turn off & clear Care Mode</button>}
         {editing&&<button type="button" onClick={()=>setEditing(false)} style={{marginTop:10,width:"100%",background:"transparent",border:0,color:INK,fontWeight:900,cursor:"pointer",padding:10}}>Cancel</button>}
       </div>
-    </>:<>
+    </>}
+    {mode==="home"&&care.enabled&&<>
       <div style={{background:CARE_COLORS.rose,border:"3px solid "+INK,borderRadius:19,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:20}}>
         <div style={{fontSize:12,fontWeight:900,letterSpacing:1,marginBottom:9}}>💌 A NOTE FROM KAI</div>
         <p aria-live="polite" style={{fontFamily:"'Fredoka One',cursive",fontSize:19,lineHeight:1.5,margin:0}}>{response||"Hey, you. I'm here if you need a little encouragement today. ♡"}</p>
@@ -100,11 +103,11 @@ export default function CareMode(){
       </div>
       {response&&<button type="button" onClick={()=>setResponse("I'm glad we got a little moment together. Take it at your own pace. ♡")} style={{background:CARE_COLORS.gold,border:"2px solid "+INK,borderRadius:12,padding:"10px 14px",fontWeight:900,color:INK,cursor:"pointer",marginBottom:16}}>♡ Thanks, Kai</button>}
       <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
-        <button type="button" onClick={()=>{setSelected(care.topics);setRhythm(care.rhythm);setEditing(true);setResponse(null);}} style={{border:"2px solid "+INK,borderRadius:12,background:"white",padding:"10px 13px",fontWeight:900,color:INK,cursor:"pointer"}}>Edit preferences</button>
+        <button type="button" onClick={onOpenPreferences} style={{border:"2px solid "+INK,borderRadius:12,background:"white",padding:"10px 13px",fontWeight:900,color:INK,cursor:"pointer"}}>Edit preferences</button>
         <button type="button" onClick={stop} style={{border:"2px solid "+CARE_COLORS.muted,borderRadius:12,background:"transparent",padding:"10px 13px",fontWeight:900,color:CARE_COLORS.muted,cursor:"pointer"}}>Turn off & clear Care Mode</button>
       </div>
     </>}
-    <div style={{marginTop:26}}>
+    {mode==="home"&&<div style={{marginTop:26}}>
       <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:21,margin:"0 0 6px"}}>More ways to feel close ♡</h3>
       <p style={{fontSize:12,color:CARE_COLORS.muted,lineHeight:1.6,margin:"0 0 14px"}}>Open what feels right today. Everything here is optional.</p>
       <div style={{display:"grid",gap:13}}>
@@ -121,7 +124,7 @@ export default function CareMode(){
           <div style={{padding:"0 12px 15px"}}><CareMemories/></div>
         </details>
       </div>
-    </div>
-    <p style={{margin:"23px 0 0",fontSize:11,lineHeight:1.65,color:CARE_COLORS.muted}}>♡ Privacy: Only your selected everyday care topics, preferred check-in time, and dismissal/snooze state are saved in this browser's local storage, not sent to an account or server by this feature. You can clear them at any time. Shared devices and browser backups may expose locally stored preferences. Birthday and personal dates are separately optional and deletable; cycle-related feelings are only used temporarily on screen and are not saved. This is friendly encouragement, not medical guidance.</p>
+    </div>}
+    {mode==="preferences"&&<p style={{margin:"23px 0 0",fontSize:11,lineHeight:1.65,color:CARE_COLORS.muted}}>♡ Privacy: Only your selected everyday care topics, preferred check-in time, and dismissal/snooze state are saved in this browser's local storage, not sent to an account or server by this feature. You can clear them at any time. Shared devices and browser backups may expose locally stored preferences. Birthday and personal dates are separately optional and deletable; cycle-related feelings are only used temporarily on screen and are not saved. This is friendly encouragement, not medical guidance.</p>}
   </section>;
 }
