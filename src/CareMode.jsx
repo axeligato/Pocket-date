@@ -97,7 +97,7 @@ export default function CareMode(){
       {response&&<button type="button" onClick={()=>setResponse("I'm glad we got a little moment together. Take it at your own pace. ♡")} style={{background:CARE_COLORS.gold,border:"2px solid "+INK,borderRadius:12,padding:"10px 14px",fontWeight:900,color:INK,cursor:"pointer",marginBottom:16}}>♡ Thanks, Kai</button>}
       <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
         <button type="button" onClick={()=>{setSelected(care.topics);setRhythm(care.rhythm);setEditing(true);setResponse(null);}} style={{border:"2px solid "+INK,borderRadius:12,background:"white",padding:"10px 13px",fontWeight:900,color:INK,cursor:"pointer"}}>Edit preferences</button>
-        <button type="button" onClick={stop} style={{border:"2px solid #b7a9a9",borderRadius:12,background:"transparent",padding:"10px 13px",fontWeight:900,color:CARE_COLORS.muted,cursor:"pointer"}}>Turn off & clear Care Mode</button>
+        <button type="button" onClick={stop} style={{border:"2px solid "+CARE_COLORS.muted,borderRadius:12,background:"transparent",padding:"10px 13px",fontWeight:900,color:CARE_COLORS.muted,cursor:"pointer"}}>Turn off & clear Care Mode</button>
       </div>
     </>}
     <div style={{marginTop:26}}>
