@@ -1,3 +1,4 @@
+import {XP_PER_LEVEL,MAX_LEVEL,applyXpReward} from "./gameRules.js";
 import KaiMiniGame from "./KaiMiniGame.jsx";
 import {STORIES_CONTENT, STORY_EXPRESSIONS} from "./narrativeChapters.js";
 import {CARE_COLORS} from "./careTheme.js";
@@ -53,19 +54,9 @@ const DATES = [
   { id:"gym",     label:"Gym Together",   emoji:"💪", xp:25, cost:12, duration:3000, color:"#118AB2" },
 ];
 
-const XP_PER_LEVEL = 50;
-const MAX_LEVEL = 10;
 const TAP_REWARD_COOLDOWN_MS = 30000;
 const TAP_REWARD_XP = 1;
 const LEVEL_UP_FLOWERS = 15;
-
-function applyXpReward(currentLevel,currentXp,amount){
-  if(currentLevel>=MAX_LEVEL)return {level:MAX_LEVEL,xp:0,levelsGained:0};
-  const total=Math.max(0,currentXp)+Math.max(0,amount);
-  const levelsGained=Math.min(MAX_LEVEL-currentLevel,Math.floor(total/XP_PER_LEVEL));
-  const level=currentLevel+levelsGained;
-  return {level,xp:level===MAX_LEVEL?0:total-levelsGained*XP_PER_LEVEL,levelsGained};
-}
 
 const PALETTE = {
   cream: CARE_COLORS.paper,
