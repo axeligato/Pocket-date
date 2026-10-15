@@ -1,3 +1,4 @@
+import {STORIES_CONTENT, STORY_EXPRESSIONS} from "./narrativeChapters.js";
 import {CARE_COLORS} from "./careTheme.js";
 import CareMode from "./CareMode.jsx";
 import React, { useState, useEffect, useRef } from "react";
@@ -6,7 +7,6 @@ const IMG = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAYEBQYFBAYG
 const PORTRAITS = Object.fromEntries(["neutral","happy","laughing","flirty","curious","surprised","nervous","concerned","sad","angry"].map(x=>[x,`/assets/characters/main/${x}.webp`]));
 const CHIBIS = Object.fromEntries(["neutral","happy","excited","focused","confused","embarrassed","pouty","sleepy","in-love","sad"].map(x=>[x,`/assets/characters/chibi/${x}.webp`]));
 const MOOD_PORTRAIT = {tired:"sad",neutral:"neutral",happy:"happy",flustered:"flirty",pumped:"laughing"};
-const STORY_EXPRESSIONS = {1:["neutral","curious","neutral","concerned","flirty"],2:["neutral","nervous","curious","flirty"],3:["sad","sad","concerned","sad","flirty"]};
 
 const SAVE_KEY = "pocket-date-save-v1";
 const MEMORY_CHOICES = ["tease","sweet","challenge"];
@@ -53,29 +53,6 @@ const DATES = [
 ];
 
 const XP_PER_LEVEL = 50;
-
-const STORIES_CONTENT = {
-  1:[
-    {speaker:null,  text:"The gym is almost empty. He's on the bench, elbows on knees, head down."},
-    {speaker:"Kai", text:"...You're still here?"},
-    {speaker:"You", text:"I waited."},
-    {speaker:"Kai", text:"That was a dumb idea."},
-    {speaker:"Kai", text:"...Thanks though."},
-  ],
-  2:[
-    {speaker:null,  text:"You hand it back. He stares at it for a second."},
-    {speaker:"Kai", text:"You can just... keep it."},
-    {speaker:"You", text:"It's your favourite one."},
-    {speaker:"Kai", text:"Yeah. I know."},
-  ],
-  3:[
-    {speaker:null,  text:"He doesn't say anything on the drive back. Neither do you."},
-    {speaker:"You", text:"You played well."},
-    {speaker:"Kai", text:"We lost."},
-    {speaker:"You", text:"I know. You still played well."},
-    {speaker:"Kai", text:"...Stop being like that."},
-  ],
-};
 
 const PALETTE = {
   cream: CARE_COLORS.paper,
@@ -153,8 +130,27 @@ const JOG_CHOICES = [
   {id:"challenge",label:"Less talking. Race you to the bridge!",reply:"Oh, it's on! Try to keep up!",expression:"surprised",chibi:"happy",bonus:3,ending:"You reach the bridge breathless, victorious, and grinning."}
 ];
 
+const DATE_EXTRA_BEATS = {
+  jog:{
+    before:"Kai slows his pace to match yours. The early streets are quiet, and he keeps glancing over as though there's something he wants to ask.",
+    after:"At the bridge, he stops to catch his breath. 'Same time next week?' he asks, trying to sound casual. He's already smiling at your answer."
+  },
+  stadium:{
+    before:"The crowd has gone home, but Kai comes back through the tunnel just to find you. 'I was hoping you'd wait,' he admits.",
+    after:"He walks you to the gates instead of joining the team right away. 'I like having someone to look for in the stands,' he says."
+  },
+  ramen:{
+    before:"Steam curls between you. Kai slides the better seat toward you and pretends not to notice that you noticed.",
+    after:"The shop is closing when you finally stand. Kai reaches for your coat before you can, then looks pleased with himself."
+  },
+  gym:{
+    before:"The gym is almost empty. Kai sets aside his headphones. 'No rush today,' he says. 'I'd rather hang out with you.'",
+    after:"When you leave, Kai walks beside you instead of heading back for another set. 'That was my favorite part of training,' he admits."
+  }
+};
 function MorningJog({date,onComplete,previousChoice}){
   const [choice,setChoice]=useState(null);
+  const [beat,setBeat]=useState(0);
   const selected=JOG_CHOICES.find(c=>c.id===choice);
   return(
     <div role="dialog" aria-modal="true" aria-label="Morning Jog with Kai" style={{position:"fixed",inset:0,zIndex:80,background:CARE_COLORS.paper,display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflowY:"auto"}}>
@@ -174,14 +170,14 @@ function MorningJog({date,onComplete,previousChoice}){
           <div style={{fontSize:11,fontWeight:900,color:PALETTE.red,letterSpacing:1.5,marginBottom:9,display:"inline-block",background:CARE_COLORS.rose,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"3px 9px",transform:"rotate(-2deg)"}}>KAI</div>
           <p aria-live="polite" style={{fontSize:16,fontWeight:700,lineHeight:1.6,color:PALETTE.navy,margin:"0 0 18px"}}>{selected?selected.reply:"You actually showed up at 6 AM? I didn't think you'd come."}</p>
           {!selected?(
-            <div style={{display:"grid",gap:9}}>
+            <div style={{display:"grid",gap:9}}><p style={{fontSize:13,lineHeight:1.6,margin:"0 0 5px"}}>{DATE_EXTRA_BEATS.jog.before}</p>
               {JOG_CHOICES.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",border:`2px solid ${PALETTE.navy}`,borderRadius:13,boxShadow:"3px 3px 0 "+PALETTE.navy,background:CARE_COLORS.paper,color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer",minHeight:52}}>{c.label}</button>)}
             </div>
           ):(
             <div>
               <p style={{color:PALETTE.navy,fontSize:13,lineHeight:1.6,margin:"0 0 14px"}}>{selected.ending}</p>
               <div style={{fontSize:12,color:PALETTE.navy,fontWeight:800,marginBottom:12}}>+{date.xp} XP · +{selected.bonus} bonus XP · +{Math.floor((date.xp+selected.bonus)/4)} affection</div>
-              <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>Finish date ♡</button>
+              <button onClick={()=>beat===0?setBeat(1):onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>{beat===0?"One more moment →":"Finish date ♡"}</button>
             </div>
           )}
         </div>
@@ -221,6 +217,7 @@ const ALL_MEMORY_IDS = [...MEMORY_CHOICES,...OTHER_MEMORY_IDS];
 
 function BranchingDate({date,onComplete}){
   const [choice,setChoice]=useState(null);
+  const [beat,setBeat]=useState(0);
   const scene=OTHER_DATE_SCENES[date.id];
   const selected=scene.choices.find(c=>c.id===choice);
   return <div role="dialog" aria-modal="true" aria-label={date.label} style={{position:"fixed",inset:0,zIndex:80,background:CARE_COLORS.paper,display:"flex",flexDirection:"column",overflowY:"auto",fontFamily:"'Nunito',sans-serif"}}>
@@ -238,11 +235,11 @@ function BranchingDate({date,onComplete}){
     <div style={{background:CARE_COLORS.surface,borderTop:`3px solid ${PALETTE.navy}`,padding:"18px clamp(16px,5vw,32px) 26px"}}>
       <div style={{maxWidth:560,margin:"0 auto"}}>
         <div style={{fontSize:11,fontWeight:900,color:PALETTE.red,letterSpacing:1.5,marginBottom:9,display:"inline-block",background:CARE_COLORS.rose,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"3px 9px",transform:"rotate(-2deg)"}}>KAI</div>
-        <p aria-live="polite" style={{fontSize:16,fontWeight:700,lineHeight:1.6,color:PALETTE.navy,margin:"0 0 18px"}}>{selected?selected.reply:scene.opening}</p>
-        {!selected?<div style={{display:"grid",gap:9}}>{scene.choices.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",minHeight:52,border:`2px solid ${PALETTE.navy}`,borderRadius:13,boxShadow:"3px 3px 0 "+PALETTE.navy,background:CARE_COLORS.paper,color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer"}}>{c.label}</button>)}</div>:<div>
+        <p aria-live="polite" style={{fontSize:16,fontWeight:700,lineHeight:1.6,color:PALETTE.navy,margin:"0 0 18px"}}>{selected?(beat===0?selected.reply:DATE_EXTRA_BEATS[date.id].after):scene.opening}</p>
+        {!selected?<div style={{display:"grid",gap:9}}><p style={{fontSize:13,lineHeight:1.6,margin:"0 0 5px"}}>{DATE_EXTRA_BEATS[date.id].before}</p>{scene.choices.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",minHeight:52,border:`2px solid ${PALETTE.navy}`,borderRadius:13,boxShadow:"3px 3px 0 "+PALETTE.navy,background:CARE_COLORS.paper,color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer"}}>{c.label}</button>)}</div>:<div>
           <p style={{fontSize:13,color:PALETTE.navy,lineHeight:1.6}}>{selected.ending}</p>
           <p style={{fontSize:12,fontWeight:800,color:PALETTE.navy}}>+{date.xp} XP · +{selected.bonus} bonus XP · +{Math.floor((date.xp+selected.bonus)/4)} affection</p>
-          <button onClick={()=>onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:date.id+":"+selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:date.color,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>Finish date ♡</button>
+          <button onClick={()=>beat===0?setBeat(1):onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:date.id+":"+selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:date.color,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>{beat===0?"One more moment →":"Finish date ♡"}</button>
         </div>}
       </div>
     </div>
