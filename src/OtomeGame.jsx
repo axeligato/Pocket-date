@@ -111,7 +111,7 @@ function StoryReader({story,onClose}){
   const colors=[PALETTE.red,PALETTE.blue,PALETTE.green,PALETTE.yellow,PALETTE.pink];
   const col=colors[story.id%colors.length];
   const advance=()=>done?onClose():setIdx(i=>i+1);
-  return <div role="dialog" aria-modal="true" aria-label={story.title} className="pocket-story-reader" style={{position:"fixed",inset:0,zIndex:100,background:"#fffaf2",display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflow:"hidden"}}>
+  return <div role="dialog" aria-modal="true" aria-label={story.title} className="pocket-story-reader" style={{position:"fixed",inset:0,zIndex:100,background:"#fffaf2",display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflowY:"auto",overscrollBehavior:"contain"}}>
     <div style={{background:col,padding:"12px clamp(14px,4vw,24px)",display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,borderBottom:"3px solid "+PALETTE.navy,flexShrink:0}}>
       <div style={{minWidth:0}}>
         <div style={{fontSize:10,letterSpacing:1.6,color:PALETTE.navy,fontWeight:900,marginBottom:3}}>✦ STORY TIME · CHAPTER {story.level}</div>
@@ -509,7 +509,7 @@ export default function OtomeGame(){
         @keyframes chibiPop{0%{opacity:0;transform:translateY(16px) scale(.55) rotate(-12deg)}20%{opacity:1;transform:translateY(-7px) scale(1.12) rotate(5deg)}35%{transform:translateY(0) scale(1) rotate(0)}78%{opacity:1}100%{opacity:0;transform:translateY(-24px) scale(.92)}}
         @media (prefers-reduced-motion:reduce){.pocket-chibi-popup,.pocket-character-portrait{animation:none !important}}
         @keyframes wiggle{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
-        *{box-sizing:border-box} ::-webkit-scrollbar{width:0}
+        *{box-sizing:border-box} .pocket-content::-webkit-scrollbar{width:7px} .pocket-content::-webkit-scrollbar-thumb{background:#c8bcb0;border-radius:10px}
         @media (min-width: 768px) {
           body { background: #f3eee7; }
           .pocket-app { max-width: 920px !important; min-height: min(860px, calc(100dvh - 48px)) !important; height: calc(100dvh - 48px); margin: 24px auto !important; border: 3px solid #073B4C; border-radius: 24px; box-shadow: 10px 12px 0 #073B4C; }
@@ -533,7 +533,7 @@ export default function OtomeGame(){
           .pocket-character-portrait { height: 270px !important; }
         }
         /* Responsive QA: prevent clipping on small phones and short landscape viewports */
-        .pocket-story-reader{overscroll-behavior:contain}
+        .pocket-story-reader{overscroll-behavior:contain} .pocket-story-reader>div:nth-child(3){min-height:140px;flex-shrink:0} .pocket-story-reader>div:last-child{position:relative;z-index:2}
         .pocket-story-reader button{touch-action:manipulation}
         @media (max-width: 380px){
           .pocket-home-heading{padding-left:16px !important;padding-right:16px !important}
@@ -545,6 +545,7 @@ export default function OtomeGame(){
           .pocket-dates,.pocket-stories{padding-left:12px !important;padding-right:12px !important}
         }
         @media (max-height: 580px) and (max-width:767px){
+          .pocket-story-reader>div:nth-child(3){min-height:125px;flex:0 0 125px !important}
           .pocket-home .pocket-character-portrait{height:min(34dvh,230px) !important}
           .pocket-home-heading{padding-top:8px !important}
           .pocket-tabs .pocket-tab{min-height:45px}
@@ -553,6 +554,7 @@ export default function OtomeGame(){
           .pocket-story-reader>div:last-child button{padding:11px 14px !important}
         }
         @media (min-width:768px) and (max-height:650px){
+          .pocket-story-reader>div:nth-child(3){min-height:150px;flex:0 0 150px !important}
           .pocket-home .pocket-home-heading{padding-top:0 !important}
           .pocket-home .pocket-dialogue{padding:10px 14px !important}
           .pocket-home .pocket-mood{margin-bottom:5px !important}
