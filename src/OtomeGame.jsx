@@ -46,7 +46,7 @@ const CHARACTER = {
 };
 
 const DATES = [
-  { id:"jog",     label:"Morning Jog",    emoji:"🌅", xp:15, cost:0,  duration:2200, color:"#FFD166" },
+  { id:"jog",     label:"Morning Jog",    emoji:"🌅", xp:15, cost:0,  duration:2200, color:"#F4A7B9" },
   { id:"stadium", label:"Watch His Game", emoji:"🏟️", xp:30, cost:15, duration:3500, color:"#EF476F" },
   { id:"ramen",   label:"Ramen After",    emoji:"🍜", xp:20, cost:8,  duration:2800, color:"#06D6A0" },
   { id:"gym",     label:"Gym Together",   emoji:"💪", xp:25, cost:12, duration:3000, color:"#118AB2" },
@@ -110,7 +110,7 @@ function StoryReader({story,onClose}){
   const cur=lines[idx];
   const expression=(STORY_EXPRESSIONS[story.id]||[])[idx]||"neutral";
   const done=idx>=lines.length-1;
-  const colors=[PALETTE.red,PALETTE.blue,PALETTE.green,PALETTE.yellow,PALETTE.pink];
+  const colors=[CARE_COLORS.rose];
   const col=colors[story.id%colors.length];
   const advance=()=>done?onClose():setIdx(i=>i+1);
   return <div role="dialog" aria-modal="true" aria-label={story.title} className="pocket-story-reader" style={{position:"fixed",inset:0,zIndex:100,background:CARE_COLORS.paper,display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflowY:"auto",overscrollBehavior:"contain"}}>
@@ -162,7 +162,7 @@ function MorningJog({date,onComplete,previousChoice}){
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>🌅 Morning Jog</div>
         <div style={{fontSize:12,color:PALETTE.navy}}>A little time together, a choice that matters.</div>
       </div>
-      <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#FFD166,#FFFAF2)"}}>
+      <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#F4A7B9,#FFFAF2)"}}>
         <div aria-hidden="true" style={{position:"absolute",width:"min(75vw,290px)",height:"min(75vw,290px)",background:date.color,border:"3px solid "+PALETTE.navy,borderRadius:"48% 52% 44% 56%",transform:"rotate(-9deg)",boxShadow:"7px 8px 0 "+PALETTE.navy,opacity:.85}}/>
         <span aria-hidden="true" style={{position:"absolute",top:18,left:"10%",fontSize:27,transform:"rotate(-15deg)"}}>✦</span>
         <span aria-hidden="true" style={{position:"absolute",right:"10%",top:"18%",fontSize:26,transform:"rotate(15deg)"}}>💗</span>
@@ -480,7 +480,7 @@ export default function OtomeGame(){
     {id:"care",label:"Care",icon:"💗",color:PALETTE.pink},
   ];
 
-  const headerColors=[PALETTE.yellow,PALETTE.red,PALETTE.green,PALETTE.blue,PALETTE.pink];
+  const headerColors=[CARE_COLORS.rose];
   const activeTabColor=TABS.find(t=>t.id===tab)?.color||PALETTE.yellow;
 
   return(
@@ -498,7 +498,7 @@ export default function OtomeGame(){
         .pocket-content{scrollbar-width:thin;scrollbar-color:#526773 transparent}
         .pocket-content button:not(:disabled):active{filter:brightness(.97)}
         @media(prefers-reduced-motion:reduce){.pocket-tabs .pocket-tab{transition:none !important}.pocket-tabs .pocket-tab:hover{transform:none !important}}
-        .pocket-home{position:relative;isolation:isolate;background:radial-gradient(circle at 12% 17%,#FFFAF2 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#FFE1E9 0 14%,transparent 14.5%),#FFFAF2}
+        .pocket-home{position:relative;isolation:isolate;background:radial-gradient(circle at 12% 17%,#FFFAF2 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#F4A7B9 0 14%,transparent 14.5%),#FFFAF2}
         .pocket-character{isolation:isolate}
         .pocket-sticker{position:absolute;z-index:3;pointer-events:none;font-family:"Fredoka One",cursive;color:#073B4C}
         .pocket-home .pocket-dialogue{transform:rotate(-1deg);border-width:3px !important;border-radius:20px 20px 22px 12px !important;box-shadow:5px 6px 0 #073B4C !important}
@@ -562,7 +562,7 @@ export default function OtomeGame(){
           .pocket-home .pocket-dialogue{padding:10px 14px !important}
           .pocket-home .pocket-mood{margin-bottom:5px !important}
         }
-        .pocket-character:focus-visible,button:focus-visible,[role="button"]:focus-visible{outline:3px solid #FFE1E9;outline-offset:4px}
+        .pocket-character:focus-visible,button:focus-visible,[role="button"]:focus-visible{outline:3px solid #F4A7B9;outline-offset:4px}
         button{touch-action:manipulation}
         @media (prefers-reduced-motion:reduce){.pocket-character-portrait,.pocket-chibi-popup{animation:none !important}.pocket-character{transition:none !important}}
         @media (max-width: 767px) {
@@ -611,7 +611,7 @@ export default function OtomeGame(){
           <span style={{fontSize:10,color:PALETTE.red,fontWeight:900,letterSpacing:1}}>♡ AFFECTION</span>
           <span style={{fontSize:10,color:CARE_COLORS.muted,fontWeight:700}}>{affection}%</span>
         </div>
-        <div style={{height:10,background:CARE_COLORS.rose,borderRadius:99,border:"1.5px solid #FFE1E9",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:CARE_COLORS.rose,borderRadius:99,border:"1.5px solid #F4A7B9",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${affection}%`,
             background:`linear-gradient(90deg,${PALETTE.pink},${PALETTE.red})`,
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(239,71,111,0.4)"}}/>
@@ -742,7 +742,7 @@ export default function OtomeGame(){
             <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Every chapter is another page in your story together.</p>
             <div style={{display:"grid",gap:17}}>
               {stories.map((story,i)=>{
-                const colors=[PALETTE.yellow,PALETTE.red,PALETTE.green,PALETTE.blue,PALETTE.pink,PALETTE.orange];
+                const colors=[CARE_COLORS.rose];
                 const paper=story.locked?CARE_COLORS.paper:colors[i%colors.length];
                 return <button type="button" key={story.id} disabled={story.locked} onClick={()=>setOpenStory(story)}
                   style={{position:"relative",width:"100%",textAlign:"left",background:"white",border:"3px solid "+(story.locked?CARE_COLORS.muted:PALETTE.navy),borderRadius:15,padding:"0 0 0 0",boxShadow:story.locked?"none":"5px 6px 0 "+PALETTE.navy,transform:"rotate("+(i%2===0?-.7:.7)+"deg)",cursor:story.locked?"not-allowed":"pointer",overflow:"hidden",fontFamily:"'Nunito',sans-serif",opacity:story.locked?.78:1}}>

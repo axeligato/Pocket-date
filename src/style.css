@@ -1,3 +1,35 @@
-:root { font-family: Arial, sans-serif; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+:root {
+  font-family: "Nunito", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --pd-ink: #073B4C;
+  --pd-muted: #526773;
+  --pd-paper: #FFFAF2;
+  --pd-surface: #FFFFFF;
+  --pd-accent: #F4A7B9;
+  --pd-radius: 16px;
+  --pd-outline: 3px solid var(--pd-ink);
+  --pd-shadow: 4px 5px 0 var(--pd-ink);
+}
 * { box-sizing: border-box; }
 html, body, #root { margin: 0; min-width: 320px; min-height: 100%; }
+button, input, select, textarea { font: inherit; }
+button { min-height: 40px; line-height: 1.35; }
+button:focus-visible, summary:focus-visible, [role="button"]:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--pd-ink);
+  outline-offset: 3px;
+}
+.pocket-app { color: var(--pd-ink); }
+.pocket-content h1, .pocket-content h2, .pocket-content h3 {
+  font-family: "Fredoka One", cursive;
+  line-height: 1.2;
+}
+.pocket-content p { line-height: 1.6; }
+.pocket-tabs .pocket-tab { min-height: 56px; }
+.pocket-content button:not(:disabled) { transition: transform .16s ease, box-shadow .16s ease; }
+.pocket-content button:not(:disabled):focus-visible { position: relative; z-index: 2; }
+@media (prefers-reduced-motion: reduce) {
+  .pocket-content button, .pocket-tabs .pocket-tab { transition: none !important; }
+}
