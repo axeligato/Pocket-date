@@ -32,11 +32,40 @@ const CHARACTER = {
   age: 24, sign: "Aries ♈", likes: "Quiet cafés, evening walks, thoughtful conversations",
   moods: ["tired","neutral","happy","flustered","pumped"],
   messages: {
-    tired: ["It's been a long day. Want a quiet moment?", "We don't have to fill every silence.", "If you're tired, we can take things slowly."],
-    neutral: ["Hey. What's been on your mind lately?", "Good to see you. How's your day really going?", "Would you rather talk or just hang out?"],
-    happy: ["I'm glad you're here. What's been good today?", "Tell me something small that made you smile.", "I like how easy it is to talk with you."],
-    flustered: ["I appreciate you trusting me with that.", "You don't need to find the perfect words.", "I like spending time with you, at whatever pace feels right."],
-    pumped: ["That's worth celebrating. What are you proudest of?", "You did that. I hope you give yourself credit.", "I'm happy for you. Want to tell me how it happened?"],
+    tired: [
+      "I ran ten miles today. Somehow walking over to see you was the part I got nervous about.",
+      "I was going to make a clever entrance. Then I yawned. Pretend that was charming.",
+      "You can borrow my hoodie. I'm not saying it smells like my coffee. I'm also not denying it.",
+      "If I fall asleep on your shoulder, you're legally required to pretend you didn't notice."
+    ],
+    neutral: [
+      "I saved you the good seat. Yes, there's only one chair. Funny how that happened.",
+      "I was practicing a smooth hello. Anyway. Hi. Nailed it.",
+      "You keep showing up around my favorite café. At this point, I might have to call it our spot.",
+      "I brought two pastries. Pure coincidence that I know which one you like.",
+      "Quick question: is it still showing off if I only do it because you're watching?"
+    ],
+    happy: [
+      "You laughed at my terrible joke. Dangerous. Now I think I'm funny.",
+      "I had a pretty good day. Then you showed up and ruined my ability to act normal.",
+      "If this were a race, I'd slow down just to walk beside you. Don't tell my coach.",
+      "You have a way of making ordinary afternoons feel like plans worth keeping.",
+      "I ordered your usual. Don't look at me like that—I have an excellent memory for important things."
+    ],
+    flustered: [
+      "You can't just smile at me like that and expect me to remember what I was saying.",
+      "I can handle a stadium full of people. One compliment from you? Apparently not.",
+      "I was going to ask you on a date. Very casually. With absolutely no rehearsing. ...Are you free Friday?",
+      "If I hold your hand, will you promise not to make fun of how nervous I am?",
+      "You're wearing my hoodie again. I should probably ask for it back. I won't."
+    ],
+    pumped: [
+      "I won the match! My first thought was telling you. My second was pretending that wasn't my first thought.",
+      "I can sprint the final lap, but apparently I can't walk past you without smiling.",
+      "Come celebrate with me. I know a ramen place. And yes, I'm asking you on a date.",
+      "The team says I'm distracted lately. I have absolutely no idea who could be responsible.",
+      "I scored today. Was that impressive? Please say yes; I practiced looking cool afterward."
+    ],
   },
   stories: [
     { id:1, level:1,  title:"After Practice",  preview:"He's still catching his breath when you find him.", locked:false },
@@ -691,7 +720,7 @@ export default function OtomeGame(){
               <div style={{position:"absolute",top:-8,left:37,width:0,height:0,
                 borderLeft:"9px solid transparent",borderRight:"9px solid transparent",
                 borderBottom:"10px solid white"}}/>
-              <div style={{fontFamily:"Fredoka One, cursive",fontSize:11,color:PALETTE.red,letterSpacing:1.5,marginBottom:5}}>KAI SAYS...</div>
+              <div style={{fontFamily:"Fredoka One, cursive",fontSize:11,color:PALETTE.red,letterSpacing:1.5,marginBottom:5}}>A LITTLE SOMETHING FROM KAI ♡</div>
               <p style={{margin:0,fontSize:15,color:PALETTE.navy,fontStyle:"italic",lineHeight:1.65,fontWeight:600}}>
                 "{message}"
               </p>
