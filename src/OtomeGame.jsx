@@ -26,16 +26,16 @@ function readSave(){
 }
 
 const CHARACTER = {
-  name: "Kai", title: "The Athlete Next Door",
+  name: "Kai", title: "The Thoughtful Neighbor",
   bio: "Loud laugh, terrible liar, makes you soup when you're sick and never admits it. Runs ten miles every morning and still shows up for everything that matters.",
-  age: 24, sign: "Aries ♈", likes: "Late games, instant ramen, your laugh",
+  age: 24, sign: "Aries ♈", likes: "Quiet cafés, evening walks, thoughtful conversations",
   moods: ["tired","neutral","happy","flustered","pumped"],
   messages: {
-    tired:    ["Ugh... five more minutes.","Don't look at me right now.","I ran ten miles. Be nice."],
-    neutral:  ["Oh. Hey.","What are you doing here?","...You came back."],
-    happy:    ["You showed up! Nice.","This is good. You being here.","Stay for a bit, yeah?"],
-    flustered:["That's— I'm not— whatever.","Stop smiling like that.","I wasn't waiting. Shut up."],
-    pumped:   ["LET'S GO!! You're here!","I've been thinking about you all day!","You're my good luck charm!"],
+    tired: ["It's been a long day. Want a quiet moment?", "We don't have to fill every silence.", "If you're tired, we can take things slowly."],
+    neutral: ["Hey. What's been on your mind lately?", "Good to see you. How's your day really going?", "Would you rather talk or just hang out?"],
+    happy: ["I'm glad you're here. What's been good today?", "Tell me something small that made you smile.", "I like how easy it is to talk with you."],
+    flustered: ["I appreciate you trusting me with that.", "You don't need to find the perfect words.", "I like spending time with you, at whatever pace feels right."],
+    pumped: ["That's worth celebrating. What are you proudest of?", "You did that. I hope you give yourself credit.", "I'm happy for you. Want to tell me how it happened?"],
   },
   stories: [
     { id:1, level:1,  title:"After Practice",  preview:"He's still catching his breath when you find him.", locked:false },
@@ -489,12 +489,14 @@ export default function OtomeGame(){
   const activeTabColor=TABS.find(t=>t.id===tab)?.color||PALETTE.yellow;
 
   return(
-    <div className="pocket-app" style={{minHeight:"100vh",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
+    <div className="pocket-app" style={{minHeight:"100dvh",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
       fontFamily:"'Nunito',sans-serif",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
         :root{--pocket-ink:#073B4C;--pocket-paper:#FFFAF2;--pocket-outline:3px solid var(--pocket-ink);--pocket-shadow:4px 5px 0 var(--pocket-ink)}
-        .pocket-tabs{gap:5px;padding:9px 10px 10px;align-items:stretch}
+        .pocket-content{padding-bottom:calc(94px + env(safe-area-inset-bottom, 0px)) !important}
+        .pocket-app [role="dialog"][aria-modal="true"]{bottom:calc(82px + env(safe-area-inset-bottom, 0px)) !important}
+        .pocket-tabs{box-sizing:border-box}\n        .pocket-tabs{gap:5px;padding:9px 10px 10px;align-items:stretch}
         .pocket-tabs .pocket-tab{border:2px solid transparent !important;border-radius:14px !important;min-width:0;min-height:55px;transition:transform .16s ease,background .16s ease,box-shadow .16s ease !important}
         .pocket-tabs .pocket-tab[aria-current="page"]{border-color:var(--pocket-ink) !important;box-shadow:3px 3px 0 var(--pocket-ink);transform:translateY(-2px)}
         .pocket-tabs .pocket-tab:not([aria-current="page"]):hover{background:#FFFAF2 !important;transform:translateY(-2px)}
@@ -774,10 +776,10 @@ export default function OtomeGame(){
       </div>
 
       {/* ── Bottom Nav ── */}
-      <nav className="pocket-tabs" aria-label="Main navigation" style={{display:"flex",borderTop:"3px solid "+PALETTE.navy,background:CARE_COLORS.paper,position:"sticky",bottom:0,zIndex:30,flexShrink:0}}>
+      <nav className="pocket-tabs" aria-label="Main navigation" style={{display:"flex",borderTop:"3px solid "+PALETTE.navy,background:CARE_COLORS.paper,position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,zIndex:120,flexShrink:0,paddingBottom:"env(safe-area-inset-bottom, 0px)"}}>
         {TABS.map(t=>{
           const active=tab===t.id;
-          return <button className="pocket-tab" type="button" key={t.id} aria-current={active?"page":undefined} onClick={()=>setTab(t.id)}
+          return <button className="pocket-tab" type="button" key={t.id} aria-current={active?"page":undefined} onClick={()=>{setTab(t.id);setOpenStory(null);setActiveDate(null);}}
             style={{flex:1,padding:"8px 3px 7px",background:active?t.color:"transparent",border:"2px solid transparent",borderRadius:14,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,color:PALETTE.navy,fontFamily:"'Nunito',sans-serif",fontWeight:900}}>
             <span className="pocket-tab-icon" aria-hidden="true">{t.icon}</span>
             <span className="pocket-tab-label" style={{fontSize:10,letterSpacing:.4,textTransform:"uppercase",fontWeight:900,color:PALETTE.navy}}>{t.label}</span>
