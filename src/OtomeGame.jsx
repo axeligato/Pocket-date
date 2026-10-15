@@ -1,3 +1,4 @@
+import InstallApp from "./InstallApp.jsx";
 import {XP_PER_LEVEL,MAX_LEVEL,applyXpReward} from "./gameRules.js";
 import KaiMiniGame from "./KaiMiniGame.jsx";
 import {STORIES_CONTENT, STORY_EXPRESSIONS} from "./narrativeChapters.js";
@@ -711,7 +712,7 @@ export default function OtomeGame(){
         {/* BIO */}
         {tab==="bio"&&<div className="pocket-bio"><BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum}/></div>}
 
-        {tab==="care"&&<CareMode mode="preferences"/>}
+        {tab==="care"&&<><CareMode mode="preferences"/><div style={{padding:"0 16px 32px"}}><InstallApp/></div></>}
 
         {/* DATES */}
         {tab==="dates"&&(
