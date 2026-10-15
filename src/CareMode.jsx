@@ -1,3 +1,4 @@
+import FeelingCheckIn from "./FeelingCheckIn.jsx";
 import {careSectionStyle,careSummaryStyle} from "./careTheme.js";
 import {CARE_COLORS} from "./careTheme.js";
 import CareMemories from "./CareMemories.jsx";
@@ -7,7 +8,7 @@ import React, {useEffect,useState} from "react";
 
 const INK=CARE_COLORS.ink;
 const CARE_KEY="pocket-date-care-v1";
-const RHYTHMS=[{id:"off",label:"Only when I ask"},{id:"morning",label:"Morning"},{id:"afternoon",label:"Afternoon"},{id:"evening",label:"Evening"}];
+const RHYTHMS=[{id:"off",label:"Only when I ask"},{id:"morning",label:"Morning"},{id:"afternoon",label:"Afternoon"},{id:"evening",label:"Evening"},{id:"every4h",label:"Every 4 hours while I use the app"},{id:"every2h",label:"Every 2 hours while I use the app"}];
 const TODAY=()=>new Date().toLocaleDateString("en-CA");
 const DAYPART=()=>{const h=new Date().getHours();return h<12?"morning":h<17?"afternoon":"evening";};
 const TOPICS=[
@@ -19,8 +20,8 @@ const TOPICS=[
 function loadCare(){
   try{
     const data=JSON.parse(localStorage.getItem(CARE_KEY)||"null");
-    if(data?.version!==1||!data.enabled)return {enabled:false,topics:[],last:null,rhythm:"off",dismissed:"",snoozed:""};
-    return {enabled:true,topics:TOPICS.filter(t=>data.topics?.includes(t.id)).map(t=>t.id),last:null,rhythm:RHYTHMS.some(r=>r.id===data.rhythm)?data.rhythm:"off",dismissed:typeof data.dismissed==="string"?data.dismissed:"",snoozed:typeof data.snoozed==="string"?data.snoozed:""};
+    if(data?.version!==1||!data.enabled)return {enabled:false,topics:[],last:null,rhythm:"off",dismissed:"",snoozed:"",lastCheck:0};
+    return {enabled:true,topics:TOPICS.filter(t=>data.topics?.includes(t.id)).map(t=>t.id),last:null,rhythm:RHYTHMS.some(r=>r.id===data.rhythm)?data.rhythm:"off",dismissed:typeof data.dismissed==="string"?data.dismissed:"",snoozed:typeof data.snoozed==="string"?data.snoozed:"",lastCheck:Number.isFinite(data.lastCheck)?data.lastCheck:0};
   }catch{return {enabled:false,topics:[],last:null};}
 }
 export default function CareMode(){
@@ -34,27 +35,29 @@ export default function CareMode(){
   const persist=(next)=>{
     setCare(next);
     try{
-      if(next.enabled)localStorage.setItem(CARE_KEY,JSON.stringify({version:1,enabled:true,topics:next.topics,rhythm:next.rhythm,dismissed:next.dismissed||"",snoozed:next.snoozed||""}));
+      if(next.enabled)localStorage.setItem(CARE_KEY,JSON.stringify({version:1,enabled:true,topics:next.topics,rhythm:next.rhythm,dismissed:next.dismissed||"",snoozed:next.snoozed||"",lastCheck:next.lastCheck||0}));
       else localStorage.removeItem(CARE_KEY);
     }catch{/* Local storage may be unavailable. */}
   };
   const toggle=(id)=>setSelected(items=>items.includes(id)?items.filter(x=>x!==id):[...items,id]);
-  const start=()=>{persist({enabled:true,topics:selected,last:null,rhythm,dismissed:care.dismissed||"",snoozed:care.snoozed||""});setResponse(null);setEditing(false);};
+  const start=()=>{persist({enabled:true,topics:selected,last:null,rhythm,dismissed:care.dismissed||"",snoozed:care.snoozed||"",lastCheck:care.lastCheck||0});setResponse(null);setEditing(false);};
   const stop=()=>{persist({enabled:false,topics:[],last:null,rhythm:"off",dismissed:"",snoozed:""});setRhythm("off");setResponse(null);setEditing(false);};
   const active=TOPICS.filter(t=>care.topics.includes(t.id));
   const today=TODAY();
-  const due=care.enabled&&care.rhythm!=="off"&&care.rhythm===DAYPART()&&care.dismissed!==today&&(!care.snoozed||Number(care.snoozed)<=clock);
+  const intervalHours=care.rhythm==="every2h"?2:care.rhythm==="every4h"?4:0;
+  const due=care.enabled&&care.rhythm!=="off"&&(intervalHours?clock-(care.lastCheck||0)>=intervalHours*3600000:care.rhythm===DAYPART()&&care.dismissed!==today)&&(!care.snoozed||Number(care.snoozed)<=clock);
   const checkIn=active[(new Date().getDate()-1)%Math.max(active.length,1)];
   const snooze=()=>{persist({...care,snoozed:String(Date.now()+60*60*1000)});setClock(Date.now());};
-  const dismiss=()=>persist({...care,dismissed:today,snoozed:""});
+  const dismiss=()=>persist({...care,dismissed:today,snoozed:"",lastCheck:Date.now()});
   return <section className="pocket-care" aria-label="Care Mode" style={{padding:"22px 16px 36px",maxWidth:740,margin:"0 auto",width:"100%",color:INK}}>
     <span style={{display:"inline-block",padding:"5px 11px",background:CARE_COLORS.gold,border:"2px solid "+INK,borderRadius:9,boxShadow:"3px 3px 0 "+INK,fontSize:10,fontWeight:900,letterSpacing:1,transform:"rotate(-2deg)"}}>✦ A LITTLE EXTRA LOVE</span>
     <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>Kai's Care Corner ♡</h2>
     <p style={{fontSize:13,lineHeight:1.65,color:CARE_COLORS.muted,fontWeight:700,margin:"0 0 20px"}}>A cozy space for gentle check-ins. You set the pace, always.</p>
+    <FeelingCheckIn/>
     {!care.enabled||editing?<>
       <div style={{background:"white",border:"3px solid "+INK,borderRadius:20,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:18}}>
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{editing?"Your care preferences":"Want me to look after you?"}</div>
-        <p style={{fontSize:12,lineHeight:1.65,margin:"0 0 15px",color:CARE_COLORS.muted}}>Choose any topics you enjoy. All check-ins happen only when you open this page; there are no background reminders or notifications yet.</p>
+        <p style={{fontSize:12,lineHeight:1.65,margin:"0 0 15px",color:CARE_COLORS.muted}}>Choose any topics you enjoy. Check-ins appear only while you visit this page. Frequent options are opt-in and never send background notifications.</p>
         <div style={{display:"grid",gap:9}}>
           {TOPICS.map(t=><label key={t.id} style={{display:"flex",alignItems:"center",gap:11,padding:"11px 12px",border:"2px solid "+INK,borderRadius:13,background:selected.includes(t.id)?CARE_COLORS.paper:CARE_COLORS.paper,cursor:"pointer"}}>
             <input type="checkbox" checked={selected.includes(t.id)} onChange={()=>toggle(t.id)} style={{width:19,height:19,accentColor:INK,flexShrink:0}}/>
