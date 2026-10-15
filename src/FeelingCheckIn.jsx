@@ -35,47 +35,54 @@ export const FEELINGS=[
   {text:"If nothing feels appealing lately, that's worth taking seriously, not criticizing yourself for. If it persists or affects daily life, talking with a qualified professional may help.",prompt:"Try: tell someone you trust how long you've been feeling this way.",source:"Supportive, non-diagnostic guidance"}
  ]}
 ];
-const btn={padding:"11px 12px",border:"2px solid "+CARE_COLORS.ink,borderRadius:12,background:CARE_COLORS.paper,color:CARE_COLORS.ink,fontWeight:800,cursor:"pointer",textAlign:"left"};
+const pill={padding:"10px 14px",border:"1.5px solid "+CARE_COLORS.ink,borderRadius:999,background:CARE_COLORS.paper,color:CARE_COLORS.ink,fontWeight:800,cursor:"pointer",fontSize:12};
 export default function FeelingCheckIn(){
  const [topic,setTopic]=useState(null);
  const [variant,setVariant]=useState({});
- const [showPrompt,setShowPrompt]=useState(false);
  const [choice,setChoice]=useState(null);
- const [stage,setStage]=useState("topic");
+ const [showAction,setShowAction]=useState(false);
  const current=FEELINGS.find(t=>t.id===topic);
- const index=topic?(variant[topic]??0):0;
- const response=current?.responses[index];
+ const response=current?.responses[variant[topic]??0];
  const followUp=topic?FOLLOW_UPS[topic]:null;
  const selectedReply=topic&&choice?getFollowUp(topic,choice):null;
- const next=()=>{setVariant(v=>({...v,[topic]:((v[topic]??0)+1)%current.responses.length}));setShowPrompt(false);setChoice(null);setStage("topic");};
- return <section aria-label="Talk about how you feel" style={{background:CARE_COLORS.surface,border:"3px solid "+CARE_COLORS.ink,borderRadius:18,padding:16,marginBottom:20}}>
-  <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:21,margin:"0 0 6px"}}>What's weighing on you?</h3>
-  <p style={{fontSize:12,lineHeight:1.6,color:CARE_COLORS.muted,margin:"0 0 14px"}}>Pick what feels closest. Kai offers a few thoughtful reflections, not a diagnosis. You can skip anything that doesn't fit.</p>
-  <div style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:8}}>
-   {FEELINGS.map(t=><button type="button" key={t.id} aria-pressed={topic===t.id} onClick={()=>{setTopic(t.id);setChoice(null);setStage("topic");setShowPrompt(false);}} style={{...btn,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper,fontSize:12}}>{t.label}</button>)}
+ const selectTopic=id=>{setTopic(id);setChoice(null);setShowAction(false);};
+ const choose=id=>{setChoice(id);setShowAction(false);};
+ const next=()=>{setVariant(v=>({...v,[topic]:((v[topic]??0)+1)%current.responses.length}));setChoice(null);setShowAction(false);};
+ const activeText=selectedReply?.reply||response?.text;
+ const activeAction=selectedReply?.action||response?.prompt;
+ return <section aria-label="Talk about how you feel" style={{padding:"8px 0 20px",marginBottom:12,color:CARE_COLORS.ink}}>
+  <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:24,margin:"0 0 6px"}}>How are you feeling?</h3>
+  <p style={{fontSize:13,lineHeight:1.65,color:CARE_COLORS.muted,margin:"0 0 16px"}}>Pick what feels closest. No pressure to explain everything.</p>
+  <div role="group" aria-label="Choose a feeling" style={{display:"flex",flexWrap:"wrap",gap:8}}>
+   {FEELINGS.map(t=><button type="button" key={t.id} aria-pressed={topic===t.id} onClick={()=>selectTopic(t.id)} style={{...pill,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper}}>{t.label}</button>)}
   </div>
-  {response&&<div aria-live="polite" style={{marginTop:14,padding:13,borderRadius:12,background:CARE_COLORS.paper,border:"2px solid "+CARE_COLORS.ink}}>
-    <strong style={{fontSize:12}}>💌 Kai</strong>
-    <p style={{fontSize:14,lineHeight:1.75,margin:"8px 0"}}>{response.text}</p>
-    <p style={{fontSize:11,color:CARE_COLORS.muted,margin:"0 0 12px"}}>{response.source}</p>
-    {showPrompt&&<p style={{fontSize:13,lineHeight:1.6,fontWeight:800}}>{response.prompt}</p>}
-    {followUp&&<div style={{borderTop:"1px solid "+CARE_COLORS.muted,paddingTop:12,marginTop:12}}>
-      <strong style={{fontSize:13}}>{followUp.question}</strong>
-      <div style={{display:"grid",gap:7,marginTop:10}}>
-        {followUp.choices.map(option=><button type="button" key={option.id} aria-pressed={choice===option.id} onClick={()=>{setChoice(option.id);setStage("reply");setShowPrompt(false);}} style={{...btn,fontSize:12,background:choice===option.id?CARE_COLORS.rose:CARE_COLORS.surface}}>{option.label}</button>)}
-      </div>
-      {selectedReply&&<div style={{marginTop:12,padding:12,borderRadius:12,background:CARE_COLORS.surface,border:"1px solid "+CARE_COLORS.muted}}>
-        <strong style={{fontSize:12}}>💌 Kai · about that</strong>
-        <p style={{fontSize:14,lineHeight:1.75,margin:"8px 0"}}>{selectedReply.reply}</p>
-        <button type="button" onClick={()=>setStage(stage==="action"?"reply":"action")} style={{...btn,fontSize:12}}>{stage==="action"?"Hide next step":"One small thing I could try"}</button>
-        {stage==="action"&&<p style={{fontSize:13,lineHeight:1.6,fontWeight:800}}>{selectedReply.action}</p>}
-      </div>}
-    </div>}
-    <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-      <button type="button" onClick={()=>setShowPrompt(x=>!x)} style={{...btn,fontSize:12}}>{showPrompt?"Hide suggestion":"A small next step"}</button>
-      <button type="button" onClick={next} style={{...btn,background:CARE_COLORS.rose,fontSize:12}}>Another perspective ↻</button>
+  {response&&<>
+   <div aria-live="polite" aria-atomic="true" style={{marginTop:20}}>
+    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:9}}>
+     <span aria-hidden="true" style={{width:32,height:32,borderRadius:"50%",background:CARE_COLORS.rose,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:18}}>♡</span>
+     <strong style={{fontSize:13}}>Kai <span style={{fontWeight:600,color:CARE_COLORS.muted}}>· {selectedReply?"Listening to you":"Here with you"}</span></strong>
     </div>
-  </div>}
-  <p style={{fontSize:11,lineHeight:1.6,color:CARE_COLORS.muted,margin:"14px 0 0"}}>These are authored reflections, not live counseling. If you're in immediate danger, contact local emergency services. For persistent distress, consider reaching out to someone you trust or a mental health professional.</p>
+    <div style={{background:CARE_COLORS.paper,borderRadius:"6px 24px 24px 24px",padding:"17px 18px",boxShadow:"0 3px 15px rgba(7,59,76,.08)"}}>
+     <p style={{fontSize:15,lineHeight:1.8,margin:0,fontWeight:650}}>{activeText}</p>
+    </div>
+    {!selectedReply&&<p style={{fontSize:11,color:CARE_COLORS.muted,margin:"9px 0 0 42px"}}>{response.source}</p>}
+   </div>
+   {followUp&&!selectedReply&&<div style={{marginTop:22}}>
+    <p style={{fontSize:14,fontWeight:900,margin:"0 0 12px"}}>{followUp.question}</p>
+    <div role="group" aria-label="Tell Kai more" style={{display:"flex",flexDirection:"column",alignItems:"flex-start",gap:9}}>
+     {followUp.choices.map(option=><button type="button" key={option.id} onClick={()=>choose(option.id)} style={{...pill,maxWidth:"100%",textAlign:"left",background:CARE_COLORS.surface}}>{option.label} <span aria-hidden="true">↗</span></button>)}
+    </div>
+   </div>}
+   {selectedReply&&<div style={{marginTop:15,display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap"}}>
+    <span style={{fontSize:12,color:CARE_COLORS.muted}}>You said: {followUp.choices.find(c=>c.id===choice)?.label}</span>
+    <button type="button" onClick={()=>{setChoice(null);setShowAction(false);}} style={{...pill,border:"none",background:"transparent",textDecoration:"underline"}}>Change answer</button>
+   </div>}
+   <div style={{display:"flex",flexWrap:"wrap",gap:10,marginTop:19,alignItems:"center"}}>
+    <button type="button" onClick={()=>setShowAction(v=>!v)} aria-expanded={showAction} style={{...pill,background:CARE_COLORS.rose}}>{showAction?"Hide next step":"♡ A small next step"}</button>
+    <button type="button" onClick={next} style={{...pill,border:"none",background:"transparent",textDecoration:"underline"}}>Another perspective ↻</button>
+   </div>
+   {showAction&&<div role="note" style={{marginTop:12,borderLeft:"3px solid "+CARE_COLORS.rose,padding:"10px 14px",fontSize:13,lineHeight:1.7,background:CARE_COLORS.surface,borderRadius:"0 14px 14px 0"}}>{activeAction}</div>}
+  </>}
+  <p style={{fontSize:11,lineHeight:1.6,color:CARE_COLORS.muted,margin:"22px 0 0"}}>Kai is a fictional companion, not a therapist. These are authored reflections, not live counseling. If you're in immediate danger, contact local emergency services; for ongoing distress, consider support from someone you trust or a qualified professional.</p>
  </section>;
 }
