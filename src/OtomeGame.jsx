@@ -1,3 +1,4 @@
+import KaiMiniGame from "./KaiMiniGame.jsx";
 import {STORIES_CONTENT, STORY_EXPRESSIONS} from "./narrativeChapters.js";
 import {CARE_COLORS} from "./careTheme.js";
 import CareMode from "./CareMode.jsx";
@@ -744,6 +745,7 @@ export default function OtomeGame(){
                 </button>;
               })}
             </div>
+            <KaiMiniGame onReward={amount=>setCoins(c=>c+amount)}/>
           </div>
         )}
 
