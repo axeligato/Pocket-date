@@ -52,7 +52,6 @@ export default function FeelingCheckIn(){
  const activeAction=selectedReply?.action||response?.prompt;
  return <section aria-label="Talk about how you feel" style={{padding:"8px 0 20px",marginBottom:12,color:CARE_COLORS.ink}}>
   <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:24,margin:"0 0 6px"}}>How are you feeling?</h3>
-  <p style={{fontSize:13,lineHeight:1.65,color:CARE_COLORS.muted,margin:"0 0 16px"}}>Pick what feels closest. No pressure to explain everything.</p>
   <div role="group" aria-label="Choose a feeling" style={{display:"flex",flexWrap:"wrap",gap:8}}>
    {FEELINGS.map(t=><button type="button" key={t.id} aria-pressed={topic===t.id} onClick={()=>selectTopic(t.id)} style={{...pill,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper}}>{t.label}</button>)}
   </div>
@@ -65,7 +64,7 @@ export default function FeelingCheckIn(){
     <div style={{background:CARE_COLORS.paper,borderRadius:"6px 24px 24px 24px",padding:"17px 18px",boxShadow:"0 3px 15px rgba(7,59,76,.08)"}}>
      <p style={{fontSize:15,lineHeight:1.8,margin:0,fontWeight:650}}>{activeText}</p>
     </div>
-    {!selectedReply&&<p style={{fontSize:11,color:CARE_COLORS.muted,margin:"9px 0 0 42px"}}>{response.source}</p>}
+    {!selectedReply&&<details style={{margin:"9px 0 0 42px",fontSize:11,color:CARE_COLORS.muted}}><summary style={{cursor:"pointer"}}>Inspiration</summary><p>{response.source}</p></details>}
    </div>
    {followUp&&!selectedReply&&<div style={{marginTop:22}}>
     <p style={{fontSize:14,fontWeight:900,margin:"0 0 12px"}}>{followUp.question}</p>
@@ -83,6 +82,6 @@ export default function FeelingCheckIn(){
    </div>
    {showAction&&<div role="note" style={{marginTop:12,borderLeft:"3px solid "+CARE_COLORS.rose,padding:"10px 14px",fontSize:13,lineHeight:1.7,background:CARE_COLORS.surface,borderRadius:"0 14px 14px 0"}}>{activeAction}</div>}
   </>}
-  <p style={{fontSize:11,lineHeight:1.6,color:CARE_COLORS.muted,margin:"22px 0 0"}}>Kai is a fictional companion, not a therapist. These are authored reflections, not live counseling. If you're in immediate danger, contact local emergency services; for ongoing distress, consider support from someone you trust or a qualified professional.</p>
+  <details style={{fontSize:11,lineHeight:1.6,color:CARE_COLORS.muted,margin:"20px 0 0"}}><summary style={{cursor:"pointer"}}>About these conversations & support</summary><p>Kai is a fictional companion, not a therapist. These are authored reflections, not live counseling. If you're in immediate danger, contact local emergency services; for ongoing distress, consider support from someone you trust or a qualified professional.</p></details>
  </section>;
 }
