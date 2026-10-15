@@ -239,7 +239,7 @@ function BranchingDate({date,onComplete}){
         {!selected?<div style={{display:"grid",gap:9}}><p style={{fontSize:13,lineHeight:1.6,margin:"0 0 5px"}}>{DATE_EXTRA_BEATS[date.id].before}</p>{scene.choices.map(c=><button key={c.id} onClick={()=>setChoice(c.id)} style={{padding:"12px 14px",minHeight:52,border:`2px solid ${PALETTE.navy}`,borderRadius:13,boxShadow:"3px 3px 0 "+PALETTE.navy,background:CARE_COLORS.paper,color:PALETTE.navy,fontSize:14,fontWeight:800,textAlign:"left",cursor:"pointer"}}>{c.label}</button>)}</div>:<div>
           <p style={{fontSize:13,color:PALETTE.navy,lineHeight:1.6}}>{selected.ending}</p>
           <p style={{fontSize:12,fontWeight:800,color:PALETTE.navy}}>+{date.xp} XP · +{selected.bonus} bonus XP · +{Math.floor((date.xp+selected.bonus)/4)} affection</p>
-          <button onClick={()=>beat===0?setBeat(1):onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:date.id+":"+selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:date.color,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>Finish date ♡</button>
+          <button onClick={()=>beat===0?setBeat(1):onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:date.id+":"+selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:date.color,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>{beat===0?"One more moment →":"Finish date ♡"}</button>
         </div>}
       </div>
     </div>
