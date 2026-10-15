@@ -53,6 +53,18 @@ const DATES = [
 ];
 
 const XP_PER_LEVEL = 50;
+const MAX_LEVEL = 10;
+const TAP_REWARD_COOLDOWN_MS = 30000;
+const TAP_REWARD_XP = 1;
+const LEVEL_UP_FLOWERS = 15;
+
+function applyXpReward(currentLevel,currentXp,amount){
+  if(currentLevel>=MAX_LEVEL)return {level:MAX_LEVEL,xp:0,levelsGained:0};
+  const total=Math.max(0,currentXp)+Math.max(0,amount);
+  const levelsGained=Math.min(MAX_LEVEL-currentLevel,Math.floor(total/XP_PER_LEVEL));
+  const level=currentLevel+levelsGained;
+  return {level,xp:level===MAX_LEVEL?0:total-levelsGained*XP_PER_LEVEL,levelsGained};
+}
 
 const PALETTE = {
   cream: CARE_COLORS.paper,
@@ -382,6 +394,8 @@ export default function OtomeGame(){
   const [coins,setCoins]=useState(savedStart.coins??30);
   const [jogMemory,setJogMemory]=useState(savedStart.jogMemory??null);
   const [memoryAlbum,setMemoryAlbum]=useState(savedStart.memoryAlbum??[]);
+  const [lastTapReward,setLastTapReward]=useState(0);
+  const progressRef=useRef({level:savedStart.level??1,xp:savedStart.xp??0});
   const [mood,setMood]=useState("neutral");
   const [message,setMessage]=useState("Oh. Hey.");
   const [pulse,setPulse]=useState(false);
@@ -405,10 +419,14 @@ export default function OtomeGame(){
     setMessage(rand(CHARACTER.messages[m]));
   },[affection]);
 
-  useEffect(()=>{
-    const t=setInterval(()=>setCoins(c=>c+1),9000);
-    return()=>clearInterval(t);
-  },[]);
+  // Flowers are earned through dates and milestones, not idle waiting.
+  function awardXp(amount){
+    const next=applyXpReward(progressRef.current.level,progressRef.current.xp,amount);
+    progressRef.current={level:next.level,xp:next.xp};
+    setLevel(next.level);
+    setXp(next.xp);
+    if(next.levelsGained)setCoins(c=>c+next.levelsGained*LEVEL_UP_FLOWERS);
+  }
 
   useEffect(()=>()=>clearTimeout(chibiTimer.current),[]);
 
@@ -433,13 +451,15 @@ export default function OtomeGame(){
     }
     setPulse(true);
     setTimeout(()=>setPulse(false),300);
-    const gain=3;
-    setAffection(a=>Math.min(a+gain,100));
-    setXp(prev=>{
-      const next=prev+gain;
-      if(next>=XP_PER_LEVEL&&level<10){setLevel(l=>l+1);setCoins(c=>c+20);return next-XP_PER_LEVEL;}
-      return next;
-    });
+    // Repeated taps always animate and produce dialogue, but only an occasional
+    // tap gives a tiny XP reward. Dates remain the primary progression activity.
+    const canReward=now-lastTapReward>=TAP_REWARD_COOLDOWN_MS;
+    if(canReward){
+      setLastTapReward(now);
+      awardXp(TAP_REWARD_XP);
+      setAffection(a=>Math.min(a+1,100));
+    }
+    const gain=canReward?1:0;
     setMessage(jogMemory&&Math.random()<0.35?JOG_MEMORY_LINES[jogMemory]:rand(CHARACTER.messages[getMood(Math.min(affection+gain,100))]));
   }
 
@@ -457,11 +477,7 @@ export default function OtomeGame(){
       if(JOG_MEMORY_LINES[date.memoryChoice])setMessage(JOG_MEMORY_LINES[date.memoryChoice]);
     }
     setAffection(a=>Math.min(a+Math.floor(date.xp/4),100));
-    setXp(prev=>{
-      const next=prev+date.xp;
-      if(next>=XP_PER_LEVEL&&level<10){setLevel(l=>l+1);setCoins(c=>c+20);return next-XP_PER_LEVEL;}
-      return next;
-    });
+    awardXp(date.xp);
     setCoins(c=>c+Math.floor(date.xp/3));
     setTab("home");
   }
@@ -596,10 +612,10 @@ export default function OtomeGame(){
             <div style={{background:PALETTE.navy,color:"white",borderRadius:99,padding:"1px 8px",fontSize:9,fontWeight:900,letterSpacing:1}}>LV{level}</div>
             <span style={{fontSize:11,color:CARE_COLORS.muted}}>XP</span>
           </div>
-          <span style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:900}}>{xp}/{XP_PER_LEVEL}</span>
+          <span style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:900}}>{level>=MAX_LEVEL?"MAX":`${xp}/${XP_PER_LEVEL}`}</span>
         </div>
         <div style={{height:10,background:CARE_COLORS.paper,borderRadius:99,border:"1.5px solid #526773",overflow:"hidden",marginBottom:8}}>
-          <div style={{height:"100%",borderRadius:99,width:`${(xp/XP_PER_LEVEL)*100}%`,
+          <div style={{height:"100%",borderRadius:99,width:`${level>=MAX_LEVEL?100:(xp/XP_PER_LEVEL)*100}%`,
             background:`linear-gradient(90deg,${PALETTE.yellow},${PALETTE.orange})`,
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(255,180,0,0.5)"}}/>
         </div>
