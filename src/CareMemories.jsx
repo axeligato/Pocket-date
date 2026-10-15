@@ -11,7 +11,7 @@ const SCENES=[
   {label:"You're blushing!",reply:"I am not! ...Okay, maybe a little. It's your fault.",memory:"The time I made Kai blush."},
   {label:"You're my favorite too",reply:"Wait. Really? ...You can't just say that and expect me to act normal. ♡",memory:"The moment we admitted we're each other's favorite."}]}
 ];
-const read=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||"null");return Array.isArray(v)?v.filter(x=>SCENES.some(s=>s.choices.some(c=>s.id+":"+s.choices.indexOf(c)===x))).slice(0,6):[];}catch{return [];}};
+const read=()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||"null");return Array.isArray(v)?v.filter(x=>SCENES.some(s=>s.choices.some((c,i)=>s.id+":"+i===x))).slice(0,6):[];}catch{return [];}};
 const button={border:"2px solid "+INK,borderRadius:12,padding:"10px 12px",color:INK,fontWeight:900,fontFamily:"'Nunito',sans-serif",cursor:"pointer"};
 export default function CareMemories(){
  const [scene,setScene]=useState(null);
