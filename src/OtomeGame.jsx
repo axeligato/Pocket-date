@@ -494,7 +494,9 @@ export default function OtomeGame(){
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
         :root{--pocket-ink:#073B4C;--pocket-paper:#FFFAF2;--pocket-outline:3px solid var(--pocket-ink);--pocket-shadow:4px 5px 0 var(--pocket-ink)}
-        .pocket-content{padding-bottom:calc(94px + env(safe-area-inset-bottom, 0px)) !important}\n        .pocket-tabs{gap:5px;padding:9px 10px 10px;align-items:stretch}
+        .pocket-content{padding-bottom:calc(94px + env(safe-area-inset-bottom, 0px)) !important}
+        .pocket-app [role="dialog"][aria-modal="true"]{bottom:calc(82px + env(safe-area-inset-bottom, 0px)) !important}
+        .pocket-tabs{box-sizing:border-box}\n        .pocket-tabs{gap:5px;padding:9px 10px 10px;align-items:stretch}
         .pocket-tabs .pocket-tab{border:2px solid transparent !important;border-radius:14px !important;min-width:0;min-height:55px;transition:transform .16s ease,background .16s ease,box-shadow .16s ease !important}
         .pocket-tabs .pocket-tab[aria-current="page"]{border-color:var(--pocket-ink) !important;box-shadow:3px 3px 0 var(--pocket-ink);transform:translateY(-2px)}
         .pocket-tabs .pocket-tab:not([aria-current="page"]):hover{background:#FFFAF2 !important;transform:translateY(-2px)}
