@@ -1,3 +1,4 @@
+import Milestones from "./Milestones.jsx";
 import React, {useState} from "react";
 
 const INK="#073B4C";
@@ -95,6 +96,7 @@ export default function CareMode(){
         <button type="button" onClick={stop} style={{border:"2px solid #b7a9a9",borderRadius:12,background:"transparent",padding:"10px 13px",fontWeight:900,color:"#675e5e",cursor:"pointer"}}>Turn off & clear Care Mode</button>
       </div>
     </>}
-    <p style={{margin:"23px 0 0",fontSize:11,lineHeight:1.65,color:"#526773"}}>♡ Privacy: Only your selected everyday care topics, preferred check-in time, and dismissal/snooze state are saved in this browser's local storage, not sent to an account or server by this feature. You can clear them at any time. Shared devices and browser backups may expose locally stored preferences. Birthday and menstrual-cycle information are not collected in this version. This is friendly encouragement, not medical guidance.</p>
+    <Milestones/>
+    <p style={{margin:"23px 0 0",fontSize:11,lineHeight:1.65,color:"#526773"}}>♡ Privacy: Only your selected everyday care topics, preferred check-in time, and dismissal/snooze state are saved in this browser's local storage, not sent to an account or server by this feature. You can clear them at any time. Shared devices and browser backups may expose locally stored preferences. Birthday and personal dates are separately optional and deletable; menstrual-cycle information is not collected. This is friendly encouragement, not medical guidance.</p>
   </section>;
 }
