@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "Pocket Date",
+  "short_name": "Pocket Date",
+  "description": "A cozy interactive story with Kai.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFFAF2",
+  "theme_color": "#A9D6E5",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
