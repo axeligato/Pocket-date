@@ -3,7 +3,7 @@ import {CARE_COLORS} from "./careTheme.js";
 import CareMemories from "./CareMemories.jsx";
 import CycleCare from "./CycleCare.jsx";
 import Milestones from "./Milestones.jsx";
-import React, {useState} from "react";
+import React, {useEffect,useState} from "react";
 
 const INK=CARE_COLORS.ink;
 const CARE_KEY="pocket-date-care-v1";
@@ -25,11 +25,12 @@ function loadCare(){
 }
 export default function CareMode(){
   const [care,setCare]=useState(loadCare);
-  const [selected,setSelected]=useState(["water","food","rest"]);
+  const [selected,setSelected]=useState(()=>{const saved=loadCare();return saved.enabled?saved.topics:["water","food","rest"];});
   const [response,setResponse]=useState(null);
   const [editing,setEditing]=useState(false);
   const [rhythm,setRhythm]=useState(()=>loadCare().rhythm);
   const [clock,setClock]=useState(()=>Date.now());
+  useEffect(()=>{const timer=setInterval(()=>setClock(Date.now()),60000);return()=>clearInterval(timer);},[]);
   const persist=(next)=>{
     setCare(next);
     try{
