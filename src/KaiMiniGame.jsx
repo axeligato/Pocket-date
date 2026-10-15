@@ -1,5 +1,6 @@
 import React,{useState} from "react";
 import {CARE_COLORS} from "./careTheme.js";
+import {rpsResult,isDailyBonusEligible} from "./gameRules.js";
 
 const MOVES=[
   {id:"rock",icon:"✊",label:"Rock",beats:"scissors"},
@@ -22,10 +23,10 @@ export default function KaiMiniGame({onReward}){
  const [wins,setWins]=useState(0);
  const [claimed,setClaimed]=useState(readClaim);
  const [dialogue,setDialogue]=useState("Best of luck! Or should I say, best of three? ♡");
- const eligible=claimed!==today();
+ const eligible=isDailyBonusEligible(claimed,today());
  const play=(move)=>{
    const opponent=MOVES[Math.floor(Math.random()*MOVES.length)];
-   const outcome=move.id===opponent.id?"tie":move.beats===opponent.id?"win":"lose";
+   const outcome=rpsResult(move.id,opponent.id);
    const nextRound=round+1;
    const nextWins=wins+(outcome==="win"?1:0);
    setPlayer(move);setKai(opponent);setResult(outcome);setRound(nextRound);setWins(nextWins);
