@@ -1,3 +1,4 @@
+import {FOLLOW_UPS,getFollowUp} from "./feelingFollowUps.js";
 import React,{useState} from "react";
 import {CARE_COLORS} from "./careTheme.js";
 
@@ -39,21 +40,37 @@ export default function FeelingCheckIn(){
  const [topic,setTopic]=useState(null);
  const [variant,setVariant]=useState({});
  const [showPrompt,setShowPrompt]=useState(false);
+ const [choice,setChoice]=useState(null);
+ const [stage,setStage]=useState("topic");
  const current=FEELINGS.find(t=>t.id===topic);
  const index=topic?(variant[topic]??0):0;
  const response=current?.responses[index];
- const next=()=>{setVariant(v=>({...v,[topic]:((v[topic]??0)+1)%current.responses.length}));setShowPrompt(false);};
+ const followUp=topic?FOLLOW_UPS[topic]:null;
+ const selectedReply=topic&&choice?getFollowUp(topic,choice):null;
+ const next=()=>{setVariant(v=>({...v,[topic]:((v[topic]??0)+1)%current.responses.length}));setShowPrompt(false);setChoice(null);setStage("topic");};
  return <section aria-label="Talk about how you feel" style={{background:CARE_COLORS.surface,border:"3px solid "+CARE_COLORS.ink,borderRadius:18,padding:16,marginBottom:20}}>
   <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:21,margin:"0 0 6px"}}>What's weighing on you?</h3>
   <p style={{fontSize:12,lineHeight:1.6,color:CARE_COLORS.muted,margin:"0 0 14px"}}>Pick what feels closest. Kai offers a few thoughtful reflections, not a diagnosis. You can skip anything that doesn't fit.</p>
   <div style={{display:"grid",gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:8}}>
-   {FEELINGS.map(t=><button type="button" key={t.id} aria-pressed={topic===t.id} onClick={()=>{setTopic(t.id);setShowPrompt(false);}} style={{...btn,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper,fontSize:12}}>{t.label}</button>)}
+   {FEELINGS.map(t=><button type="button" key={t.id} aria-pressed={topic===t.id} onClick={()=>{setTopic(t.id);setChoice(null);setStage("topic");setShowPrompt(false);}} style={{...btn,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper,fontSize:12}}>{t.label}</button>)}
   </div>
   {response&&<div aria-live="polite" style={{marginTop:14,padding:13,borderRadius:12,background:CARE_COLORS.paper,border:"2px solid "+CARE_COLORS.ink}}>
     <strong style={{fontSize:12}}>💌 Kai</strong>
     <p style={{fontSize:14,lineHeight:1.75,margin:"8px 0"}}>{response.text}</p>
     <p style={{fontSize:11,color:CARE_COLORS.muted,margin:"0 0 12px"}}>{response.source}</p>
     {showPrompt&&<p style={{fontSize:13,lineHeight:1.6,fontWeight:800}}>{response.prompt}</p>}
+    {followUp&&<div style={{borderTop:"1px solid "+CARE_COLORS.muted,paddingTop:12,marginTop:12}}>
+      <strong style={{fontSize:13}}>{followUp.question}</strong>
+      <div style={{display:"grid",gap:7,marginTop:10}}>
+        {followUp.choices.map(option=><button type="button" key={option.id} aria-pressed={choice===option.id} onClick={()=>{setChoice(option.id);setStage("reply");setShowPrompt(false);}} style={{...btn,fontSize:12,background:choice===option.id?CARE_COLORS.rose:CARE_COLORS.surface}}>{option.label}</button>)}
+      </div>
+      {selectedReply&&<div style={{marginTop:12,padding:12,borderRadius:12,background:CARE_COLORS.surface,border:"1px solid "+CARE_COLORS.muted}}>
+        <strong style={{fontSize:12}}>💌 Kai · about that</strong>
+        <p style={{fontSize:14,lineHeight:1.75,margin:"8px 0"}}>{selectedReply.reply}</p>
+        <button type="button" onClick={()=>setStage(stage==="action"?"reply":"action")} style={{...btn,fontSize:12}}>{stage==="action"?"Hide next step":"One small thing I could try"}</button>
+        {stage==="action"&&<p style={{fontSize:13,lineHeight:1.6,fontWeight:800}}>{selectedReply.action}</p>}
+      </div>}
+    </div>}
     <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
       <button type="button" onClick={()=>setShowPrompt(x=>!x)} style={{...btn,fontSize:12}}>{showPrompt?"Hide suggestion":"A small next step"}</button>
       <button type="button" onClick={next} style={{...btn,background:CARE_COLORS.rose,fontSize:12}}>Another perspective ↻</button>
