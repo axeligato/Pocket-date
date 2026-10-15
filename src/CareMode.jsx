@@ -50,15 +50,13 @@ export default function CareMode({mode="home",onOpenPreferences}){
   const snooze=()=>{persist({...care,snoozed:String(Date.now()+60*60*1000)});setClock(Date.now());};
   const dismiss=()=>persist({...care,dismissed:today,snoozed:"",lastCheck:Date.now()});
   return <section className="pocket-care" aria-label="Care Mode" style={{padding:"22px 16px 36px",maxWidth:740,margin:"0 auto",width:"100%",color:INK}}>
-    <span style={{display:"inline-block",padding:"5px 11px",background:CARE_COLORS.gold,border:"2px solid "+INK,borderRadius:9,boxShadow:"3px 3px 0 "+INK,fontSize:10,fontWeight:900,letterSpacing:1,transform:"rotate(-2deg)"}}>✦ A LITTLE EXTRA LOVE</span>
-    <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>Kai's Care Corner ♡</h2>
-    <p style={{fontSize:13,lineHeight:1.65,color:CARE_COLORS.muted,fontWeight:700,margin:"0 0 20px"}}>A cozy space for gentle check-ins. You set the pace, always.</p>
+    <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>{mode==="home"?"A moment with Kai ♡":"Care preferences"}</h2>
     {mode==="home"&&<FeelingCheckIn/>}
     {mode==="home"&&<button type="button" onClick={onOpenPreferences} style={{width:"100%",padding:13,border:"2px solid "+INK,borderRadius:12,background:CARE_COLORS.paper,color:INK,fontWeight:900,cursor:"pointer",marginBottom:18}}>⚙ Care preferences & reminders →</button>}
     {mode==="preferences"&&<>
       <div style={{background:"white",border:"3px solid "+INK,borderRadius:20,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:18}}>
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{care.enabled?"Your care preferences":"Want me to look after you?"}</div>
-        <p style={{fontSize:12,lineHeight:1.65,margin:"0 0 15px",color:CARE_COLORS.muted}}>Choose any topics you enjoy. Check-ins appear only while you visit this page. Frequent options are opt-in and never send background notifications.</p>
+        <p style={{fontSize:12,lineHeight:1.65,margin:"0 0 15px",color:CARE_COLORS.muted}}>Choose what Kai checks in about.</p>
         <div style={{display:"grid",gap:9}}>
           {TOPICS.map(t=><label key={t.id} style={{display:"flex",alignItems:"center",gap:11,padding:"11px 12px",border:"2px solid "+INK,borderRadius:13,background:selected.includes(t.id)?CARE_COLORS.paper:CARE_COLORS.paper,cursor:"pointer"}}>
             <input type="checkbox" checked={selected.includes(t.id)} onChange={()=>toggle(t.id)} style={{width:19,height:19,accentColor:INK,flexShrink:0}}/>
@@ -71,7 +69,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
           <select id="care-rhythm" value={rhythm} onChange={e=>setRhythm(e.target.value)} style={{width:"100%",minHeight:46,border:"2px solid "+INK,borderRadius:11,background:"white",color:INK,padding:"8px 10px",fontSize:13,fontWeight:800}}>
             {RHYTHMS.map(r=><option key={r.id} value={r.id}>{r.label}</option>)}
           </select>
-          <p style={{fontSize:11,color:CARE_COLORS.muted,lineHeight:1.5,margin:"7px 0 0"}}>Check-ins only appear while you're visiting Care Mode during your chosen time of day. Nothing is sent outside the game.</p>
+          <p style={{fontSize:11,color:CARE_COLORS.muted,lineHeight:1.5,margin:"7px 0 0"}}>Only in-app reminders; no push notifications.</p>
         </div>
         <button type="button" onClick={start} disabled={!selected.length} style={{marginTop:17,width:"100%",minHeight:48,background:CARE_COLORS.gold,border:"3px solid "+INK,borderRadius:14,boxShadow:"3px 4px 0 "+INK,color:INK,fontSize:14,fontWeight:900,cursor:selected.length?"pointer":"not-allowed",opacity:selected.length?1:.5}}>{care.enabled?"Save preferences ♡":"Turn on Care Mode ♡"}</button>
         {care.enabled&&<button type="button" onClick={stop} style={{marginTop:12,width:"100%",padding:12,border:"2px solid "+INK,borderRadius:12,background:"transparent",color:INK,fontWeight:900,cursor:"pointer"}}>Turn off & clear Care Mode</button>}
