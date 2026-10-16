@@ -20,9 +20,37 @@ export const ROMANCE_SCENES=[
   {id:"honest",label:"I do the same thing",reply:"For once, Kai has no comeback. Just a very real smile. 'Good. That's really good.'",affection:4}
  ]}
 ];
-export function getRomanceScene(affection,previousId=null){
+export const ROMANCE_KEY="pocket-date-romance-v1";
+export function readRomanceProgress(){
+ try{
+  const raw=JSON.parse(localStorage.getItem(ROMANCE_KEY)||"null");
+  if(raw?.version!==1||!raw.choices||typeof raw.choices!=="object")return {};
+  return Object.fromEntries(ROMANCE_SCENES.flatMap(scene=>{
+   const choice=raw.choices[scene.id];
+   return scene.choices.some(c=>c.id===choice)?[[scene.id,choice]]:[];
+  }));
+ }catch{return {};}
+}
+export function saveRomanceProgress(choices){
+ try{localStorage.setItem(ROMANCE_KEY,JSON.stringify({version:1,choices}));}catch{/* Storage unavailable. */}
+}
+export function getRomanceScene(affection,choices={}){
  const available=ROMANCE_SCENES.filter(s=>affection>=s.min);
- return available.find(s=>s.id!==previousId&&s.min===Math.max(...available.map(x=>x.min)))||available[0];
+ return available.find(s=>!choices[s.id])||available[available.length-1]||ROMANCE_SCENES[0];
+}
+export function getRomanceChoiceCallback(choices){
+ const entries=ROMANCE_SCENES.flatMap(scene=>{
+  const selected=scene.choices.find(c=>c.id===choices[scene.id]);
+  if(!selected)return [];
+  const lines={
+   coffee:{tease:"Kai still insists he's not a romantic lead. He did bring your coffee again, though.",sweet:"Kai remembers that you called his coffee gesture sweet. He tries not to look pleased.",playful:"Kai reminds you that you promised to buy the next coffee. He's already picked the café."},
+   race:{challenge:"Kai says he's ready for your rematch. He's smiling far too much to be intimidating.",flirt:"Kai suggests another walk instead of a race. He hasn't forgotten what you said.",joke:"Kai asks if he should start charging pastries for piggyback rides yet."},
+   hoodie:{borrow:"Kai asks if you're ever giving his hoodie back. He clearly doesn't want you to.",flirt:"Kai has accepted that his hoodie looks better on you. Begrudgingly, allegedly.",soft:"Kai blushes again when he remembers why you liked his hoodie."},
+   almost:{stay:"Kai keeps joking that your five extra minutes turned into his favorite part of the day.",tease:"Kai is attempting to be mysterious again. It's going terribly.",honest:"Kai looks at you with that quiet smile he gets when he knows you feel the same."}
+  };
+  return [lines[scene.id]?.[selected.id]].filter(Boolean);
+ });
+ return entries[entries.length-1]||"";
 }
 export function getRomanceMemoryLine(jogMemory){
  return {tease:"And yes, I was on time for our run. I'm keeping that victory forever.",sweet:"I still think about what you said on our morning run.",challenge:"One day I'll actually win that race. Maybe."}[jogMemory]||"";
