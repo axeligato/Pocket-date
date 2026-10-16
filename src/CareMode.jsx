@@ -78,7 +78,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
       {response&&<div style={{background:CARE_COLORS.rose,border:"3px solid "+INK,borderRadius:19,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:20}}>
         <div style={{fontSize:12,fontWeight:900,letterSpacing:1,marginBottom:9}}>💌 A NOTE FROM KAI</div>
         <p aria-live="polite" style={{fontFamily:"'Fredoka One',cursive",fontSize:19,lineHeight:1.5,margin:0}}>{response||"Hey, you. I'm here if you need a little encouragement today. ♡"}</p>
-      </div>
+      </div>}
       {due&&checkIn&&<div style={{background:CARE_COLORS.paper,border:"3px solid "+INK,borderRadius:18,padding:15,boxShadow:"4px 5px 0 "+INK,marginBottom:20}}>
         <strong style={{fontSize:11,letterSpacing:1}}>♡ YOUR {care.rhythm.toUpperCase()} CHECK-IN</strong>
         <p style={{fontSize:14,lineHeight:1.6,fontWeight:800,margin:"10px 0"}}>{checkIn.line}</p>
