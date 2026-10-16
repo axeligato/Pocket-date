@@ -738,7 +738,8 @@ export default function OtomeGame(){
         )}
 
         {tab==="home"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
-        {tab==="home"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
+        {tab==="home"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>setTab("dates")} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 Plan a date</button><button type="button" onClick={()=>setTab("stories")} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:"white",color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
+        {tab==="home"&&<details style={{margin:"10px 16px 26px",borderRadius:18,background:CARE_COLORS.paper,padding:"12px 0"}}><summary style={{padding:"8px 16px",cursor:"pointer",fontWeight:900,color:PALETTE.navy}}>♡ Talk about how I feel & care moments</summary><CareMode mode="home" onOpenPreferences={()=>setTab("care")}/></details>}
 
         {/* BIO */}
         {tab==="bio"&&<div className="pocket-bio"><BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum}/></div>}
