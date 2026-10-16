@@ -116,7 +116,7 @@ function Deco(){
 }
 
 // ── Story Reader ──────────────────────────────────────────────────────────────
-function StoryReader({story,onClose}){
+function StoryReader({story,onClose,onComplete}){
   const [idx,setIdx]=useState(0);
   const lines=STORIES_CONTENT[story.id]||[{speaker:null,text:story.preview}];
   const cur=lines[idx];
@@ -124,7 +124,7 @@ function StoryReader({story,onClose}){
   const done=idx>=lines.length-1;
   const colors=[CARE_COLORS.rose];
   const col=colors[story.id%colors.length];
-  const advance=()=>done?onClose():setIdx(i=>i+1);
+  const advance=()=>done?onComplete(story.id):setIdx(i=>i+1);
   return <div role="dialog" aria-modal="true" aria-label={story.title} className="pocket-story-reader" style={{position:"fixed",inset:0,zIndex:100,background:CARE_COLORS.paper,display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflowY:"auto",overscrollBehavior:"contain"}}>
     <div style={{background:col,padding:"12px clamp(14px,4vw,24px)",display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,borderBottom:"3px solid "+PALETTE.navy,flexShrink:0}}>
       <div style={{minWidth:0}}>
@@ -337,7 +337,7 @@ function DateScreen({date, onComplete}){
 }
 
 // ── Bio Tab ───────────────────────────────────────────────────────────────────
-function BioTab({jogMemory,memoryAlbum}){
+function BioTab({jogMemory,memoryAlbum,completedStories=[]}){
   const pills=[
     {label:"Age",value:CHARACTER.age,color:PALETTE.yellow},
     {label:"Sign",value:CHARACTER.sign,color:PALETTE.red},
@@ -369,6 +369,16 @@ function BioTab({jogMemory,memoryAlbum}){
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{pills.map(p=><div key={p.label} style={{background:p.color,border:"2px solid "+PALETTE.navy,borderRadius:11,padding:"7px 10px",boxShadow:"2px 2px 0 "+PALETTE.navy}}>
           <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy}}>{p.label}: </span><span style={{fontSize:11,fontWeight:800,color:PALETTE.navy}}>{p.value}</span>
         </div>)}</div>
+      </div>
+    </section>
+    <section aria-label="Discover Kai through stories" style={{marginBottom:24}}>
+      <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:22,margin:"0 0 8px",color:PALETTE.navy}}>Getting to know Kai 📖</h3>
+      <p style={{fontSize:12,color:CARE_COLORS.muted,margin:"0 0 13px"}}>{completedStories.length} of {CHARACTER.stories.length} chapters read · Finish a chapter to add a page to Kai's scrapbook.</p>
+      <div style={{display:"grid",gap:9}}>
+        {CHARACTER.stories.map((story,i)=><div key={story.id} style={{background:completedStories.includes(story.id)?"white":CARE_COLORS.paper,border:"1px solid rgba(7,59,76,.2)",borderRadius:14,padding:"12px 14px"}}>
+          <strong style={{fontSize:13}}>{completedStories.includes(story.id)?story.title:"🔒 A story still to discover"}</strong>
+          <p style={{fontSize:12,lineHeight:1.55,color:CARE_COLORS.muted,margin:"5px 0 0"}}>{completedStories.includes(story.id)?story.preview:"Read chapter "+(i+1)+" in Kai's story journal to reveal this memory."}</p>
+        </div>)}
       </div>
     </section>
     <section aria-label="Shared memories">
@@ -417,6 +427,9 @@ export default function OtomeGame(){
   const [coins,setCoins]=useState(savedStart.coins??30);
   const [jogMemory,setJogMemory]=useState(savedStart.jogMemory??null);
   const [memoryAlbum,setMemoryAlbum]=useState(savedStart.memoryAlbum??[]);
+  const [completedStories,setCompletedStories]=useState(()=>{try{const d=JSON.parse(localStorage.getItem("pocket-date-read-stories-v1")||"[]");return Array.isArray(d)?CHARACTER.stories.map(s=>s.id).filter(id=>d.includes(id)):[];}catch{return [];}});
+  const [kaiSection,setKaiSection]=useState("profile");
+  const [showDates,setShowDates]=useState(false);
   const [lastTapReward,setLastTapReward]=useState(0);
   const progressRef=useRef({level:savedStart.level??1,xp:savedStart.xp??0});
   const [mood,setMood]=useState("neutral");
@@ -505,14 +518,14 @@ export default function OtomeGame(){
     setTab("home");
   }
 
+  useEffect(()=>{try{localStorage.setItem("pocket-date-read-stories-v1",JSON.stringify(completedStories));}catch{/* Storage unavailable */}},[completedStories]);
+  const completeStory=id=>{setCompletedStories(prev=>prev.includes(id)?prev:[...prev,id]);setOpenStory(null);};
   const stories=CHARACTER.stories.map(s=>({...s,locked:s.level>level}));
   const moodEmoji={tired:"😴",neutral:"😶",happy:"😊",flustered:"🫣",pumped:"🔥"};
   const moodColor={tired:PALETTE.blue,neutral:PALETTE.navy,happy:PALETTE.green,flustered:PALETTE.pink,pumped:PALETTE.red};
   const TABS=[
     {id:"home",   label:"Home",    icon:"🏠", color:PALETTE.yellow},
-    {id:"bio",    label:"Profile", icon:"👤", color:PALETTE.green},
-    {id:"dates",  label:"Dates",   icon:"💌", color:PALETTE.red},
-    {id:"stories",label:"Stories", icon:"📖", color:PALETTE.blue},
+    {id:"bio",    label:"Kai", icon:"👤", color:PALETTE.green},
     {id:"care",label:"Settings",icon:"⚙️",color:PALETTE.pink},
   ];
 
@@ -738,16 +751,17 @@ export default function OtomeGame(){
         )}
 
         {tab==="home"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
-        {tab==="home"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>setTab("dates")} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 Plan a date</button><button type="button" onClick={()=>setTab("stories")} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:"white",color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
+        {tab==="home"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>setShowDates(v=>!v)} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:"white",color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
         {tab==="home"&&<details style={{margin:"10px 16px 26px",borderRadius:18,background:CARE_COLORS.paper,padding:"12px 0"}}><summary style={{padding:"8px 16px",cursor:"pointer",fontWeight:900,color:PALETTE.navy}}>♡ Talk about how I feel & care moments</summary><CareMode mode="home" onOpenPreferences={()=>setTab("care")}/></details>}
 
         {/* BIO */}
-        {tab==="bio"&&<div className="pocket-bio"><BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum}/></div>}
+        {tab==="bio"&&<div style={{padding:"15px 16px 0",display:"flex",gap:8}}><button type="button" aria-pressed={kaiSection==="profile"} onClick={()=>setKaiSection("profile")} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="profile"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>♡ About Kai</button><button type="button" aria-pressed={kaiSection==="stories"} onClick={()=>setKaiSection("stories")} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="stories"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>📖 Stories</button></div>}
+        {tab==="bio"&&kaiSection==="profile"&&<BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum} completedStories={completedStories}/>}
 
         {tab==="care"&&<><CareMode mode="preferences"/><div style={{padding:"0 16px 32px"}}><InstallApp/></div></>}
 
         {/* DATES */}
-        {tab==="dates"&&(
+        {tab==="home"&&showDates&&(
           <div className="pocket-dates" style={{padding:"22px 16px 32px"}}>
             <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE DATE BOOK</div>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Pick our next adventure! 💌</div>
@@ -778,7 +792,7 @@ export default function OtomeGame(){
         )}
 
         {/* STORIES */}
-        {tab==="stories"&&(
+        {tab==="bio"&&kaiSection==="stories"&&(
           <div className="pocket-stories" style={{padding:"22px 16px 32px"}}>
             <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE STORY JOURNAL</div>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Kai's Story 📖</div>
@@ -823,7 +837,7 @@ export default function OtomeGame(){
       </nav>
 
       {activeDate&&(activeDate.id==="jog"?<MorningJog date={activeDate} onComplete={finishDate} previousChoice={jogMemory}/>:<BranchingDate date={activeDate} onComplete={finishDate}/>)}
-      {openStory&&<StoryReader story={openStory} onClose={()=>setOpenStory(null)}/>}
+      {openStory&&<StoryReader story={openStory} onClose={()=>setOpenStory(null)} onComplete={completeStory}/>}
     </div>
   );
 }
