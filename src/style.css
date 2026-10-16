@@ -33,3 +33,42 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .pocket-content button, .pocket-tabs .pocket-tab { transition: none !important; }
 }
+
+/* Phase 5.7: sticker accents for primary actions, quiet surfaces for dialogue. */
+:root {
+  --pd-radius-sm: 12px;
+  --pd-radius-lg: 22px;
+  --pd-soft-border: 1px solid rgba(7,59,76,.15);
+  --pd-soft-shadow: 0 5px 18px rgba(7,59,76,.07);
+}
+.pd-romance, .pd-feelings, .pd-care { color: var(--pd-ink); }
+.pd-conversation {
+  border: var(--pd-soft-border) !important;
+  box-shadow: var(--pd-soft-shadow) !important;
+  border-radius: var(--pd-radius-lg) !important;
+}
+.pd-choice-group { gap: 9px !important; }
+.pd-choice {
+  min-height: 44px;
+  border: 1.5px solid rgba(7,59,76,.32) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
+  line-height: 1.4;
+}
+.pd-choice:hover:not(:disabled) { background: var(--pd-accent) !important; }
+.pd-choice[aria-pressed="true"] { border-color: var(--pd-ink) !important; background: var(--pd-accent) !important; }
+.pd-settings-card { border: var(--pd-soft-border) !important; box-shadow: var(--pd-soft-shadow) !important; }
+.pd-setting-option { border: var(--pd-soft-border) !important; box-shadow: none !important; }
+.pd-setting-option:has(input:checked) { background: rgba(169,214,229,.3) !important; border-color: var(--pd-accent) !important; }
+.pd-care-topic { border: var(--pd-soft-border) !important; box-shadow: none !important; border-radius: var(--pd-radius) !important; }
+.pd-care details { border-color: rgba(7,59,76,.16) !important; box-shadow: none !important; }
+.pd-care details > summary { font-size: 15px !important; }
+.pd-romance button, .pd-care button, .pd-feelings button { touch-action: manipulation; }
+@media (max-width: 380px) {
+ .pd-choice-group { gap: 7px !important; }
+ .pd-choice { padding: 10px 12px !important; font-size: 12px !important; }
+ .pd-care { padding-left: 12px !important; padding-right: 12px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .pd-romance *, .pd-care *, .pd-feelings * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
