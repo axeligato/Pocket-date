@@ -40,7 +40,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
   };
   const toggle=(id)=>setSelected(items=>items.includes(id)?items.filter(x=>x!==id):[...items,id]);
   const start=()=>{persist({enabled:true,topics:selected,last:null,rhythm,dismissed:care.dismissed||"",snoozed:care.snoozed||"",lastCheck:care.lastCheck||0});setResponse(null);};
-  const stop=()=>{persist({enabled:false,topics:[],last:null,rhythm:"off",dismissed:"",snoozed:""});setRhythm("off");setResponse(null);setEditing(false);};
+  const stop=()=>{persist({enabled:false,topics:[],last:null,rhythm:"off",dismissed:"",snoozed:""});setRhythm("off");setResponse(null);};
   const active=TOPICS.filter(t=>care.topics.includes(t.id));
   const today=TODAY();
   const intervalHours=care.rhythm==="every2h"?2:care.rhythm==="every4h"?4:0;
@@ -48,15 +48,15 @@ export default function CareMode({mode="home",onOpenPreferences}){
   const checkIn=active[(new Date().getDate()-1)%Math.max(active.length,1)];
   const snooze=()=>{persist({...care,snoozed:String(Date.now()+60*60*1000)});setClock(Date.now());};
   const dismiss=()=>persist({...care,dismissed:today,snoozed:"",lastCheck:Date.now()});
-  return <section className="pocket-care" aria-label="Care Mode" style={{padding:"22px 16px 36px",maxWidth:740,margin:"0 auto",width:"100%",color:INK}}>
+  return <section className="pocket-care pd-care" aria-label="Care Mode" style={{padding:"22px 16px 36px",maxWidth:740,margin:"0 auto",width:"100%",color:INK}}>
     <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>{mode==="home"?"A moment with Kai ♡":"Care preferences"}</h2>
     {mode==="home"&&<FeelingCheckIn/>}
     {mode==="preferences"&&<>
-      <div style={{background:"white",border:"3px solid "+INK,borderRadius:20,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:18}}>
+      <div className="pd-settings-card" style={{background:"white",border:"3px solid "+INK,borderRadius:20,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:18}}>
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{care.enabled?"Your care preferences":"Want me to look after you?"}</div>
         <p style={{fontSize:12,lineHeight:1.65,margin:"0 0 15px",color:CARE_COLORS.muted}}>Choose what Kai checks in about.</p>
         <div style={{display:"grid",gap:9}}>
-          {TOPICS.map(t=><label key={t.id} style={{display:"flex",alignItems:"center",gap:11,padding:"11px 12px",border:"2px solid "+INK,borderRadius:13,background:selected.includes(t.id)?CARE_COLORS.paper:CARE_COLORS.paper,cursor:"pointer"}}>
+          {TOPICS.map(t=><label className="pd-setting-option" key={t.id} style={{display:"flex",alignItems:"center",gap:11,padding:"11px 12px",border:"2px solid "+INK,borderRadius:13,background:selected.includes(t.id)?CARE_COLORS.paper:CARE_COLORS.paper,cursor:"pointer"}}>
             <input type="checkbox" checked={selected.includes(t.id)} onChange={()=>toggle(t.id)} style={{width:19,height:19,accentColor:INK,flexShrink:0}}/>
             <span aria-hidden="true" style={{fontSize:23}}>{t.icon}</span>
             <span><strong style={{display:"block",fontSize:13}}>{t.title}</strong><span style={{fontSize:11,color:CARE_COLORS.muted}}>{t.hint}</span></span>
@@ -75,11 +75,11 @@ export default function CareMode({mode="home",onOpenPreferences}){
       </div>
     </>}
     {mode==="home"&&care.enabled&&<>
-      {response&&<div style={{background:CARE_COLORS.rose,border:"3px solid "+INK,borderRadius:19,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:20}}>
+      {response&&<div className="pd-conversation" style={{background:CARE_COLORS.rose,border:"3px solid "+INK,borderRadius:19,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:20}}>
         <div style={{fontSize:12,fontWeight:900,letterSpacing:1,marginBottom:9}}>💌 A NOTE FROM KAI</div>
         <p aria-live="polite" style={{fontFamily:"'Fredoka One',cursive",fontSize:19,lineHeight:1.5,margin:0}}>{response||"Hey, you. I'm here if you need a little encouragement today. ♡"}</p>
       </div>}
-      {due&&checkIn&&<div style={{background:CARE_COLORS.paper,border:"3px solid "+INK,borderRadius:18,padding:15,boxShadow:"4px 5px 0 "+INK,marginBottom:20}}>
+      {due&&checkIn&&<div className="pd-conversation" style={{background:CARE_COLORS.paper,border:"3px solid "+INK,borderRadius:18,padding:15,boxShadow:"4px 5px 0 "+INK,marginBottom:20}}>
         <strong style={{fontSize:11,letterSpacing:1}}>♡ YOUR {care.rhythm.toUpperCase()} CHECK-IN</strong>
         <p style={{fontSize:14,lineHeight:1.6,fontWeight:800,margin:"10px 0"}}>{checkIn.line}</p>
         <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
@@ -93,7 +93,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
         <div style={{padding:"12px"}}>
       <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:19,margin:"0 0 12px"}}>What sounds good right now?</h3>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,210px),1fr))",gap:13,marginBottom:20}}>
-        {active.map(t=><button key={t.id} type="button" onClick={()=>setResponse(t.line)} style={{background:"white",border:"2.5px solid "+INK,borderRadius:16,padding:"15px 13px",boxShadow:"3px 4px 0 "+INK,cursor:"pointer",textAlign:"left",color:INK,fontFamily:"'Nunito',sans-serif"}}>
+        {active.map(t=><button className="pd-care-topic" key={t.id} type="button" onClick={()=>setResponse(t.line)} style={{background:"white",border:"2.5px solid "+INK,borderRadius:16,padding:"15px 13px",boxShadow:"3px 4px 0 "+INK,cursor:"pointer",textAlign:"left",color:INK,fontFamily:"'Nunito',sans-serif"}}>
           <span aria-hidden="true" style={{fontSize:29}}>{t.icon}</span>
           <strong style={{display:"block",fontSize:14,marginTop:7}}>{t.title}</strong>
           <span style={{display:"block",fontSize:11,color:CARE_COLORS.muted,marginTop:5}}>{t.hint}</span>
