@@ -50,10 +50,10 @@ export default function FeelingCheckIn(){
  const next=()=>{setVariant(v=>({...v,[topic]:((v[topic]??0)+1)%current.responses.length}));setChoice(null);setShowAction(false);};
  const activeText=selectedReply?.reply||response?.text;
  const activeAction=selectedReply?.action||response?.prompt;
- return <section aria-label="Talk about how you feel" style={{padding:"8px 0 20px",marginBottom:12,color:CARE_COLORS.ink}}>
+ return <section className="pd-feelings" aria-label="Talk about how you feel" style={{padding:"8px 0 20px",marginBottom:12,color:CARE_COLORS.ink}}>
   <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:24,margin:"0 0 6px"}}>How are you feeling?</h3>
-  <div role="group" aria-label="Choose a feeling" style={{display:"flex",flexWrap:"wrap",gap:8}}>
-   {FEELINGS.map(t=><button type="button" key={t.id} aria-pressed={topic===t.id} onClick={()=>selectTopic(t.id)} style={{...pill,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper}}>{t.label}</button>)}
+  <div className="pd-choice-group" role="group" aria-label="Choose a feeling" style={{display:"flex",flexWrap:"wrap",gap:8}}>
+   {FEELINGS.map(t=><button type="button" className="pd-choice" key={t.id} aria-pressed={topic===t.id} onClick={()=>selectTopic(t.id)} style={{...pill,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper}}>{t.label}</button>)}
   </div>
   {response&&<>
    <div aria-live="polite" aria-atomic="true" style={{marginTop:20}}>
@@ -61,15 +61,15 @@ export default function FeelingCheckIn(){
      <span aria-hidden="true" style={{width:32,height:32,borderRadius:"50%",background:CARE_COLORS.rose,display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:18}}>♡</span>
      <strong style={{fontSize:13}}>Kai <span style={{fontWeight:600,color:CARE_COLORS.muted}}>· {selectedReply?"Listening to you":"Here with you"}</span></strong>
     </div>
-    <div style={{background:CARE_COLORS.paper,borderRadius:"6px 24px 24px 24px",padding:"17px 18px",boxShadow:"0 3px 15px rgba(7,59,76,.08)"}}>
+    <div className="pd-conversation" style={{background:CARE_COLORS.paper,borderRadius:"6px 24px 24px 24px",padding:"17px 18px",boxShadow:"0 3px 15px rgba(7,59,76,.08)"}}>
      <p style={{fontSize:15,lineHeight:1.8,margin:0,fontWeight:650}}>{activeText}</p>
     </div>
     {!selectedReply&&<details style={{margin:"9px 0 0 42px",fontSize:11,color:CARE_COLORS.muted}}><summary style={{cursor:"pointer"}}>Inspiration</summary><p>{response.source}</p></details>}
    </div>
    {followUp&&!selectedReply&&<div style={{marginTop:22}}>
     <p style={{fontSize:14,fontWeight:900,margin:"0 0 12px"}}>{followUp.question}</p>
-    <div role="group" aria-label="Tell Kai more" style={{display:"flex",flexDirection:"column",alignItems:"flex-start",gap:9}}>
-     {followUp.choices.map(option=><button type="button" key={option.id} onClick={()=>choose(option.id)} style={{...pill,maxWidth:"100%",textAlign:"left",background:CARE_COLORS.surface}}>{option.label} <span aria-hidden="true">↗</span></button>)}
+    <div className="pd-choice-group" role="group" aria-label="Tell Kai more" style={{display:"flex",flexDirection:"column",alignItems:"flex-start",gap:9}}>
+     {followUp.choices.map(option=><button type="button" className="pd-choice" key={option.id} onClick={()=>choose(option.id)} style={{...pill,maxWidth:"100%",textAlign:"left",background:CARE_COLORS.surface}}>{option.label} <span aria-hidden="true">↗</span></button>)}
     </div>
    </div>}
    {selectedReply&&<div style={{marginTop:15,display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap"}}>
