@@ -1,3 +1,4 @@
+import RomanceMoment from "./RomanceMoment.jsx";
 import InstallApp from "./InstallApp.jsx";
 import {XP_PER_LEVEL,MAX_LEVEL,applyXpReward} from "./gameRules.js";
 import KaiMiniGame from "./KaiMiniGame.jsx";
@@ -736,6 +737,7 @@ export default function OtomeGame(){
           </div>
         )}
 
+        {tab==="home"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
         {tab==="home"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
         {/* BIO */}
