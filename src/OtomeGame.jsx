@@ -661,7 +661,7 @@ export default function OtomeGame(){
 
         {/* HOME */}
         {tab==="home"&&(
-          <div className="pocket-home" style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
+          <div className="pocket-home pd-home" style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
             <div className="pocket-home-heading" style={{width:"100%",padding:"18px 22px 0",position:"relative",zIndex:4}}>
               <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.4,color:PALETTE.navy}}>✦ YOUR LITTLE LOVE STORY</div>
               <div style={{fontFamily:"'Fredoka One',cursive",fontSize:"clamp(22px,5vw,30px)",lineHeight:1.1,color:PALETTE.navy,marginTop:10}}>Hang out with Kai <span aria-hidden="true">♡</span></div>
@@ -711,7 +711,7 @@ export default function OtomeGame(){
             </div>
 
             {/* Speech bubble */}
-            <div className="pocket-dialogue" style={{margin:"14px 16px 10px",background:"white",border:"2.5px solid "+PALETTE.navy,
+            <div className="pocket-dialogue pd-conversation" style={{margin:"14px 16px 10px",background:"white",border:"2.5px solid "+PALETTE.navy,
               borderRadius:18,padding:"14px 18px",width:"calc(100% - 32px)",
               boxShadow:`4px 5px 0 ${PALETTE.navy}`,animation:"fi 0.3s ease",position:"relative"}}>
               {/* Bubble triangle */}
