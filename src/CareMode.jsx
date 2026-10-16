@@ -28,7 +28,6 @@ export default function CareMode({mode="home",onOpenPreferences}){
   const [care,setCare]=useState(loadCare);
   const [selected,setSelected]=useState(()=>{const saved=loadCare();return saved.enabled?saved.topics:["water","food","rest"];});
   const [response,setResponse]=useState(null);
-  const [editing,setEditing]=useState(false);
   const [rhythm,setRhythm]=useState(()=>loadCare().rhythm);
   const [clock,setClock]=useState(()=>Date.now());
   useEffect(()=>{const timer=setInterval(()=>setClock(Date.now()),60000);return()=>clearInterval(timer);},[]);
@@ -40,7 +39,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
     }catch{/* Local storage may be unavailable. */}
   };
   const toggle=(id)=>setSelected(items=>items.includes(id)?items.filter(x=>x!==id):[...items,id]);
-  const start=()=>{persist({enabled:true,topics:selected,last:null,rhythm,dismissed:care.dismissed||"",snoozed:care.snoozed||"",lastCheck:care.lastCheck||0});setResponse(null);setEditing(false);};
+  const start=()=>{persist({enabled:true,topics:selected,last:null,rhythm,dismissed:care.dismissed||"",snoozed:care.snoozed||"",lastCheck:care.lastCheck||0});setResponse(null);};
   const stop=()=>{persist({enabled:false,topics:[],last:null,rhythm:"off",dismissed:"",snoozed:""});setRhythm("off");setResponse(null);setEditing(false);};
   const active=TOPICS.filter(t=>care.topics.includes(t.id));
   const today=TODAY();
@@ -52,7 +51,6 @@ export default function CareMode({mode="home",onOpenPreferences}){
   return <section className="pocket-care" aria-label="Care Mode" style={{padding:"22px 16px 36px",maxWidth:740,margin:"0 auto",width:"100%",color:INK}}>
     <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>{mode==="home"?"A moment with Kai ♡":"Care preferences"}</h2>
     {mode==="home"&&<FeelingCheckIn/>}
-    {mode==="home"&&<button type="button" onClick={onOpenPreferences} style={{width:"100%",padding:13,border:"2px solid "+INK,borderRadius:12,background:CARE_COLORS.paper,color:INK,fontWeight:900,cursor:"pointer",marginBottom:18}}>⚙ Care preferences & reminders →</button>}
     {mode==="preferences"&&<>
       <div style={{background:"white",border:"3px solid "+INK,borderRadius:20,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:18}}>
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{care.enabled?"Your care preferences":"Want me to look after you?"}</div>
@@ -73,11 +71,11 @@ export default function CareMode({mode="home",onOpenPreferences}){
         </div>
         <button type="button" onClick={start} disabled={!selected.length} style={{marginTop:17,width:"100%",minHeight:48,background:CARE_COLORS.gold,border:"3px solid "+INK,borderRadius:14,boxShadow:"3px 4px 0 "+INK,color:INK,fontSize:14,fontWeight:900,cursor:selected.length?"pointer":"not-allowed",opacity:selected.length?1:.5}}>{care.enabled?"Save preferences ♡":"Turn on Care Mode ♡"}</button>
         {care.enabled&&<button type="button" onClick={stop} style={{marginTop:12,width:"100%",padding:12,border:"2px solid "+INK,borderRadius:12,background:"transparent",color:INK,fontWeight:900,cursor:"pointer"}}>Turn off & clear Care Mode</button>}
-        {editing&&<button type="button" onClick={()=>setEditing(false)} style={{marginTop:10,width:"100%",background:"transparent",border:0,color:INK,fontWeight:900,cursor:"pointer",padding:10}}>Cancel</button>}
+
       </div>
     </>}
     {mode==="home"&&care.enabled&&<>
-      <div style={{background:CARE_COLORS.rose,border:"3px solid "+INK,borderRadius:19,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:20}}>
+      {response&&<div style={{background:CARE_COLORS.rose,border:"3px solid "+INK,borderRadius:19,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:20}}>
         <div style={{fontSize:12,fontWeight:900,letterSpacing:1,marginBottom:9}}>💌 A NOTE FROM KAI</div>
         <p aria-live="polite" style={{fontFamily:"'Fredoka One',cursive",fontSize:19,lineHeight:1.5,margin:0}}>{response||"Hey, you. I'm here if you need a little encouragement today. ♡"}</p>
       </div>
@@ -90,6 +88,9 @@ export default function CareMode({mode="home",onOpenPreferences}){
           <button type="button" onClick={dismiss} style={{background:"transparent",border:"none",padding:"9px 12px",color:INK,fontWeight:900,cursor:"pointer"}}>Not today</button>
         </div>
       </div>}
+      <details style={{...careSectionStyle,marginBottom:16}}>
+        <summary style={careSummaryStyle}>♡ Ask Kai for a little encouragement</summary>
+        <div style={{padding:"12px"}}>
       <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:19,margin:"0 0 12px"}}>What sounds good right now?</h3>
       <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,210px),1fr))",gap:13,marginBottom:20}}>
         {active.map(t=><button key={t.id} type="button" onClick={()=>setResponse(t.line)} style={{background:"white",border:"2.5px solid "+INK,borderRadius:16,padding:"15px 13px",boxShadow:"3px 4px 0 "+INK,cursor:"pointer",textAlign:"left",color:INK,fontFamily:"'Nunito',sans-serif"}}>
@@ -99,13 +100,12 @@ export default function CareMode({mode="home",onOpenPreferences}){
           <span style={{display:"block",fontSize:10,fontWeight:900,marginTop:12}}>HEAR KAI'S NOTE ↗</span>
         </button>)}
       </div>
+        </div>
+      </details>
       {response&&<button type="button" onClick={()=>setResponse("I'm glad we got a little moment together. Take it at your own pace. ♡")} style={{background:CARE_COLORS.gold,border:"2px solid "+INK,borderRadius:12,padding:"10px 14px",fontWeight:900,color:INK,cursor:"pointer",marginBottom:16}}>♡ Thanks, Kai</button>}
-      <div style={{display:"flex",gap:12,flexWrap:"wrap"}}>
-        <button type="button" onClick={onOpenPreferences} style={{border:"2px solid "+INK,borderRadius:12,background:"white",padding:"10px 13px",fontWeight:900,color:INK,cursor:"pointer"}}>Edit preferences</button>
-        <button type="button" onClick={stop} style={{border:"2px solid "+CARE_COLORS.muted,borderRadius:12,background:"transparent",padding:"10px 13px",fontWeight:900,color:CARE_COLORS.muted,cursor:"pointer"}}>Turn off & clear Care Mode</button>
-      </div>
+
     </>}
-    {mode==="home"&&<div style={{marginTop:26}}>
+    {mode==="home"&&<div style={{marginTop:18}}>
       <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:21,margin:"0 0 6px"}}>More ways to feel close ♡</h3>
       <p style={{fontSize:12,color:CARE_COLORS.muted,lineHeight:1.6,margin:"0 0 14px"}}>Open what feels right today. Everything here is optional.</p>
       <div style={{display:"grid",gap:13}}>
