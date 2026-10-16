@@ -72,3 +72,30 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 @media (prefers-reduced-motion: reduce) {
  .pd-romance *, .pd-care *, .pd-feelings * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Care 2.1: dedicated, distraction-free wellness sessions. */
+.pd-wellness-session {
+ position: fixed;
+ inset: 0;
+ z-index: 110;
+ overflow-y: auto;
+ overscroll-behavior: contain;
+ display: flex !important;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ gap: 24px !important;
+ padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom)) !important;
+ border: 0 !important;
+ border-radius: 0 !important;
+ text-align: center;
+}
+.pd-wellness-session > * { width: min(100%, 440px); }
+@keyframes pd-breathe {
+ 0%,100% {transform:scale(.72)}
+ 40% {transform:scale(1)}
+ 90% {transform:scale(.72)}
+}
+@media (prefers-reduced-motion: reduce) {
+ .pd-wellness-session [aria-hidden="true"] { animation: none !important; transform: none !important; }
+}

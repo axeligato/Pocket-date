@@ -526,6 +526,7 @@ export default function OtomeGame(){
   const TABS=[
     {id:"home",   label:"Home",    icon:"🏠", color:PALETTE.yellow},
     {id:"bio",    label:"Kai", icon:"👤", color:PALETTE.green},
+    {id:"wellness",label:"Care",icon:"♡",color:CARE_COLORS.rose},
     {id:"care",label:"Settings",icon:"⚙️",color:PALETTE.pink},
   ];
 
@@ -752,7 +753,8 @@ export default function OtomeGame(){
 
         {tab==="home"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
         {tab==="home"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>setShowDates(v=>!v)} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:"white",color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
-        {tab==="home"&&<details style={{margin:"10px 16px 26px",borderRadius:18,background:CARE_COLORS.paper,padding:"12px 0"}}><summary style={{padding:"8px 16px",cursor:"pointer",fontWeight:900,color:PALETTE.navy}}>♡ Talk about how I feel & care moments</summary><CareMode mode="home" onOpenPreferences={()=>setTab("care")}/></details>}
+        {tab==="home"&&<button type="button" onClick={()=>setTab("wellness")} style={{margin:"12px 16px 24px",padding:"16px",width:"calc(100% - 32px)",textAlign:"left",border:"2px solid "+PALETTE.navy,borderRadius:19,background:CARE_COLORS.rose,color:PALETTE.navy,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}><span><strong style={{display:"block",fontSize:17}}>♡ A little care with Kai</strong><span style={{display:"block",fontSize:12,marginTop:5}}>Breathe, unwind, ground yourself or talk.</span></span><span aria-hidden="true" style={{fontSize:22}}>→</span></button>}
+        {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
         {/* BIO */}
         {tab==="bio"&&<div style={{padding:"15px 16px 0",display:"flex",gap:8}}><button type="button" aria-pressed={kaiSection==="profile"} onClick={()=>setKaiSection("profile")} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="profile"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>♡ About Kai</button><button type="button" aria-pressed={kaiSection==="stories"} onClick={()=>setKaiSection("stories")} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="stories"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>📖 Stories</button></div>}

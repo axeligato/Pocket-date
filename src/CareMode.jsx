@@ -51,7 +51,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
   const dismiss=()=>persist({...care,dismissed:today,snoozed:"",lastCheck:Date.now()});
   return <section className="pocket-care pd-care" aria-label="Care Mode" style={{padding:"22px 16px 36px",maxWidth:740,margin:"0 auto",width:"100%",color:INK}}>
     <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>{mode==="home"?"A moment with Kai ♡":"Care preferences"}</h2>
-    {mode==="home"&&<><h3 style={{fontSize:21,margin:"12px 0 10px"}}>What would help right now?</h3><WellnessToolkit/><details style={{marginTop:16,...careSectionStyle}}><summary style={careSummaryStyle}>♡ Talk to Kai about how I feel</summary><div style={{padding:"0 14px"}}><FeelingCheckIn/></div></details></>}
+    {mode==="home"&&<><p style={{fontSize:13,color:CARE_COLORS.muted,lineHeight:1.6,margin:"0 0 18px"}}>A moment for you, at your own pace. Pick what feels helpful today.</p><h3 style={{fontSize:21,margin:"12px 0 10px"}}>What would help right now?</h3><WellnessToolkit/><div style={{marginTop:24}}><FeelingCheckIn/></div></>}
     {mode==="preferences"&&<>
       <div className="pd-settings-card" style={{background:"white",border:"3px solid "+INK,borderRadius:20,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:18}}>
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{care.enabled?"Your care preferences":"Want me to look after you?"}</div>
