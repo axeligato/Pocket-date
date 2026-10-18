@@ -8,7 +8,7 @@ const ROUTINES=[
  {id:"evening",icon:"🌙",name:"Evening wind-down",description:"A short guided pause before resting.",tool:"unwind"}
 ];
 function load(){try{const value=JSON.parse(localStorage.getItem(KEY)||"null");return ROUTINES.some(r=>r.id===value)?value:null;}catch{return null;}}
-export default function CareRoutine({onStart}){
+export default function CareRoutine(){
  const [selected,setSelected]=useState(load);
  const choose=id=>{const next=id===selected?null:id;setSelected(next);try{if(next)localStorage.setItem(KEY,JSON.stringify(next));else localStorage.removeItem(KEY);}catch{/* Optional preference */}};
  return <section aria-label="Your gentle routine" style={{margin:"24px 0",color:C.ink}}>
@@ -21,6 +21,6 @@ export default function CareRoutine({onStart}){
     <button type="button" aria-pressed={selected===r.id} onClick={()=>choose(r.id)} style={{border:"1px solid "+C.ink,borderRadius:12,padding:"9px",minHeight:44,background:selected===r.id?C.rose:"white",fontSize:11,fontWeight:800,color:C.ink,cursor:"pointer"}}>{selected===r.id?"Saved ✓":"Save"}</button>
    </div>)}
   </div>
-  {selected&&<p style={{fontSize:12,color:C.muted,margin:"10px 0 0"}}>♡ Kai will keep your favorite here. Start it whenever you want.</p>}
+  {selected&&<p style={{fontSize:12,color:C.muted,margin:"10px 0 0"}}>♡ Your preference is saved on this device. Choose the matching activity above whenever you want.</p>}
  </section>;
 }
