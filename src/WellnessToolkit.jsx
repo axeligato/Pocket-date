@@ -21,7 +21,7 @@ export default function WellnessToolkit(){
  const [reflection,setReflection]=useState(null);
  const lastSpoken=useRef("");
  useEffect(()=>{if(!running||!active)return;const id=setInterval(()=>setSeconds(v=>v+1),1000);return()=>clearInterval(id);},[running,active]);
- useEffect(()=>{if(active&&seconds>=active.seconds&&running){setRunning(false);setFinished(true);}},[seconds,active,running]);
+ useEffect(()=>{if(active&&seconds>=active.seconds&&running){if(typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();setRunning(false);setFinished(true);}},[seconds,active,running]);
  useEffect(()=>{if(!active||!running||finished||!voiceEnabled||typeof window==="undefined"||!("speechSynthesis" in window))return;const message=active.id==="breathe"?(seconds%10<4?"Breathe in gently":"Breathe out slowly"):STEPS[active.id][Math.min(STEPS[active.id].length-1,Math.floor(seconds/(active.seconds/STEPS[active.id].length)))];const key=active.id==="breathe"?Math.floor(seconds/10)+":"+Math.floor(seconds%10/4):message;if(lastSpoken.current===key)return;lastSpoken.current=key;window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(message);utterance.rate=.88;utterance.volume=.75;window.speechSynthesis.speak(utterance);},[seconds,running,active,finished,voiceEnabled]);
  useEffect(()=>()=>{if(typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();},[]);
  const start=tool=>{lastSpoken.current="";setReflection(null);setActive(tool.id==="breathe"?{...tool,seconds:breathDuration}:tool);setSeconds(0);setFinished(false);setRunning(true);};
@@ -52,7 +52,7 @@ export default function WellnessToolkit(){
     </>:<><div aria-hidden="true" style={{fontSize:42,padding:16}}>{active.icon}</div><p aria-live="polite" style={{fontSize:17,lineHeight:1.65,minHeight:70,margin:0}}>{step}</p></>}
     <label style={{display:"flex",justifyContent:"center",alignItems:"center",gap:10,fontSize:13}}><input type="checkbox" checked={voiceEnabled} onChange={e=>{setVoiceEnabled(e.target.checked);lastSpoken.current="";if(!e.target.checked&&typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();}}/> Read guidance aloud (optional)</label>
     <strong style={{fontVariantNumeric:"tabular-nums"}}>{Math.floor(remaining/60)}:{String(remaining%60).padStart(2,"0")} remaining</strong>
-    <button type="button" onClick={()=>setRunning(v=>!v)} style={{...button,background:C.rose}}>{running?"Pause":"Resume"}</button>
+    <button type="button" onClick={()=>{if(running&&typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();lastSpoken.current="";setRunning(v=>!v);}} style={{...button,background:C.rose}}>{running?"Pause":"Resume"}</button>
    </>}
    <p style={{fontSize:11,color:C.muted,margin:0}}>Optional relaxation exercise, not a medical treatment. Stop if you feel uncomfortable.</p>
   </div>}
