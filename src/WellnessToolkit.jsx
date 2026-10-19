@@ -11,7 +11,7 @@ const STEPS={
  ground:["Look around and notice five things you can see.","Notice four things you can feel, like the chair or floor.","Listen for three sounds around you.","Notice two scents, if any are present.","Notice one taste, or simply how your mouth feels. You're here."]
 };
 const button={minHeight:44,border:"1.5px solid "+C.ink,borderRadius:14,background:C.surface,color:C.ink,fontWeight:800,padding:"10px 13px",cursor:"pointer"};
-export default function WellnessToolkit(){
+export default function WellnessToolkit({onComplete}){
  const [active,setActive]=useState(null);
  const [seconds,setSeconds]=useState(0);
  const [running,setRunning]=useState(false);
@@ -19,7 +19,7 @@ export default function WellnessToolkit(){
  const [breathDuration,setBreathDuration]=useState(60);
  const [reflection,setReflection]=useState(null);
  useEffect(()=>{if(!running||!active)return;const id=setInterval(()=>setSeconds(v=>v+1),1000);return()=>clearInterval(id);},[running,active]);
- useEffect(()=>{if(active&&seconds>=active.seconds&&running){setRunning(false);setFinished(true);}},[seconds,active,running]);
+ useEffect(()=>{if(active&&seconds>=active.seconds&&running){setRunning(false);setFinished(true);onComplete?.(active.id,active.seconds);}},[seconds,active,running,onComplete]);
  const start=tool=>{setReflection(null);setActive(tool.id==="breathe"?{...tool,seconds:breathDuration}:tool);setSeconds(0);setFinished(false);setRunning(true);};
  const close=()=>{setRunning(false);setActive(null);setSeconds(0);setFinished(false);};
  const remaining=active?Math.max(0,active.seconds-seconds):0;
