@@ -193,3 +193,18 @@ body {background:radial-gradient(ellipse at 80% 0%,#263943 0%,#121F26 65%)}
 .pd-wellness-session {background:#182930!important;color:var(--pd-ink)!important}
 .pocket-app :is(button,select,summary) {touch-action:manipulation}
 @media(prefers-reduced-motion:reduce){html {scroll-behavior:auto!important}}
+
+/* Contrast audit: override legacy inline light cards without flattening illustrations. */
+.pocket-home {background:radial-gradient(circle at 12% 17%,#304750 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#3E4459 0 14%,transparent 14.5%),#182930!important}
+.pocket-home .pocket-character {background:transparent!important}
+.pocket-home .pocket-character-portrait {filter:drop-shadow(0 10px 16px rgba(0,0,0,.34))!important}
+.pocket-home .pocket-sticker {color:#F4EEE7}
+.pocket-home .pocket-dialogue {background:#243840!important;color:#F4EEE7!important;border-color:rgba(244,238,231,.5)!important}
+.pocket-home .pocket-mood {border-color:rgba(244,238,231,.5)!important;box-shadow:0 4px 14px rgba(0,0,0,.24)!important}
+.pocket-home .pocket-mood span {color:#F4EEE7!important}
+.pocket-app .pd-conversation {background:#243840!important;color:#F4EEE7!important}
+.pocket-app .pd-choice {color:#F4EEE7!important}
+.pocket-app .pocket-tab:not([aria-current="page"]):hover {background:#304750!important}
+.pocket-app .pocket-sticker {text-shadow:0 2px 5px rgba(0,0,0,.4)}
+.pocket-app .pd-care-hero-footer,.pocket-app .pd-care-eyebrow {color:#BBCBD0}
+.pocket-app :is(button,[role="button"],summary):focus-visible {outline:3px solid #E4BC83!important;outline-offset:3px!important}
