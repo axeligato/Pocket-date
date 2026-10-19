@@ -1,4 +1,4 @@
-import React,{useEffect,useRef,useState} from "react";
+import React,{useEffect,useState} from "react";
 import {CARE_COLORS as C} from "./careTheme.js";
 
 const TOOLS=[
@@ -17,14 +17,10 @@ export default function WellnessToolkit(){
  const [running,setRunning]=useState(false);
  const [finished,setFinished]=useState(false);
  const [breathDuration,setBreathDuration]=useState(60);
- const [voiceEnabled,setVoiceEnabled]=useState(false);
  const [reflection,setReflection]=useState(null);
- const lastSpoken=useRef("");
  useEffect(()=>{if(!running||!active)return;const id=setInterval(()=>setSeconds(v=>v+1),1000);return()=>clearInterval(id);},[running,active]);
- useEffect(()=>{if(active&&seconds>=active.seconds&&running){if(typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();setRunning(false);setFinished(true);}},[seconds,active,running]);
- useEffect(()=>{if(!active||!running||finished||!voiceEnabled||typeof window==="undefined"||!("speechSynthesis" in window))return;const message=active.id==="breathe"?(seconds%10<4?"Breathe in gently":"Breathe out slowly"):STEPS[active.id][Math.min(STEPS[active.id].length-1,Math.floor(seconds/(active.seconds/STEPS[active.id].length)))];const key=active.id==="breathe"?Math.floor(seconds/10)+":"+Math.floor(seconds%10/4):message;if(lastSpoken.current===key)return;lastSpoken.current=key;window.speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(message);utterance.rate=.88;utterance.volume=.75;window.speechSynthesis.speak(utterance);},[seconds,running,active,finished,voiceEnabled]);
- useEffect(()=>()=>{if(typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();},[]);
- const start=tool=>{lastSpoken.current="";setReflection(null);setActive(tool.id==="breathe"?{...tool,seconds:breathDuration}:tool);setSeconds(0);setFinished(false);setRunning(true);};
+ useEffect(()=>{if(active&&seconds>=active.seconds&&running){setRunning(false);setFinished(true);}},[seconds,active,running]);
+ const start=tool=>{setReflection(null);setActive(tool.id==="breathe"?{...tool,seconds:breathDuration}:tool);setSeconds(0);setFinished(false);setRunning(true);};
  const close=()=>{if(typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();setRunning(false);setActive(null);setSeconds(0);setFinished(false);};
  const remaining=active?Math.max(0,active.seconds-seconds):0;
  const inhale=seconds%10<4;
@@ -50,7 +46,6 @@ export default function WellnessToolkit(){
      <strong aria-live="off" style={{fontSize:21}}>{running?(inhale?"Breathe in gently":"Breathe out slowly"):"Paused"}</strong>
      <p style={{margin:0,fontSize:12,color:C.muted}}>Follow at a comfortable pace. Breathe normally if this rhythm doesn't suit you.</p>
     </>:<><div aria-hidden="true" style={{fontSize:42,padding:16}}>{active.icon}</div><p aria-live="polite" style={{fontSize:17,lineHeight:1.65,minHeight:70,margin:0}}>{step}</p></>}
-    <label style={{display:"flex",justifyContent:"center",alignItems:"center",gap:10,fontSize:13}}><input type="checkbox" checked={voiceEnabled} onChange={e=>{setVoiceEnabled(e.target.checked);lastSpoken.current="";if(!e.target.checked&&typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();}}/> Read guidance aloud (optional)</label>
     <strong style={{fontVariantNumeric:"tabular-nums"}}>{Math.floor(remaining/60)}:{String(remaining%60).padStart(2,"0")} remaining</strong>
     <button type="button" onClick={()=>{if(running&&typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();lastSpoken.current="";setRunning(v=>!v);}} style={{...button,background:C.rose}}>{running?"Pause":"Resume"}</button>
    </>}
