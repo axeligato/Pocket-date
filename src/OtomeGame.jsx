@@ -132,25 +132,25 @@ function StoryReader({story,onClose,onComplete}){
         <div style={{fontSize:10,letterSpacing:1.6,color:PALETTE.navy,fontWeight:900,marginBottom:3}}>✦ STORY TIME · CHAPTER {story.level}</div>
         <div style={{fontSize:19,color:PALETTE.navy,fontWeight:900,fontFamily:"'Fredoka One',cursive",lineHeight:1.2}}>{story.title}</div>
       </div>
-      <button type="button" onClick={onClose} aria-label="Close story" style={{background:"white",border:"2.5px solid "+PALETTE.navy,borderRadius:12,width:40,height:40,flexShrink:0,cursor:"pointer",color:PALETTE.navy,fontSize:19,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"3px 3px 0 "+PALETTE.navy}}>✕</button>
+      <button type="button" onClick={onClose} aria-label="Close story" style={{background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,borderRadius:12,width:40,height:40,flexShrink:0,cursor:"pointer",color:PALETTE.navy,fontSize:19,fontWeight:900,display:"flex",alignItems:"center",justifyContent:"center",boxShadow:"3px 3px 0 "+PALETTE.navy}}>✕</button>
     </div>
     <div style={{padding:"11px 18px 8px",background:CARE_COLORS.paper,flexShrink:0}}>
       <div style={{maxWidth:620,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
         <span style={{fontSize:11,fontWeight:900,color:PALETTE.navy,letterSpacing:.5}}>PAGE {idx+1} / {lines.length}</span>
         <span aria-hidden="true" style={{fontSize:13}}>✦ ♡ ✦</span>
       </div>
-      <div role="progressbar" aria-label="Chapter reading progress" aria-valuemin={0} aria-valuemax={lines.length} aria-valuenow={idx+1} style={{height:9,maxWidth:620,margin:"7px auto 0",border:"2px solid "+PALETTE.navy,borderRadius:99,background:"white",overflow:"hidden"}}>
+      <div role="progressbar" aria-label="Chapter reading progress" aria-valuemin={0} aria-valuemax={lines.length} aria-valuenow={idx+1} style={{height:9,maxWidth:620,margin:"7px auto 0",border:"2px solid "+PALETTE.navy,borderRadius:99,background:PALETTE.paper,overflow:"hidden"}}>
         <div style={{height:"100%",width:((idx+1)/lines.length*100)+"%",background:col,transition:"width .2s ease"}}/>
       </div>
     </div>
-    <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",minHeight:0,position:"relative",isolation:"isolate",background:"radial-gradient(circle at 20% 25%,#FFFAF2,transparent 45%),#FFFAF2"}}>
+    <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",minHeight:0,position:"relative",isolation:"isolate",background:"radial-gradient(circle at 20% 25%,#2B414B,transparent 45%),#182930"}}>
       <div aria-hidden="true" style={{position:"absolute",height:"min(50dvh,370px)",width:"min(78vw,370px)",background:col,border:"3px solid "+PALETTE.navy,borderRadius:"46% 54% 50% 50% / 54% 44% 56% 46%",transform:"rotate(-9deg)",boxShadow:"7px 9px 0 "+PALETTE.navy,opacity:.75}}/>
       <span aria-hidden="true" style={{position:"absolute",top:"13%",left:"12%",fontSize:28,transform:"rotate(-13deg)"}}>✦</span>
       <span aria-hidden="true" style={{position:"absolute",top:"19%",right:"11%",fontSize:25,transform:"rotate(13deg)"}}>💗</span>
       <img key={expression} src={PORTRAITS[expression]} alt={`Kai — ${expression}`} style={{height:"min(100%,430px)",width:"auto",maxWidth:"86%",objectFit:"contain",objectPosition:"center",display:"block",position:"relative",zIndex:1,filter:"drop-shadow(3px 6px 3px #073B4C33)"}}/>
     </div>
     <div style={{padding:"0 16px max(22px,env(safe-area-inset-bottom,0px))",flexShrink:0,background:CARE_COLORS.paper}}>
-      <button type="button" onClick={advance} aria-label={done?"Close story":"Continue story"} style={{display:"block",width:"100%",maxWidth:620,margin:"0 auto",textAlign:"left",background:"white",border:"3px solid "+PALETTE.navy,borderRadius:18,padding:"17px 19px 14px",cursor:"pointer",boxShadow:"5px 6px 0 "+PALETTE.navy,fontFamily:"'Nunito',sans-serif",color:PALETTE.navy}}>
+      <button type="button" onClick={advance} aria-label={done?"Close story":"Continue story"} style={{display:"block",width:"100%",maxWidth:620,margin:"0 auto",textAlign:"left",background:PALETTE.paper,border:"3px solid "+PALETTE.navy,borderRadius:18,padding:"17px 19px 14px",cursor:"pointer",boxShadow:"5px 6px 0 "+PALETTE.navy,fontFamily:"'Nunito',sans-serif",color:PALETTE.navy}}>
         <span style={{display:"inline-block",fontSize:11,letterSpacing:1.5,fontWeight:900,color:PALETTE.navy,marginBottom:10,background:cur?.speaker==="You"?PALETTE.blue:col,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 9px",transform:"rotate(-2deg)"}}>{cur?.speaker?(cur.speaker==="You"?"YOU":CHARACTER.name.toUpperCase()):"✦ NARRATOR"}</span>
         <span aria-live="polite" style={{display:"block",fontSize:15,lineHeight:1.65,fontWeight:700,color:PALETTE.navy,whiteSpace:"normal"}}>{cur?.text}</span>
         <span style={{display:"flex",justifyContent:"flex-end",alignItems:"center",gap:7,marginTop:13,fontSize:11,fontWeight:900,letterSpacing:.5,color:PALETTE.navy}}>{done?"FINISH CHAPTER":"NEXT PAGE"} <span aria-hidden="true" style={{fontSize:16}}>↗</span></span>
@@ -194,7 +194,7 @@ function MorningJog({date,onComplete,previousChoice}){
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>🌅 Morning Jog</div>
         <div style={{fontSize:12,color:PALETTE.navy}}>A little time together, a choice that matters.</div>
       </div>
-      <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#A9D6E5,#FFFAF2)"}}>
+      <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#345D6A,#182930)"}}>
         <div aria-hidden="true" style={{position:"absolute",width:"min(75vw,290px)",height:"min(75vw,290px)",background:date.color,border:"3px solid "+PALETTE.navy,borderRadius:"48% 52% 44% 56%",transform:"rotate(-9deg)",boxShadow:"7px 8px 0 "+PALETTE.navy,opacity:.85}}/>
         <span aria-hidden="true" style={{position:"absolute",top:18,left:"10%",fontSize:27,transform:"rotate(-15deg)"}}>✦</span>
         <span aria-hidden="true" style={{position:"absolute",right:"10%",top:"18%",fontSize:26,transform:"rotate(15deg)"}}>💗</span>
@@ -351,7 +351,7 @@ function BioTab({jogMemory,memoryAlbum,completedStories=[]}){
   return <div className="pocket-bio" style={{padding:"22px 16px 32px",background:CARE_COLORS.paper}}>
     <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.2,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE KAI COLLECTION</div>
     <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 17px"}}>Your little scrapbook ♡</h2>
-    <section aria-label="Kai's profile" style={{position:"relative",background:"white",border:"3px solid "+PALETTE.navy,borderRadius:23,boxShadow:"6px 7px 0 "+PALETTE.navy,marginBottom:27,overflow:"hidden"}}>
+    <section aria-label="Kai's profile" style={{position:"relative",background:PALETTE.paper,border:"3px solid "+PALETTE.navy,borderRadius:23,boxShadow:"6px 7px 0 "+PALETTE.navy,marginBottom:27,overflow:"hidden"}}>
       <div style={{background:PALETTE.yellow,minHeight:225,display:"flex",justifyContent:"center",alignItems:"end",position:"relative",overflow:"hidden",borderBottom:"3px solid "+PALETTE.navy}}>
         <span aria-hidden="true" style={{position:"absolute",top:15,left:18,fontSize:30,transform:"rotate(-15deg)"}}>✦</span>
         <span aria-hidden="true" style={{position:"absolute",top:16,right:17,fontSize:28,transform:"rotate(12deg)"}}>💙</span>
@@ -387,7 +387,7 @@ function BioTab({jogMemory,memoryAlbum,completedStories=[]}){
         <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:24,color:PALETTE.navy,margin:"0 0 6px"}}>Memory Album 💌</h3>
         <span style={{fontSize:12,fontWeight:900,color:PALETTE.navy,background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px"}}>{memoryAlbum.length} / {ALL_MEMORY_IDS.length} found</span>
       </div>
-      <div role="progressbar" aria-label="Memories collected" aria-valuenow={memoryAlbum.length} aria-valuemin={0} aria-valuemax={ALL_MEMORY_IDS.length} style={{height:13,border:"2px solid "+PALETTE.navy,borderRadius:99,background:"white",overflow:"hidden",margin:"8px 0 22px"}}>
+      <div role="progressbar" aria-label="Memories collected" aria-valuenow={memoryAlbum.length} aria-valuemin={0} aria-valuemax={ALL_MEMORY_IDS.length} style={{height:13,border:"2px solid "+PALETTE.navy,borderRadius:99,background:PALETTE.paper,overflow:"hidden",margin:"8px 0 22px"}}>
         <div style={{height:"100%",width:(memoryAlbum.length/ALL_MEMORY_IDS.length*100)+"%",background:PALETTE.red,transition:"width .3s ease"}}/>
       </div>
       {groups.map((group,groupIndex)=>{
@@ -637,7 +637,7 @@ export default function OtomeGame(){
           <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,lineHeight:1}}>{CHARACTER.name}</div>
           <div style={{fontSize:11,color:PALETTE.navy+"99",marginTop:1,fontStyle:"italic"}}>{CHARACTER.title}</div>
         </div>
-        <div style={{background:"white",border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
+        <div style={{background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
           display:"flex",alignItems:"center",gap:5,boxShadow:`3px 3px 0 ${PALETTE.navy}`}}>
           <span style={{fontSize:14}}>🌸</span>
           <span style={{fontWeight:900,fontSize:15,color:PALETTE.navy}}>{coins}</span>
@@ -691,7 +691,7 @@ export default function OtomeGame(){
               <div aria-hidden="true" style={{position:"absolute",inset:"15% 14% 13%",border:"2px dashed rgba(7,59,76,.38)",borderRadius:"48%",transform:"rotate(9deg)",zIndex:0}}/>
               <span className="pocket-sticker" aria-hidden="true" style={{top:"12%",left:"7%",fontSize:27,transform:"rotate(-13deg)",textShadow:"2px 2px 0 white"}}>✦</span>
               <span className="pocket-sticker" aria-hidden="true" style={{right:"8%",bottom:"24%",fontSize:30,transform:"rotate(12deg)",color:CARE_COLORS.rose,textShadow:"2px 2px 0 white"}}>♥</span>
-              <span className="pocket-sticker" aria-hidden="true" style={{top:"22%",right:"6%",background:"white",border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px",fontSize:11,transform:"rotate(12deg)",boxShadow:"3px 3px 0 #073B4C"}}>SO CUTE!</span>
+              <span className="pocket-sticker" aria-hidden="true" style={{top:"22%",right:"6%",background:PALETTE.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px",fontSize:11,transform:"rotate(12deg)",boxShadow:"3px 3px 0 #073B4C"}}>SO CUTE!</span>
               <img className="pocket-character-portrait" key={mood} src={PORTRAITS[MOOD_PORTRAIT[mood]]} alt={`${CHARACTER.name} — ${mood}`}
                 style={{
                   height:315,
@@ -716,7 +716,7 @@ export default function OtomeGame(){
                   pointerEvents:"none",animation:"hf 1.1s ease-out forwards",zIndex:10,color:PALETTE.red}}>♡</div>
               ))}
               {tapHint&&(
-                <div style={{position:"absolute",bottom:18,zIndex:2,background:"white",
+                <div style={{position:"absolute",bottom:18,zIndex:2,background:PALETTE.paper,
                   border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 14px",
                   fontSize:11,color:PALETTE.navy,fontWeight:800,boxShadow:`2px 2px 0 ${PALETTE.navy}`,
                   animation:"bounce 1.6s ease-in-out infinite"}}>
@@ -726,7 +726,7 @@ export default function OtomeGame(){
             </div>
 
             {/* Speech bubble */}
-            <div className="pocket-dialogue pd-conversation" style={{margin:"14px 16px 10px",background:"white",border:"2.5px solid "+PALETTE.navy,
+            <div className="pocket-dialogue pd-conversation" style={{margin:"14px 16px 10px",background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,
               borderRadius:18,padding:"14px 18px",width:"calc(100% - 32px)",
               boxShadow:`4px 5px 0 ${PALETTE.navy}`,animation:"fi 0.3s ease",position:"relative"}}>
               {/* Bubble triangle */}
@@ -753,7 +753,7 @@ export default function OtomeGame(){
         )}
 
         {tab==="home"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
-        {tab==="home"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>setShowDates(v=>!v)} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:"white",color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
+        {tab==="home"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>setShowDates(v=>!v)} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:PALETTE.paper,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
         {tab==="home"&&<button type="button" onClick={()=>setTab("wellness")} style={{margin:"12px 16px 24px",padding:"16px",width:"calc(100% - 32px)",textAlign:"left",border:"2px solid "+PALETTE.navy,borderRadius:19,background:CARE_COLORS.rose,color:PALETTE.navy,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}><span><strong style={{display:"block",fontSize:17}}>♡ A little care with Kai</strong><span style={{display:"block",fontSize:12,marginTop:5}}>Breathe, unwind, ground yourself or talk.</span></span><span aria-hidden="true" style={{fontSize:22}}>→</span></button>}
         {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
@@ -805,7 +805,7 @@ export default function OtomeGame(){
                 const colors=[CARE_COLORS.rose];
                 const paper=story.locked?CARE_COLORS.paper:colors[i%colors.length];
                 return <button type="button" key={story.id} disabled={story.locked} onClick={()=>setOpenStory(story)}
-                  style={{position:"relative",width:"100%",textAlign:"left",background:"white",border:"3px solid "+(story.locked?CARE_COLORS.muted:PALETTE.navy),borderRadius:15,padding:"0 0 0 0",boxShadow:story.locked?"none":"5px 6px 0 "+PALETTE.navy,transform:"rotate("+(i%2===0?-.7:.7)+"deg)",cursor:story.locked?"not-allowed":"pointer",overflow:"hidden",fontFamily:"'Nunito',sans-serif",opacity:story.locked?.78:1}}>
+                  style={{position:"relative",width:"100%",textAlign:"left",background:PALETTE.paper,border:"3px solid "+(story.locked?CARE_COLORS.muted:PALETTE.navy),borderRadius:15,padding:"0 0 0 0",boxShadow:story.locked?"none":"5px 6px 0 "+PALETTE.navy,transform:"rotate("+(i%2===0?-.7:.7)+"deg)",cursor:story.locked?"not-allowed":"pointer",overflow:"hidden",fontFamily:"'Nunito',sans-serif",opacity:story.locked?.78:1}}>
                   <div style={{display:"flex",alignItems:"stretch"}}>
                     <div aria-hidden="true" style={{width:65,minWidth:65,background:paper,borderRight:"2px dashed "+PALETTE.navy,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:6}}>
                       <span style={{fontSize:25}}>{story.locked?"🔒":"✉️"}</span>
