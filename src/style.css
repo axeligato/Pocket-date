@@ -99,3 +99,38 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 @media (prefers-reduced-motion: reduce) {
  .pd-wellness-session [aria-hidden="true"] { animation: none !important; transform: none !important; }
 }
+
+
+/* Care 3: calm dashboard hierarchy, grounded in real session history. */
+.pd-care-home {display:grid;gap:22px}
+.pd-care-eyebrow {font-size:10px;font-weight:900;letter-spacing:1.4px;color:var(--pd-muted)}
+.pd-care-hero {background:linear-gradient(135deg,#d9eef4,#f6f0f8 75%,#fffaf2);border:1px solid rgba(7,59,76,.12);border-radius:24px;padding:21px 19px;box-shadow:0 6px 24px rgba(7,59,76,.06)}
+.pd-care-hero p {font-family:"Fredoka One",cursive;font-size:22px;line-height:1.4;margin:13px 0}
+.pd-care-hero-footer {font-size:12px;color:var(--pd-muted)}
+.pd-care-dashboard,.pd-care-activities,.pd-care-feeling,.pd-care-encouragement {background:white;border:1px solid rgba(7,59,76,.12);border-radius:22px;padding:17px;box-shadow:0 5px 18px rgba(7,59,76,.04)}
+.pd-care-section-heading {display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}
+.pd-care-section-heading h3,.pd-care-encouragement h3 {font-family:"Fredoka One",cursive;font-size:20px;margin:5px 0 0}
+.pd-care-stats {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:18px}
+.pd-care-stats>div {border-radius:15px;background:#edf6f8;padding:12px 8px;display:grid;gap:4px;min-width:0}
+.pd-care-stats strong {font-family:"Fredoka One",cursive;font-size:27px;line-height:1}
+.pd-care-stats span {font-size:10px;line-height:1.35;color:var(--pd-muted)}
+.pd-care-trend {border-top:1px solid rgba(7,59,76,.12);padding-top:15px}
+.pd-care-trend-head {display:flex;justify-content:space-between;gap:8px;font-size:12px}
+.pd-care-trend-head span {font-size:11px;color:var(--pd-muted)}
+.pd-care-bars {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin-top:16px}
+.pd-care-day {display:flex;flex-direction:column;align-items:center;gap:8px;padding:3px 0!important;border:0;background:transparent;min-width:0;min-height:102px!important;font-size:10px;font-weight:800;color:var(--pd-muted);cursor:pointer}
+.pd-care-bar-track {width:100%;max-width:26px;height:77px;border-radius:8px;background:#eef2f3;display:flex;align-items:end;overflow:hidden}
+.pd-care-bar-fill {display:block;width:100%;border-radius:8px;background:#83bbce;min-height:0;transition:height .2s}
+.pd-care-day[aria-pressed="true"] .pd-care-bar-track {outline:2px solid var(--pd-ink);outline-offset:2px}
+.pd-care-trend-note {font-size:11px;color:var(--pd-muted);margin:10px 0 0;min-height:18px}
+.pd-care-history-footer {display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}
+.pd-care-history-footer span {font-size:10px;color:var(--pd-muted);line-height:1.4}
+.pd-care-history-footer button {font-size:11px;text-decoration:underline;background:none;border:0;color:var(--pd-ink);cursor:pointer;white-space:nowrap}
+.pd-care-activities .pd-wellness {margin-top:8px}
+.pd-care-encouragement {margin-bottom:20px}
+.pd-care-encouragement p {font-size:12px;color:var(--pd-muted)}
+.pd-care-encouragement-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.pd-care-encouragement-grid button {display:flex;align-items:center;gap:8px;text-align:left;padding:11px;background:#f5fafb;border:1px solid rgba(7,59,76,.16);border-radius:13px;color:var(--pd-ink);font-size:12px;cursor:pointer}
+.pd-care-encouragement-grid button span {font-size:19px}
+@media(max-width:360px){.pd-care-dashboard,.pd-care-activities,.pd-care-feeling{padding:12px}.pd-care-bars{gap:4px}.pd-care-stats strong{font-size:23px}}
+@media(prefers-reduced-motion:reduce){.pd-care-bar-fill{transition:none}}
