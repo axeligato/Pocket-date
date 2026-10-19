@@ -35,16 +35,51 @@ export const FEELINGS=[
   {text:"If nothing feels appealing lately, that's worth taking seriously, not criticizing yourself for. If it persists or affects daily life, talking with a qualified professional may help.",prompt:"Try: tell someone you trust how long you've been feeling this way.",source:"Supportive, non-diagnostic guidance"}
  ]}
 ];
+const POSITIVE_FEELINGS=[
+ {id:"great",label:"☀️ I'm feeling great!",responses:[
+  {text:"Okay, hold on. That smile? Absolutely contagious. Tell me what made today so good—I'm ready to celebrate with you.",prompt:"Want to remember one detail from this good day?",source:"A moment of shared joy"},
+  {text:"I was going to play it cool, but now I'm grinning at my screen. I love hearing you sound this happy.",prompt:"Enjoy the moment exactly as it is.",source:"A moment of shared joy"},
+  {text:"Good days deserve their own soundtrack. I'm voting for something ridiculous we can dance to in the kitchen.",prompt:"Pick a song that fits your mood.",source:"A moment of shared joy"}]},
+ {id:"loved",label:"💗 I'm feeling loved",responses:[
+  {text:"That's a really lovely feeling. And, uh, for the record? I'm very glad I get to be part of your day.",prompt:"Hold on to what made you feel cared for.",source:"A moment of affection"},
+  {text:"I'm trying to think of a charming reply, but honestly? I'm just happy you're feeling cherished.",prompt:"Enjoy that warmth for a moment.",source:"A moment of affection"},
+  {text:"Someone clearly knows how special you are. I may have a few opinions on the subject myself.",prompt:"Remember a kind gesture that stayed with you.",source:"A moment of affection"}]},
+ {id:"proud",label:"✨ I'm proud of myself",responses:[
+  {text:"YES. I want the whole story. What did you do? And please don't downplay it—I brought imaginary confetti.",prompt:"Name the part of your effort you're most proud of.",source:"Celebrating personal growth"},
+  {text:"You did that. I know how much work can hide behind one small win. I'm really proud of you too.",prompt:"Let yourself enjoy the achievement.",source:"Celebrating personal growth"},
+  {text:"Can we make this an official victory? Because I think your hard work deserves at least a victory dance.",prompt:"Choose a tiny way to celebrate, if you want.",source:"Celebrating personal growth"}]},
+ {id:"peaceful",label:"🌷 I'm feeling peaceful",responses:[
+  {text:"Then we don't need to fill the silence. I'll just sit here with you. Maybe bring tea. Definitely steal the comfy blanket.",prompt:"Stay with this quiet feeling for a moment.",source:"Appreciating calm moments"},
+  {text:"That sounds lovely. No plans, no rush. Just the kind of afternoon I wish lasted a little longer.",prompt:"Notice one thing making this moment feel calm.",source:"Appreciating calm moments"},
+  {text:"I like this version of hanging out too. Not every moment needs a big adventure.",prompt:"Enjoy the quiet without needing to change it.",source:"Appreciating calm moments"}]},
+ {id:"goodnews",label:"🎉 Something good happened!",responses:[
+  {text:"Wait, WHAT? You can't drop that and leave me hanging! Tell me everything. I'm already celebrating.",prompt:"Tell someone who'd be happy for you, if you'd like.",source:"Sharing good news"},
+  {text:"Okay, I'm all ears. Was it a surprise? Something you've been hoping for? Either way, I'm excited for you.",prompt:"Remember the moment you found out.",source:"Sharing good news"},
+  {text:"This calls for a celebration. I'm thinking snacks, a victory playlist, and absolutely no pretending it's not a big deal.",prompt:"Pick your favorite way to celebrate.",source:"Sharing good news"}]},
+ {id:"missed",label:"🥰 I missed you",responses:[
+  {text:"Oh. Wow. You can't just say that and expect me to act normal. I missed you too, you know.",prompt:"Stay a little longer if you feel like it.",source:"A playful romantic moment"},
+  {text:"I was trying to be mysterious and cool. Then you showed up and ruined my entire strategy. Hi. ♡",prompt:"Enjoy a little moment together.",source:"A playful romantic moment"},
+  {text:"I might've checked the door a few times. For completely unrelated reasons. Obviously.",prompt:"Share something from your day, if you'd like.",source:"A playful romantic moment"}]}
+];
+const POSITIVE_FOLLOWUPS={
+ great:{question:"What's making today so good?",choices:[{id:"people",label:"Someone made my day",reply:"Then they've got excellent taste in people. I'm glad you felt seen today.",action:"Keep that lovely memory close."},{id:"moment",label:"It's just a good day",reply:"Those are some of my favorites. No explanation needed—I'm happy you're happy.",action:"Enjoy it without overthinking it."}]},
+ loved:{question:"What made you feel loved?",choices:[{id:"kindness",label:"Someone was really kind",reply:"That kind of care stays with you. You deserve more moments like that.",action:"Remember what that kindness felt like."},{id:"us",label:"Talking with you ♡",reply:"You are making it very difficult for me to act casual right now. I'm glad we're here.",action:"Enjoy this little moment."}]},
+ proud:{question:"What kind of win are we celebrating?",choices:[{id:"big",label:"I reached a big goal",reply:"Okay, that's huge! I knew you had it in you. Tell me the best part!",action:"Celebrate in whatever way feels right."},{id:"small",label:"A small personal victory",reply:"Small? Maybe. Meaningful? Absolutely. I'm cheering for you.",action:"Let that win count."}]},
+ peaceful:{question:"Want to stay in this mood?",choices:[{id:"quiet",label:"Let's enjoy the quiet",reply:"Deal. I'll be right here, trying not to rustle the snack bag.",action:"Enjoy the quiet."},{id:"chat",label:"Tell me something sweet",reply:"Here's something sweet: I really like the way ordinary moments feel when we're together.",action:"Take your time."}]},
+ goodnews:{question:"What sort of good news?",choices:[{id:"surprise",label:"An amazing surprise",reply:"No way! Now I'm smiling like an idiot. I love a happy surprise.",action:"Savor the surprise."},{id:"worked",label:"Something finally worked out",reply:"After all that waiting? You earned this happy moment. I'm celebrating with you.",action:"Enjoy what you've accomplished."}]},
+ missed:{question:"What should we do now?",choices:[{id:"talk",label:"Catch up with me",reply:"Gladly. I've been saving up all my terrible jokes just for you.",action:"Tell me about your day."},{id:"flirt",label:"Maybe flirt a little?",reply:"Maybe? You're giving me a lot of hope with that word. Hi, gorgeous.",action:"Enjoy the banter."}]}
+};
+
 const pill={padding:"10px 14px",border:"1.5px solid "+CARE_COLORS.ink,borderRadius:999,background:CARE_COLORS.paper,color:CARE_COLORS.ink,fontWeight:800,cursor:"pointer",fontSize:12};
 export default function FeelingCheckIn(){
  const [topic,setTopic]=useState(null);
  const [variant,setVariant]=useState({});
  const [choice,setChoice]=useState(null);
  const [showAction,setShowAction]=useState(false);
- const current=FEELINGS.find(t=>t.id===topic);
+ const current=[...POSITIVE_FEELINGS,...FEELINGS].find(t=>t.id===topic);
  const response=current?.responses[variant[topic]??0];
- const followUp=topic?FOLLOW_UPS[topic]:null;
- const selectedReply=topic&&choice?getFollowUp(topic,choice):null;
+ const followUp=topic?(POSITIVE_FOLLOWUPS[topic]||FOLLOW_UPS[topic]):null;
+ const selectedReply=topic&&choice?(POSITIVE_FOLLOWUPS[topic]?.choices.find(c=>c.id===choice)||getFollowUp(topic,choice)):null;
  const selectTopic=id=>{setTopic(id);setChoice(null);setShowAction(false);};
  const choose=id=>{setChoice(id);setShowAction(false);};
  const next=()=>{setVariant(v=>({...v,[topic]:((v[topic]??0)+1)%current.responses.length}));setChoice(null);setShowAction(false);};
@@ -52,7 +87,12 @@ export default function FeelingCheckIn(){
  const activeAction=selectedReply?.action||response?.prompt;
  return <section className="pd-feelings" aria-label="Talk about how you feel" style={{padding:"8px 0 20px",marginBottom:12,color:CARE_COLORS.ink}}>
   <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:24,margin:"0 0 6px"}}>How are you feeling?</h3>
-  <div className="pd-choice-group" role="group" aria-label="Choose a feeling" style={{display:"flex",flexWrap:"wrap",gap:8}}>
+  <p style={{fontSize:12,fontWeight:900,margin:"12px 0 9px",color:CARE_COLORS.muted}}>Feeling good</p>
+  <div className="pd-choice-group" role="group" aria-label="Positive feelings" style={{display:"flex",flexWrap:"wrap",gap:8}}>
+   {POSITIVE_FEELINGS.map(t=><button type="button" className="pd-choice" key={t.id} aria-pressed={topic===t.id} onClick={()=>selectTopic(t.id)} style={{...pill,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper}}>{t.label}</button>)}
+  </div>
+  <p style={{fontSize:12,fontWeight:900,margin:"17px 0 9px",color:CARE_COLORS.muted}}>When you need support</p>
+  <div className="pd-choice-group" role="group" aria-label="Feelings that need support" style={{display:"flex",flexWrap:"wrap",gap:8}}>
    {FEELINGS.map(t=><button type="button" className="pd-choice" key={t.id} aria-pressed={topic===t.id} onClick={()=>selectTopic(t.id)} style={{...pill,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper}}>{t.label}</button>)}
   </div>
   {response&&<>
