@@ -134,3 +134,24 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .pd-care-encouragement-grid button span {font-size:19px}
 @media(max-width:360px){.pd-care-dashboard,.pd-care-activities,.pd-care-feeling{padding:12px}.pd-care-bars{gap:4px}.pd-care-stats strong{font-size:23px}}
 @media(prefers-reduced-motion:reduce){.pd-care-bar-fill{transition:none}}
+
+
+/* Guided Care: gentle visual pacing for Unwind and Ground Myself */
+.pd-guided-visual {position:relative;width:min(100%,280px)!important;height:170px;flex-shrink:0;align-self:center;isolation:isolate;display:grid;place-items:center;overflow:hidden;border-radius:28px;background:radial-gradient(circle at 50% 48%,#fffdfc 0%,#e8f5f8 68%,#dceef3 100%);border:1px solid rgba(7,59,76,.08)}
+.pd-guided-visual--unwind .pd-guided-halo {position:absolute;width:110px;height:110px;border-radius:50%;background:#eacde3;box-shadow:0 0 0 18px rgba(234,205,227,.3),0 0 0 36px rgba(234,205,227,.15);animation:pd-guided-glow 9s ease-in-out infinite alternate}
+.pd-guided-orbit {position:absolute;width:135px;height:135px;border:1px dashed rgba(7,59,76,.25);border-radius:50%;animation:pd-guided-spin 22s linear infinite}
+.pd-guided-orb {position:absolute;left:50%;top:-7px;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;background:#3f92b1;box-shadow:0 0 0 6px rgba(63,146,177,.15)}
+.pd-guided-center {position:relative;z-index:2;font-size:27px;color:#427c91}
+.pd-guided-visual--ground {background:linear-gradient(180deg,#eff8f4,#e0f0eb)}
+.pd-ground-path {position:absolute;left:10%;right:10%;top:70%;height:3px;border-radius:10px;background:#a9c9bf}
+.pd-ground-traveler {position:absolute;top:calc(70% - 7px);width:17px;height:17px;border-radius:50%;background:#367c70;box-shadow:0 0 0 6px rgba(54,124,112,.15);transform:translateX(-50%);transition:left 1.4s ease}
+.pd-ground-stops {position:absolute;left:10%;right:10%;top:calc(70% - 4px);display:flex;justify-content:space-between}
+.pd-ground-stops span {width:10px;height:10px;background:#d0e2da;border:2px solid #7da99b;border-radius:50%}
+.pd-ground-stops span.is-active {background:#367c70}
+.pd-guided-visual--ground .pd-guided-center {transform:translateY(-23px)}
+.pd-guided-step-count {font-size:11px;font-weight:900;letter-spacing:1.5px;color:#427c91}
+@keyframes pd-guided-spin {to{transform:rotate(360deg)}}
+@keyframes pd-guided-glow {to{transform:scale(1.14);opacity:.6}}
+.pd-wellness-session:has(.pd-guided-visual) {gap:17px!important}
+.pd-wellness-session:has(.pd-guided-visual) .pd-guided-visual {width:min(100%,280px)!important}
+@media(prefers-reduced-motion:reduce){.pd-guided-orbit,.pd-guided-halo {animation:none!important}.pd-ground-traveler {transition:none!important}}
