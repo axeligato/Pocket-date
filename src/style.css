@@ -3,13 +3,13 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --pd-ink: #073B4C;
-  --pd-muted: #526773;
-  --pd-paper: #FFFAF2;
-  --pd-surface: #FFFFFF;
-  --pd-accent: #A9D6E5;
+  --pd-ink: #F4EEE7;
+  --pd-muted: #BBCBD0;
+  --pd-paper: #182930;
+  --pd-surface: #243840;
+  --pd-accent: #345D6A;
   --pd-radius: 16px;
-  --pd-outline: 3px solid var(--pd-ink);
+  --pd-outline: 3px solid #E4BC83;
   --pd-shadow: 4px 5px 0 var(--pd-ink);
 }
 * { box-sizing: border-box; }
@@ -155,3 +155,41 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .pd-wellness-session:has(.pd-guided-visual) {gap:17px!important}
 .pd-wellness-session:has(.pd-guided-visual) .pd-guided-visual {width:min(100%,280px)!important}
 @media(prefers-reduced-motion:reduce){.pd-guided-orbit,.pd-guided-halo {animation:none!important}.pd-ground-traveler {transition:none!important}}
+
+/* Warm Midnight: a low-glare, storybook-dark theme rather than flat black. */
+:root {color-scheme:dark;--pd-focus:#E4BC83;--pd-outline:2px solid rgba(244,238,231,.65);--pd-shadow:0 6px 22px rgba(0,0,0,.22);--pd-soft-border:1px solid rgba(244,238,231,.19);--pd-soft-shadow:0 6px 22px rgba(0,0,0,.18)}
+html,body,#root {background:#121F26;color:var(--pd-ink)}
+body {background:radial-gradient(ellipse at 80% 0%,#263943 0%,#121F26 65%)}
+.pocket-app {background:#182930!important;color:var(--pd-ink)!important}
+.pocket-content {color:var(--pd-ink)}
+.pocket-app :is(button,input,textarea,select) {color:var(--pd-ink)}
+.pocket-app :is(input,textarea,select) {background:#263B44!important;border-color:rgba(244,238,231,.45)!important}
+.pocket-app :is(input,textarea)::placeholder {color:#BBCBD0;opacity:1}
+.pocket-app :is(button,summary,input,select,textarea,[role="button"]):focus-visible {outline:3px solid var(--pd-focus)!important;outline-offset:3px!important}
+.pocket-app button:disabled {opacity:.55}
+.pocket-app [style*="background: white"],.pocket-app [style*="background: rgb(255, 255, 255)"] {background:#243840!important}
+.pocket-app [style*="background: linear-gradient(180deg, rgb(169, 214, 229)"],.pocket-app [style*="background: radial-gradient(circle at 20%"] {background:#182930!important}
+.pocket-app [style*="color: rgb(7, 59, 76)"] {color:var(--pd-ink)!important}
+.pocket-app [style*="color: rgb(82, 103, 115)"] {color:var(--pd-muted)!important}
+.pocket-app [style*="box-shadow: 3px 4px 0"],.pocket-app [style*="box-shadow: 4px 5px 0"],.pocket-app [style*="box-shadow: 5px 6px 0"] {box-shadow:0 5px 18px rgba(0,0,0,.24)!important}
+.pd-care-hero {background:linear-gradient(135deg,#304750,#3D3548 80%,#27353C)!important;border-color:rgba(244,238,231,.2)!important}
+.pd-care-dashboard,.pd-care-activities,.pd-care-feeling,.pd-care-encouragement {background:#243840!important;border-color:rgba(244,238,231,.2)!important}
+.pd-care-stats>div {background:#304A53!important}
+.pd-care-trend {border-color:rgba(244,238,231,.19)}
+.pd-care-bar-track {background:#344A53}
+.pd-care-bar-fill {background:#88C5C7}
+.pd-care-encouragement-grid button {background:#304A53;border-color:rgba(244,238,231,.25)}
+.pd-guided-visual {background:radial-gradient(circle at 50% 48%,#3D4554,#263F4A)!important;border-color:rgba(244,238,231,.15)}
+.pd-guided-visual--ground {background:linear-gradient(180deg,#304A48,#243D40)!important}
+.pd-guided-visual--unwind .pd-guided-halo {background:#735F7D;box-shadow:0 0 0 18px rgba(165,132,176,.15),0 0 0 36px rgba(165,132,176,.08)}
+.pd-guided-orbit {border-color:rgba(244,238,231,.4)}
+.pd-guided-orb {background:#A7D6DC}
+.pd-guided-center,.pd-guided-step-count {color:#D0E5E4}
+.pd-ground-path {background:#779B90}
+.pd-ground-traveler,.pd-ground-stops span.is-active {background:#A1D1BD}
+.pd-ground-stops span {background:#304D49;border-color:#A1D1BD}
+.pd-choice {border-color:rgba(244,238,231,.38)!important}
+.pd-choice:hover:not(:disabled),.pd-choice[aria-pressed="true"] {background:#426D78!important}
+.pd-wellness-session {background:#182930!important;color:var(--pd-ink)!important}
+.pocket-app :is(button,select,summary) {touch-action:manipulation}
+@media(prefers-reduced-motion:reduce){html {scroll-behavior:auto!important}}
