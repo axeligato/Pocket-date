@@ -539,7 +539,7 @@ export default function OtomeGame(){
       fontFamily:"'Nunito',sans-serif",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
-        :root{--pocket-ink:#073B4C;--pocket-paper:#FFFAF2;--pocket-outline:3px solid var(--pocket-ink);--pocket-shadow:4px 5px 0 var(--pocket-ink)}
+        :root{--pocket-ink:#F4EEE7;--pocket-paper:#182930;--pocket-outline:3px solid var(--pocket-ink);--pocket-shadow:4px 5px 0 var(--pocket-ink)}
         .pocket-content{padding-bottom:calc(94px + env(safe-area-inset-bottom, 0px)) !important}
         .pocket-app [role="dialog"][aria-modal="true"]{bottom:calc(82px + env(safe-area-inset-bottom, 0px)) !important}
         .pocket-tabs{box-sizing:border-box}\n        .pocket-tabs{gap:5px;padding:9px 10px 10px;align-items:stretch}
@@ -551,10 +551,10 @@ export default function OtomeGame(){
         .pocket-content{scrollbar-width:thin;scrollbar-color:#526773 transparent}
         .pocket-content button:not(:disabled):active{filter:brightness(.97)}
         @media(prefers-reduced-motion:reduce){.pocket-tabs .pocket-tab{transition:none !important}.pocket-tabs .pocket-tab:hover{transform:none !important}}
-        .pocket-home{position:relative;isolation:isolate;background:radial-gradient(circle at 12% 17%,#FFFAF2 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#A9D6E5 0 14%,transparent 14.5%),#FFFAF2}
+        .pocket-home{position:relative;isolation:isolate;background:radial-gradient(circle at 12% 17%,#304750 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#3E4459 0 14%,transparent 14.5%),#182930}
         .pocket-character{isolation:isolate}
         .pocket-sticker{position:absolute;z-index:3;pointer-events:none;font-family:"Fredoka One",cursive;color:#073B4C}
-        .pocket-home .pocket-dialogue{transform:rotate(-1deg);border-width:3px !important;border-radius:20px 20px 22px 12px !important;box-shadow:5px 6px 0 #073B4C !important}
+        .pocket-home .pocket-dialogue{transform:rotate(-1deg);border-width:3px !important;border-radius:20px 20px 22px 12px !important;box-shadow:0 8px 24px rgba(0,0,0,.3) !important}
         .pocket-home .pocket-mood{transform:rotate(3deg);margin-top:4px}
         @media (min-width:768px){.pocket-home .pocket-home-heading{grid-column:2;grid-row:1;align-self:end;margin-bottom:8px}}
         @media (max-width:767px){.pocket-home-heading{padding-top:15px}.pocket-home .pocket-dialogue{margin-top:8px !important}}
@@ -567,8 +567,8 @@ export default function OtomeGame(){
         @keyframes wiggle{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
         *{box-sizing:border-box} .pocket-content::-webkit-scrollbar{width:7px} .pocket-content::-webkit-scrollbar-thumb{background:#526773;border-radius:10px}
         @media (min-width: 768px) {
-          body { background: #FFFAF2; }
-          .pocket-app { max-width: 920px !important; min-height: min(860px, calc(100dvh - 48px)) !important; height: calc(100dvh - 48px); margin: 24px auto !important; border: 3px solid #073B4C; border-radius: 24px; box-shadow: 10px 12px 0 #073B4C; }
+          body { background: #121F26; }
+          .pocket-app { max-width: 920px !important; min-height: min(860px, calc(100dvh - 48px)) !important; height: calc(100dvh - 48px); margin: 24px auto !important; border: 2px solid #55727B; border-radius: 24px; box-shadow: 0 18px 44px rgba(0,0,0,.38); }
           .pocket-content { scrollbar-width: thin; }
           .pocket-home { display: grid !important; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: auto auto auto; align-items: center !important; align-content: center; column-gap: 30px; row-gap: 12px; padding: 28px 40px !important; min-height: 100%; }
           .pocket-character { grid-column:1; grid-row:1 / 4; min-height: 360px; align-items: center; }
@@ -615,7 +615,7 @@ export default function OtomeGame(){
           .pocket-home .pocket-dialogue{padding:10px 14px !important}
           .pocket-home .pocket-mood{margin-bottom:5px !important}
         }
-        .pocket-character:focus-visible,button:focus-visible,[role="button"]:focus-visible{outline:3px solid #A9D6E5;outline-offset:4px}
+        .pocket-character:focus-visible,button:focus-visible,[role="button"]:focus-visible{outline:3px solid #E4BC83;outline-offset:4px}
         button{touch-action:manipulation}
         @media (prefers-reduced-motion:reduce){.pocket-character-portrait,.pocket-chibi-popup{animation:none !important}.pocket-character{transition:none !important}}
         @media (max-width: 767px) {
@@ -645,11 +645,11 @@ export default function OtomeGame(){
       </div>
 
       {/* ── XP + Affection bars ── */}
-      <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"2px solid #FFFAF2"}}>
+      <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"2px solid "+PALETTE.navy}}>
         {/* Level row */}
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
           <div style={{display:"flex",alignItems:"center",gap:6}}>
-            <div style={{background:PALETTE.navy,color:"white",borderRadius:99,padding:"1px 8px",fontSize:9,fontWeight:900,letterSpacing:1}}>LV{level}</div>
+            <div style={{background:PALETTE.paper,color:PALETTE.navy,borderRadius:99,padding:"1px 8px",fontSize:9,fontWeight:900,letterSpacing:1}}>LV{level}</div>
             <span style={{fontSize:11,color:CARE_COLORS.muted}}>XP</span>
           </div>
           <span style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:900}}>{level>=MAX_LEVEL?"MAX":`${xp}/${XP_PER_LEVEL}`}</span>
@@ -687,9 +687,9 @@ export default function OtomeGame(){
               style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
                 justifyContent:"center",paddingTop:16,
                 transform:pulse?"scale(1.03)":"scale(1)",transition:"transform 0.25s cubic-bezier(.4,2,.6,1)"}}>
-              <div aria-hidden="true" style={{position:"absolute",inset:"9% 9% 6%",background:CARE_COLORS.gold,border:"3px solid "+PALETTE.navy,borderRadius:"46% 54% 50% 48% / 44% 42% 58% 56%",transform:"rotate(-8deg)",boxShadow:"7px 9px 0 #073B4C",zIndex:0}}/>
-              <div aria-hidden="true" style={{position:"absolute",inset:"15% 14% 13%",border:"2px dashed rgba(7,59,76,.38)",borderRadius:"48%",transform:"rotate(9deg)",zIndex:0}}/>
-              <span className="pocket-sticker" aria-hidden="true" style={{top:"12%",left:"7%",fontSize:27,transform:"rotate(-13deg)",textShadow:"2px 2px 0 white"}}>✦</span>
+              <div aria-hidden="true" style={{position:"absolute",inset:"9% 9% 6%",background:CARE_COLORS.gold,border:"3px solid "+PALETTE.navy,borderRadius:"46% 54% 50% 48% / 44% 42% 58% 56%",transform:"rotate(-8deg)",boxShadow:"0 12px 30px rgba(0,0,0,.28)",zIndex:0}}/>
+              <div aria-hidden="true" style={{position:"absolute",inset:"15% 14% 13%",border:"2px dashed rgba(244,238,231,.38)",borderRadius:"48%",transform:"rotate(9deg)",zIndex:0}}/>
+              <span className="pocket-sticker" aria-hidden="true" style={{top:"12%",left:"7%",fontSize:27,transform:"rotate(-13deg)",textShadow:"2px 2px 0 #182930"}}>✦</span>
               <span className="pocket-sticker" aria-hidden="true" style={{right:"8%",bottom:"24%",fontSize:30,transform:"rotate(12deg)",color:CARE_COLORS.rose,textShadow:"2px 2px 0 white"}}>♥</span>
               <span className="pocket-sticker" aria-hidden="true" style={{top:"22%",right:"6%",background:PALETTE.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px",fontSize:11,transform:"rotate(12deg)",boxShadow:"3px 3px 0 #073B4C"}}>SO CUTE!</span>
               <img className="pocket-character-portrait" key={mood} src={PORTRAITS[MOOD_PORTRAIT[mood]]} alt={`${CHARACTER.name} — ${mood}`}
@@ -747,7 +747,7 @@ export default function OtomeGame(){
               background:moodColor[mood],border:"2.5px solid "+PALETTE.navy,
               borderRadius:99,padding:"6px 16px",boxShadow:`3px 3px 0 ${PALETTE.navy}`,marginBottom:16}}>
               <span style={{fontSize:15}}>{moodEmoji[mood]}</span>
-              <span style={{fontSize:11,textTransform:"capitalize",color:"white",fontWeight:900,letterSpacing:1}}>{mood}</span>
+              <span style={{fontSize:11,textTransform:"capitalize",color:PALETTE.navy,fontWeight:900,letterSpacing:1}}>{mood}</span>
             </div>
           </div>
         )}
