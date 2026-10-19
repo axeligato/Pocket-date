@@ -21,7 +21,7 @@ export default function WellnessToolkit(){
  useEffect(()=>{if(!running||!active)return;const id=setInterval(()=>setSeconds(v=>v+1),1000);return()=>clearInterval(id);},[running,active]);
  useEffect(()=>{if(active&&seconds>=active.seconds&&running){setRunning(false);setFinished(true);}},[seconds,active,running]);
  const start=tool=>{setReflection(null);setActive(tool.id==="breathe"?{...tool,seconds:breathDuration}:tool);setSeconds(0);setFinished(false);setRunning(true);};
- const close=()=>{if(typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();setRunning(false);setActive(null);setSeconds(0);setFinished(false);};
+ const close=()=>{setRunning(false);setActive(null);setSeconds(0);setFinished(false);};
  const remaining=active?Math.max(0,active.seconds-seconds):0;
  const inhale=seconds%10<4;
  const step=active&&active.id!=="breathe"?STEPS[active.id][Math.min(STEPS[active.id].length-1,Math.floor(seconds/(active.seconds/STEPS[active.id].length)))]:null;
@@ -47,7 +47,7 @@ export default function WellnessToolkit(){
      <p style={{margin:0,fontSize:12,color:C.muted}}>Follow at a comfortable pace. Breathe normally if this rhythm doesn't suit you.</p>
     </>:<><div aria-hidden="true" style={{fontSize:42,padding:16}}>{active.icon}</div><p aria-live="polite" style={{fontSize:17,lineHeight:1.65,minHeight:70,margin:0}}>{step}</p></>}
     <strong style={{fontVariantNumeric:"tabular-nums"}}>{Math.floor(remaining/60)}:{String(remaining%60).padStart(2,"0")} remaining</strong>
-    <button type="button" onClick={()=>{if(running&&typeof window!=="undefined"&&"speechSynthesis" in window)window.speechSynthesis.cancel();lastSpoken.current="";setRunning(v=>!v);}} style={{...button,background:C.rose}}>{running?"Pause":"Resume"}</button>
+    <button type="button" onClick={()=>setRunning(v=>!v)} style={{...button,background:C.rose}}>{running?"Pause":"Resume"}</button>
    </>}
    <p style={{fontSize:11,color:C.muted,margin:0}}>Optional relaxation exercise, not a medical treatment. Stop if you feel uncomfortable.</p>
   </div>}
