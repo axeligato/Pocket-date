@@ -1,3 +1,4 @@
+import PersonaSelector from "./PersonaSelector.jsx";
 import RomanceMoment from "./RomanceMoment.jsx";
 import InstallApp from "./InstallApp.jsx";
 import {XP_PER_LEVEL,MAX_LEVEL,applyXpReward} from "./gameRules.js";
@@ -760,7 +761,7 @@ export default function OtomeGame(){
         {tab==="bio"&&<div style={{padding:"15px 16px 0",display:"flex",gap:8}}><button type="button" aria-pressed={kaiSection==="profile"} onClick={()=>setKaiSection("profile")} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="profile"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>♡ About Kai</button><button type="button" aria-pressed={kaiSection==="stories"} onClick={()=>setKaiSection("stories")} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="stories"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>📖 Stories</button></div>}
         {tab==="bio"&&kaiSection==="profile"&&<BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum} completedStories={completedStories}/>}
 
-        {tab==="care"&&<><CareMode mode="preferences"/><div style={{padding:"0 16px 32px"}}><InstallApp/></div></>}
+        {tab==="care"&&<><PersonaSelector/><CareMode mode="preferences"/><div style={{padding:"0 16px 32px"}}><InstallApp/></div></>}
 
         {/* DATES */}
         {tab==="home"&&showDates&&(
