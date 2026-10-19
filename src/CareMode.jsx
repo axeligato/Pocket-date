@@ -2,6 +2,7 @@ import FeelingCheckIn from "./FeelingCheckIn.jsx";
 import {getPersona} from "./PersonaSelector.jsx";
 import WellnessToolkit from "./WellnessToolkit.jsx";
 import CareRoutine from "./CareRoutine.jsx";
+import CareActivityDashboard,{readActivity,recordActivity,ACTIVITY_KEY} from "./CareActivityDashboard.jsx";
 import {careSectionStyle,careSummaryStyle} from "./careTheme.js";
 import {CARE_COLORS} from "./careTheme.js";
 import CareMemories from "./CareMemories.jsx";
@@ -31,6 +32,9 @@ export default function CareMode({mode="home",onOpenPreferences}){
   const [care,setCare]=useState(loadCare);
   const [selected,setSelected]=useState(()=>{const saved=loadCare();return saved.enabled?saved.topics:["water","food","rest"];});
   const [response,setResponse]=useState(null);
+  const [activity,setActivity]=useState(readActivity);
+  const onSessionComplete=React.useCallback((type,duration)=>setActivity(recordActivity(type,duration)),[]);
+  const clearActivity=()=>{try{localStorage.removeItem(ACTIVITY_KEY);}catch{}setActivity([]);};
   const [rhythm,setRhythm]=useState(()=>loadCare().rhythm);
   const [clock,setClock]=useState(()=>Date.now());
   useEffect(()=>{const timer=setInterval(()=>setClock(Date.now()),60000);return()=>clearInterval(timer);},[]);
@@ -53,7 +57,13 @@ export default function CareMode({mode="home",onOpenPreferences}){
   const dismiss=()=>persist({...care,dismissed:today,snoozed:"",lastCheck:Date.now()});
   return <section className="pocket-care pd-care" aria-label="Care Mode" style={{padding:"22px 16px 36px",maxWidth:740,margin:"0 auto",width:"100%",color:INK}}>
     <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>{mode==="home"?"A moment with Kai ♡":"Care preferences"}</h2>
-    {mode==="home"&&<><p style={{fontSize:13,color:CARE_COLORS.muted,lineHeight:1.6,margin:"0 0 18px"}}>{getPersona()==="jenny"?"Jenny says: We can take this at your pace. Want to find a little calm together?":"Kai says: Hey, you. A little moment for yourself? I’ll stay right here."}</p><h3 style={{fontSize:21,margin:"12px 0 10px"}}>What would help right now?</h3><WellnessToolkit/><CareRoutine/><div style={{marginTop:24}}><FeelingCheckIn/></div></>}
+    {mode==="home"&&<div className="pd-care-home">
+      <div className="pd-care-hero"><span className="pd-care-eyebrow">A MOMENT FOR YOU ♡</span><p>{getPersona()==="jenny"?"Jenny says: I saved us a quiet moment. What sounds good?":"Kai says: Hey, you. We can take things slow today. What would help?"}</p><span className="pd-care-hero-footer">No pressure. Just a little care, together.</span></div>
+      <CareActivityDashboard entries={activity} onClear={clearActivity}/>
+      <div className="pd-care-activities"><div className="pd-care-section-heading"><div><span className="pd-care-eyebrow">QUICK START</span><h3>What would help right now?</h3></div></div><WellnessToolkit onComplete={onSessionComplete}/></div>
+      <CareRoutine/>
+      <div className="pd-care-feeling"><div className="pd-care-section-heading"><div><span className="pd-care-eyebrow">CHECK IN</span><h3>Talk about your day</h3></div></div><FeelingCheckIn/></div>
+    </div>}
     {mode==="preferences"&&<>
       <div className="pd-settings-card" style={{background:"white",border:"3px solid "+INK,borderRadius:20,padding:17,boxShadow:"5px 6px 0 "+INK,marginBottom:18}}>
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:19,marginBottom:6}}>{care.enabled?"Your care preferences":"Want me to look after you?"}</div>
@@ -91,20 +101,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
           <button type="button" onClick={dismiss} style={{background:"transparent",border:"none",padding:"9px 12px",color:INK,fontWeight:900,cursor:"pointer"}}>Not today</button>
         </div>
       </div>}
-      <details style={{...careSectionStyle,marginBottom:16}}>
-        <summary style={careSummaryStyle}>♡ Ask Kai for a little encouragement</summary>
-        <div style={{padding:"12px"}}>
-      <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:19,margin:"0 0 12px"}}>What sounds good right now?</h3>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,210px),1fr))",gap:13,marginBottom:20}}>
-        {active.map(t=><button className="pd-care-topic" key={t.id} type="button" onClick={()=>setResponse(t.line)} style={{background:"white",border:"2.5px solid "+INK,borderRadius:16,padding:"15px 13px",boxShadow:"3px 4px 0 "+INK,cursor:"pointer",textAlign:"left",color:INK,fontFamily:"'Nunito',sans-serif"}}>
-          <span aria-hidden="true" style={{fontSize:29}}>{t.icon}</span>
-          <strong style={{display:"block",fontSize:14,marginTop:7}}>{t.title}</strong>
-          <span style={{display:"block",fontSize:11,color:CARE_COLORS.muted,marginTop:5}}>{t.hint}</span>
-          <span style={{display:"block",fontSize:10,fontWeight:900,marginTop:12}}>HEAR KAI'S NOTE ↗</span>
-        </button>)}
-      </div>
-        </div>
-      </details>
+      <section className="pd-care-encouragement"><h3>♡ A little encouragement</h3><p>Choose a gentle reminder whenever you need it.</p><div className="pd-care-encouragement-grid">{active.map(t=><button className="pd-care-topic" key={t.id} type="button" onClick={()=>setResponse(t.line)}><span aria-hidden="true">{t.icon}</span><strong>{t.title}</strong></button>)}</div></section>
       {response&&<button type="button" onClick={()=>setResponse("I'm glad we got a little moment together. Take it at your own pace. ♡")} style={{background:CARE_COLORS.gold,border:"2px solid "+INK,borderRadius:12,padding:"10px 14px",fontWeight:900,color:INK,cursor:"pointer",marginBottom:16}}>♡ Thanks, Kai</button>}
 
     </>}
