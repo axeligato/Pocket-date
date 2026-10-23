@@ -208,3 +208,27 @@ body {background:radial-gradient(ellipse at 80% 0%,#263943 0%,#121F26 65%)}
 .pocket-app .pocket-sticker {text-shadow:0 2px 5px rgba(0,0,0,.4)}
 .pocket-app .pd-care-hero-footer,.pocket-app .pd-care-eyebrow {color:#BBCBD0}
 .pocket-app :is(button,[role="button"],summary):focus-visible {outline:3px solid #E4BC83!important;outline-offset:3px!important}
+
+/* Little Things Together: warm, low-glare, compact and touch-friendly. */
+.pd-daily-quests{margin:14px 16px 20px;padding:18px;border:1px solid rgba(244,238,231,.24);border-radius:20px;background:#243840;color:#F4EEE7}
+.pd-daily-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pd-daily-heading h2{font-size:23px;margin:3px 0 0}
+.pd-daily-eyebrow{font-size:10px;letter-spacing:1.4px;font-weight:900;color:#BBCBD0}
+.pd-daily-xp{font-size:12px;font-weight:900;color:#E4BC83}
+.pd-daily-intro,.pd-daily-footer{font-size:12px;color:#BBCBD0;line-height:1.6;margin:10px 0 14px}
+.pd-daily-footer{margin:12px 0 0}
+.pd-daily-list{display:grid;gap:8px}
+.pd-daily-quest{display:flex;align-items:center;gap:10px;width:100%;min-height:64px;padding:11px 12px;border:1px solid rgba(244,238,231,.28);border-radius:14px;background:#304750;color:#F4EEE7;text-align:left;cursor:pointer}
+.pd-daily-quest:hover:not(:disabled){background:#385965}
+.pd-daily-quest:disabled{opacity:1;cursor:default;background:#34564F;border-color:#729E8C}
+.pd-daily-emoji{font-size:24px;flex-shrink:0}
+.pd-daily-copy{flex:1;min-width:0;display:grid;gap:3px}
+.pd-daily-copy strong{font-size:13px;line-height:1.3}
+.pd-daily-copy small{font-size:11px;color:#D2DFE1;line-height:1.4}
+.pd-daily-reward{flex-shrink:0;font-size:11px;font-weight:900;color:#F0D1A1;white-space:nowrap}
+.pd-daily-quest:disabled .pd-daily-reward{color:#C6E8D4}
+.pd-daily-reaction{margin-top:12px;border-left:3px solid #E4BC83;padding:10px 12px;background:#304750;border-radius:0 12px 12px 0}
+.pd-daily-reaction strong{font-size:12px;color:#F0D1A1}
+.pd-daily-reaction p{margin:4px 0 0;font-size:13px;line-height:1.55}
+@media(max-width:360px){.pd-daily-quests{padding:14px;margin-left:12px;margin-right:12px}.pd-daily-quest{gap:8px;padding:10px}.pd-daily-reward{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.pd-daily-quest{transition:none!important}}
