@@ -430,7 +430,7 @@ export default function OtomeGame(){
   const [jogMemory,setJogMemory]=useState(savedStart.jogMemory??null);
   const [memoryAlbum,setMemoryAlbum]=useState(savedStart.memoryAlbum??[]);
   const [completedStories,setCompletedStories]=useState(()=>{try{const d=JSON.parse(localStorage.getItem("pocket-date-read-stories-v1")||"[]");return Array.isArray(d)?CHARACTER.stories.map(s=>s.id).filter(id=>d.includes(id)):[];}catch{return [];}});
-  const [kaiSection,setKaiSection]=useState("profile");
+  const [kaiSection,setKaiSection]=useState("dates");
   const [showDates,setShowDates]=useState(false);
   const [lastTapReward,setLastTapReward]=useState(0);
   const progressRef=useRef({level:savedStart.level??1,xp:savedStart.xp??0});
@@ -644,6 +644,7 @@ export default function OtomeGame(){
         </div></div>
       </div>
 
+      {tab!=="bio"&&<>
       {/* ── XP + Affection bars ── */}
       <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"2px solid "+PALETTE.navy}}>
         {/* Level row */}
@@ -670,6 +671,8 @@ export default function OtomeGame(){
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(239,71,111,0.4)"}}/>
         </div>
       </div>
+
+      </>}
 
       {/* ── Content ── */}
       <div className="pocket-content" style={{flex:1,overflow:"auto",minHeight:0}}>
@@ -752,24 +755,25 @@ export default function OtomeGame(){
           </div>
         )}
 
-        {tab==="bio"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
-        {tab==="bio"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>{setShowDates(v=>!v);setKaiSection("profile");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setShowDates(false);setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:PALETTE.paper,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
         {tab==="home"&&<DailyQuests onEarnXp={awardXp}/>}
         {tab==="home"&&<button className="pd-today-care-link" type="button" onClick={()=>setTab("wellness")}><span className="pd-today-care-icon" aria-hidden="true">♡</span><span><strong>Need a quiet moment?</strong><small>Breathe, unwind, or talk with Kai</small></span><span className="pd-today-care-arrow" aria-hidden="true">→</span></button>}
         {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
-        {/* BIO */}
-        {tab==="bio"&&<div style={{padding:"15px 16px 0",display:"flex",gap:8}}><button type="button" aria-pressed={kaiSection==="profile"} onClick={()=>{setShowDates(false);setKaiSection("profile");}} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="profile"?CARE_COLORS.rose:CARE_COLORS.surface,fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>♡ About Kai</button><button type="button" aria-pressed={kaiSection==="stories"} onClick={()=>{setShowDates(false);setKaiSection("stories");}} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="stories"?CARE_COLORS.rose:CARE_COLORS.surface,fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>📖 Stories</button></div>}
-        {tab==="bio"&&!showDates&&kaiSection==="profile"&&<BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum} completedStories={completedStories}/>}
+        {/* Kai: two destinations, with chapters inside Dates rather than a third tab. */}
+        {tab==="bio"&&<nav className="pd-kai-nav" aria-label="Kai sections">
+          <button type="button" aria-current={kaiSection==="dates"?"page":undefined} onClick={()=>setKaiSection("dates")}>Dates</button>
+          <button type="button" aria-current={kaiSection==="profile"?"page":undefined} onClick={()=>setKaiSection("profile")}>Profile</button>
+        </nav>}
+        {tab==="bio"&&kaiSection==="profile"&&<BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum} completedStories={completedStories}/>}
 
         {tab==="care"&&<><PersonaSelector/><CareMode mode="preferences"/><div style={{padding:"0 16px 32px"}}><InstallApp/></div></>}
 
         {/* DATES */}
-        {tab==="bio"&&showDates&&(
+        {tab==="bio"&&kaiSection==="dates"&&(
           <div className="pocket-dates" style={{padding:"22px 16px 32px"}}>
-            <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE DATE BOOK</div>
-            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Pick our next adventure! 💌</div>
-            <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Four little plans, a whole lot of butterflies.</p>
+            <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>DATES</div>
+            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Dates</div>
+            <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Choose a date to play. Your choices can reveal new scenes and memories.</p>
             <div style={{display:"grid",gap:16}}>
               {DATES.map((date,i)=>{
                 const ok=coins>=date.cost;
@@ -791,16 +795,17 @@ export default function OtomeGame(){
                 </button>;
               })}
             </div>
+            <RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>
             <KaiMiniGame onReward={amount=>setCoins(c=>c+amount)}/>
           </div>
         )}
 
         {/* STORIES */}
-        {tab==="bio"&&!showDates&&kaiSection==="stories"&&(
+        {tab==="bio"&&kaiSection==="dates"&&(
           <div className="pocket-stories" style={{padding:"22px 16px 32px"}}>
-            <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE STORY JOURNAL</div>
-            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Kai's Story 📖</div>
-            <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Every chapter is another page in your story together.</p>
+            <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>CHAPTERS</div>
+            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Story chapters</div>
+            <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Read unlocked chapters to discover more about Kai.</p>
             <div style={{display:"grid",gap:17}}>
               {stories.map((story,i)=>{
                 const colors=[CARE_COLORS.rose];
