@@ -525,10 +525,9 @@ export default function OtomeGame(){
   const moodEmoji={tired:"😴",neutral:"😶",happy:"😊",flustered:"🫣",pumped:"🔥"};
   const moodColor={tired:PALETTE.blue,neutral:PALETTE.navy,happy:PALETTE.green,flustered:PALETTE.pink,pumped:PALETTE.red};
   const TABS=[
-    {id:"home",   label:"Home",    icon:"🏠", color:PALETTE.yellow},
+    {id:"home",   label:"Today",    icon:"🏠", color:PALETTE.yellow},
     {id:"bio",    label:"Kai", icon:"👤", color:PALETTE.green},
     {id:"wellness",label:"Care",icon:"♡",color:CARE_COLORS.rose},
-    {id:"care",label:"Settings",icon:"⚙️",color:PALETTE.pink},
   ];
 
   const headerColors=[CARE_COLORS.rose];
@@ -637,11 +636,11 @@ export default function OtomeGame(){
           <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,lineHeight:1}}>{CHARACTER.name}</div>
           <div style={{fontSize:11,color:PALETTE.navy+"99",marginTop:1,fontStyle:"italic"}}>{CHARACTER.title}</div>
         </div>
-        <div style={{background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
+        <div style={{display:"flex",alignItems:"center",gap:9}}><button type="button" aria-label={tab==="care"?"Back to Today":"Open settings"} onClick={()=>setTab(tab==="care"?"home":"care")} style={{minWidth:44,minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:14,background:PALETTE.paper,color:PALETTE.navy,fontSize:21,cursor:"pointer"}}>{tab==="care"?"←":"⚙️"}</button><div style={{background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
           display:"flex",alignItems:"center",gap:5,boxShadow:`3px 3px 0 ${PALETTE.navy}`}}>
           <span style={{fontSize:14}}>🌸</span>
           <span style={{fontWeight:900,fontSize:15,color:PALETTE.navy}}>{coins}</span>
-        </div>
+        </div></div>
       </div>
 
       {/* ── XP + Affection bars ── */}
@@ -752,8 +751,8 @@ export default function OtomeGame(){
           </div>
         )}
 
-        {tab==="home"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
-        {tab==="home"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>setShowDates(v=>!v)} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:PALETTE.paper,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
+        {tab==="bio"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
+        {tab==="bio"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>{setShowDates(v=>!v);setKaiSection("profile");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:PALETTE.paper,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
         {tab==="home"&&<button type="button" onClick={()=>setTab("wellness")} style={{margin:"12px 16px 24px",padding:"16px",width:"calc(100% - 32px)",textAlign:"left",border:"2px solid "+PALETTE.navy,borderRadius:19,background:CARE_COLORS.rose,color:PALETTE.navy,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}><span><strong style={{display:"block",fontSize:17}}>♡ A little care with Kai</strong><span style={{display:"block",fontSize:12,marginTop:5}}>Breathe, unwind, ground yourself or talk.</span></span><span aria-hidden="true" style={{fontSize:22}}>→</span></button>}
         {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
@@ -764,7 +763,7 @@ export default function OtomeGame(){
         {tab==="care"&&<><PersonaSelector/><CareMode mode="preferences"/><div style={{padding:"0 16px 32px"}}><InstallApp/></div></>}
 
         {/* DATES */}
-        {tab==="home"&&showDates&&(
+        {tab==="bio"&&showDates&&(
           <div className="pocket-dates" style={{padding:"22px 16px 32px"}}>
             <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE DATE BOOK</div>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Pick our next adventure! 💌</div>
@@ -831,7 +830,7 @@ export default function OtomeGame(){
       <nav className="pocket-tabs" aria-label="Main navigation" style={{display:"flex",borderTop:"3px solid "+PALETTE.navy,background:CARE_COLORS.paper,position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,zIndex:120,flexShrink:0,paddingBottom:"env(safe-area-inset-bottom, 0px)"}}>
         {TABS.map(t=>{
           const active=tab===t.id;
-          return <button className="pocket-tab" type="button" key={t.id} aria-current={active?"page":undefined} onClick={()=>{setTab(t.id);setOpenStory(null);setActiveDate(null);}}
+          return <button className="pocket-tab" type="button" key={t.id} aria-current={active?"page":undefined} onClick={()=>{setTab(t.id);setShowDates(false);setOpenStory(null);setActiveDate(null);}}
             style={{flex:1,padding:"8px 3px 7px",background:active?t.color:"transparent",border:"2px solid transparent",borderRadius:14,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,color:PALETTE.navy,fontFamily:"'Nunito',sans-serif",fontWeight:900}}>
             <span className="pocket-tab-icon" aria-hidden="true">{t.icon}</span>
             <span className="pocket-tab-label" style={{fontSize:10,letterSpacing:.4,textTransform:"uppercase",fontWeight:900,color:PALETTE.navy}}>{t.label}</span>
