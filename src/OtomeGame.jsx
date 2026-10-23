@@ -752,13 +752,13 @@ export default function OtomeGame(){
         )}
 
         {tab==="bio"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
-        {tab==="bio"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>{setShowDates(v=>!v);setKaiSection("profile");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:PALETTE.paper,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
+        {tab==="bio"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>{setShowDates(v=>!v);setKaiSection("profile");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setShowDates(false);setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:PALETTE.paper,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
         {tab==="home"&&<button type="button" onClick={()=>setTab("wellness")} style={{margin:"12px 16px 24px",padding:"16px",width:"calc(100% - 32px)",textAlign:"left",border:"2px solid "+PALETTE.navy,borderRadius:19,background:CARE_COLORS.rose,color:PALETTE.navy,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}><span><strong style={{display:"block",fontSize:17}}>♡ A little care with Kai</strong><span style={{display:"block",fontSize:12,marginTop:5}}>Breathe, unwind, ground yourself or talk.</span></span><span aria-hidden="true" style={{fontSize:22}}>→</span></button>}
         {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
         {/* BIO */}
-        {tab==="bio"&&<div style={{padding:"15px 16px 0",display:"flex",gap:8}}><button type="button" aria-pressed={kaiSection==="profile"} onClick={()=>setKaiSection("profile")} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="profile"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>♡ About Kai</button><button type="button" aria-pressed={kaiSection==="stories"} onClick={()=>setKaiSection("stories")} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="stories"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>📖 Stories</button></div>}
-        {tab==="bio"&&kaiSection==="profile"&&<BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum} completedStories={completedStories}/>}
+        {tab==="bio"&&<div style={{padding:"15px 16px 0",display:"flex",gap:8}}><button type="button" aria-pressed={kaiSection==="profile"} onClick={()=>{setShowDates(false);setKaiSection("profile");}} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="profile"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>♡ About Kai</button><button type="button" aria-pressed={kaiSection==="stories"} onClick={()=>{setShowDates(false);setKaiSection("stories");}} style={{flex:1,padding:12,border:"2px solid "+PALETTE.navy,borderRadius:12,background:kaiSection==="stories"?CARE_COLORS.rose:"white",fontWeight:900,color:PALETTE.navy,cursor:"pointer"}}>📖 Stories</button></div>}
+        {tab==="bio"&&!showDates&&kaiSection==="profile"&&<BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum} completedStories={completedStories}/>}
 
         {tab==="care"&&<><PersonaSelector/><CareMode mode="preferences"/><div style={{padding:"0 16px 32px"}}><InstallApp/></div></>}
 
@@ -794,7 +794,7 @@ export default function OtomeGame(){
         )}
 
         {/* STORIES */}
-        {tab==="bio"&&kaiSection==="stories"&&(
+        {tab==="bio"&&!showDates&&kaiSection==="stories"&&(
           <div className="pocket-stories" style={{padding:"22px 16px 32px"}}>
             <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE STORY JOURNAL</div>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Kai's Story 📖</div>
