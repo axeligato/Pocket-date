@@ -305,3 +305,13 @@ body {background:radial-gradient(ellipse at 80% 0%,#263943 0%,#121F26 65%)}
 .pocket-app .pocket-tab[aria-current="page"]{color:#F4EEE7!important}
 .pocket-app .pocket-tab[aria-current="page"] .pocket-tab-label{color:#F4EEE7!important}
 @media(max-width:360px){.pd-daily-quest{flex-wrap:wrap}.pd-daily-copy{min-width:calc(100% - 52px)}.pd-daily-reward{margin-left:48px}}
+
+
+/* Kai IA: one clear Dates / Profile switch, not stacked action rows. */
+.pd-kai-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin:15px 16px 2px;padding:5px;border:1px solid rgba(244,238,231,.22);border-radius:16px;background:#243840}
+.pd-kai-nav button{min-height:48px;border:1px solid transparent;border-radius:12px;background:transparent;color:#BBCBD0;font-weight:900;font-size:14px;cursor:pointer}
+.pd-kai-nav button[aria-current="page"]{background:#405D65;border-color:rgba(228,188,131,.5);color:#F4EEE7}
+.pd-kai-nav button:not([aria-current="page"]):hover{background:#304750;color:#F4EEE7}
+.pd-kai-nav button:focus-visible{outline:3px solid #E4BC83;outline-offset:2px}
+.pocket-dates,.pocket-stories{padding-top:16px!important;padding-bottom:18px!important}
+.pocket-stories{border-top:1px solid rgba(244,238,231,.18)}
