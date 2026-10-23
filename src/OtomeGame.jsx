@@ -251,6 +251,15 @@ const OTHER_DATE_SCENES = {
 };
 const OTHER_MEMORY_IDS = Object.entries(OTHER_DATE_SCENES).flatMap(([date,scene])=>scene.choices.map(choice=>date+":"+choice.id));
 const ALL_MEMORY_IDS = [...MEMORY_CHOICES,...OTHER_MEMORY_IDS];
+function dateMemories(dateId,album){
+  const choices=dateId==="jog"?JOG_CHOICES:OTHER_DATE_SCENES[dateId]?.choices||[];
+  return choices.filter(choice=>album.includes(dateId==="jog"?choice.id:dateId+":"+choice.id)).map(choice=>({
+    id:dateId==="jog"?choice.id:dateId+":"+choice.id,
+    title:dateId==="jog"?MEMORY_TITLES[choice.id]:choice.title,
+    description:choice.ending
+  }));
+}
+
 
 function BranchingDate({date,onComplete}){
   const [choice,setChoice]=useState(null);
@@ -483,7 +492,8 @@ export default function OtomeGame(){
     setAffection(a=>Math.min(a+Math.floor(date.xp/4),100));
     awardXp(date.xp);
     setCoins(c=>c+Math.floor(date.xp/3));
-    setTab("home");
+    setTab("bio");
+    setKaiSection("dates");
   }
 
   useEffect(()=>{try{localStorage.setItem("pocket-date-read-stories-v1",JSON.stringify(completedStories));}catch{/* Storage unavailable */}},[completedStories]);
@@ -743,7 +753,8 @@ export default function OtomeGame(){
             <div style={{display:"grid",gap:16}}>
               {DATES.map((date,i)=>{
                 const ok=coins>=date.cost;
-                return <button type="button" key={date.id} disabled={!ok} onClick={()=>goDate(date)}
+                const memories=dateMemories(date.id,memoryAlbum);
+                return <article key={date.id} className="pd-date-entry"><button type="button" disabled={!ok} onClick={()=>goDate(date)}
                   aria-label={date.label+", "+date.cost+" flowers"+(ok?"":", not enough flowers")}
                   style={{display:"flex",width:"100%",position:"relative",textAlign:"left",alignItems:"stretch",padding:0,background:ok?CARE_COLORS.surface:CARE_COLORS.paper,border:"3px solid "+(ok?PALETTE.navy:CARE_COLORS.muted),borderRadius:19,boxShadow:ok?"5px 6px 0 "+PALETTE.navy:"none",cursor:ok?"pointer":"not-allowed",opacity:ok?1:.78,overflow:"hidden",transform:"rotate("+(i%2===0?-1:1)+"deg)",fontFamily:"'Nunito',sans-serif"}}>
                   <div aria-hidden="true" style={{width:96,minWidth:96,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:ok?date.color:CARE_COLORS.paper,borderRight:"3px dashed "+PALETTE.navy,padding:"16px 7px"}}>
@@ -752,13 +763,15 @@ export default function OtomeGame(){
                   </div>
                   <div style={{padding:"16px 12px 15px 15px",flex:1,minWidth:0}}>
                     <div style={{fontFamily:"'Fredoka One',cursive",fontSize:17,color:PALETTE.navy,lineHeight:1.25}}>{date.label}</div>
-                    <div style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:800,marginTop:8}}>✦ +{date.xp} base XP</div>
+                    <div style={{fontSize:12,color:CARE_COLORS.muted,fontWeight:800,marginTop:8}}>{memories.length?memories.length+" memories discovered":"No memories discovered yet"}</div>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:6,marginTop:13,flexWrap:"wrap"}}>
                       <span style={{background:ok?CARE_COLORS.paper:CARE_COLORS.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"4px 9px",fontSize:11,fontWeight:900,color:PALETTE.navy}}>🌸 {date.cost===0?"FREE":date.cost}</span>
                       <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy}}>{ok?"LET'S GO ↗":"🔒 NEED FLOWERS"}</span>
                     </div>
                   </div>
-                </button>;
+                </button>
+                {memories.length>0&&<section className="pd-date-memories" aria-label={date.label+" memories"}><h3>Memories from this date</h3><div className="pd-date-memory-list">{memories.map(memory=><div className="pd-date-memory" key={memory.id}><span aria-hidden="true">✦</span><div><strong>{memory.title}</strong><p>{memory.description}</p></div></div>)}</div><button type="button" className="pd-date-revisit" disabled={!ok} onClick={()=>goDate(date)}>{ok?"Replay "+date.label:"Not enough flowers to replay"}</button></section>}
+                </article>;
               })}
             </div>
             <RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>

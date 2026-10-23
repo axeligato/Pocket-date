@@ -347,3 +347,19 @@ body {background:radial-gradient(ellipse at 80% 0%,#263943 0%,#121F26 65%)}
 .pd-kai-fact.is-locked .pd-kai-fact-icon{background:#344750;color:#BBCBD0}
 .pd-kai-fact.is-locked small{color:#BBCBD0}
 @media(min-width:600px){.pd-kai-profile-hero{display:grid;grid-template-columns:40% 60%}.pd-kai-profile-art,.pd-kai-profile-art img{height:100%;min-height:240px}}
+
+
+/* Date-linked memories: no separate album or navigation destination. */
+.pd-date-entry{min-width:0}
+.pd-date-memories{margin:13px 2px 6px;padding:14px;border:1px solid rgba(244,238,231,.24);border-radius:15px;background:#243840}
+.pd-date-memories h3{font-size:14px;line-height:1.4;margin:0 0 11px;color:#F4EEE7}
+.pd-date-memory-list{display:grid;gap:9px}
+.pd-date-memory{display:flex;align-items:flex-start;gap:10px;border-top:1px solid rgba(244,238,231,.15);padding-top:10px;color:#E4BC83}
+.pd-date-memory:first-child{border-top:0;padding-top:0}
+.pd-date-memory>span{flex:0 0 20px;font-size:18px}
+.pd-date-memory strong{display:block;font-size:13px;line-height:1.45;color:#F4EEE7}
+.pd-date-memory p{font-size:12px;line-height:1.6;color:#D5E2E3;margin:4px 0 0}
+.pd-date-revisit{margin-top:13px;min-height:44px;width:100%;border-radius:11px;border:1px solid #7B9B9F;background:#304750;color:#F4EEE7;font-weight:800;font-size:13px;cursor:pointer}
+.pd-date-revisit:disabled{opacity:.6;cursor:not-allowed}
+.pd-date-revisit:focus-visible{outline:3px solid #E4BC83;outline-offset:3px}
+@media(max-width:360px){.pd-date-memories{padding:11px}}
