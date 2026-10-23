@@ -339,84 +339,51 @@ function DateScreen({date, onComplete}){
 }
 
 // ── Bio Tab ───────────────────────────────────────────────────────────────────
-function BioTab({jogMemory,memoryAlbum,completedStories=[]}){
-  const pills=[
-    {label:"Age",value:CHARACTER.age,color:PALETTE.yellow},
-    {label:"Sign",value:CHARACTER.sign,color:PALETTE.red},
-    {label:"Likes",value:CHARACTER.likes,color:PALETTE.green}
-  ];
-  const groups=[
-    {id:"jog",label:"Morning Jog",emoji:"🌅",color:PALETTE.yellow,choices:JOG_CHOICES.map(c=>({...c,title:MEMORY_TITLES[c.id],memoryId:c.id}))},
-    ...Object.entries(OTHER_DATE_SCENES).map(([id,scene])=>({id,label:DATES.find(d=>d.id===id)?.label||id,emoji:DATES.find(d=>d.id===id)?.emoji||"💌",color:DATES.find(d=>d.id===id)?.color||PALETTE.yellow,choices:scene.choices.map(c=>({...c,memoryId:id+":"+c.id}))}))
-  ];
-  return <div className="pocket-bio" style={{padding:"22px 16px 32px",background:CARE_COLORS.paper}}>
-    <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.2,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>✦ THE KAI COLLECTION</div>
-    <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 17px"}}>Your little scrapbook ♡</h2>
-    <section aria-label="Kai's profile" style={{position:"relative",background:PALETTE.paper,border:"3px solid "+PALETTE.navy,borderRadius:23,boxShadow:"6px 7px 0 "+PALETTE.navy,marginBottom:27,overflow:"hidden"}}>
-      <div style={{background:PALETTE.yellow,minHeight:225,display:"flex",justifyContent:"center",alignItems:"end",position:"relative",overflow:"hidden",borderBottom:"3px solid "+PALETTE.navy}}>
-        <span aria-hidden="true" style={{position:"absolute",top:15,left:18,fontSize:30,transform:"rotate(-15deg)"}}>✦</span>
-        <span aria-hidden="true" style={{position:"absolute",top:16,right:17,fontSize:28,transform:"rotate(12deg)"}}>💙</span>
-        <span aria-hidden="true" style={{position:"absolute",bottom:25,right:17,fontSize:25}}>✿</span>
-        <img src={PORTRAITS.neutral} alt="Kai" style={{height:225,maxWidth:"83%",objectFit:"contain",objectPosition:"bottom center",position:"relative",zIndex:1,filter:"drop-shadow(3px 5px 2px rgba(7,59,76,.2))"}}/>
+// Discoveries are derived from existing date and chapter progress; no separate
+// unlock currency or saved flags. Each fact references established Kai canon.
+const KAI_PROFILE_FACTS=[
+  {id:"runner",category:"Interests",title:"A committed runner",detail:"Kai runs ten miles most mornings. He takes training seriously, even if he jokes about it.",source:"Known from the start",unlocked:()=>true},
+  {id:"cafes",category:"Interests",title:"His kind of place",detail:"Quiet cafés and evening walks are his idea of a good day.",source:"Known from the start",unlocked:()=>true},
+  {id:"jog",category:"Personality",title:"A competitive streak",detail:"Kai loves a challenge, especially when someone gives him a reason to show off.",source:"Morning Jog",unlocked:({memoryAlbum})=>memoryAlbum.some(id=>MEMORY_CHOICES.includes(id))},
+  {id:"ramen",category:"Habits",title:"Thoughtful gestures",detail:"He'll offer you the better seat and then pretend he didn't think about it.",source:"Ramen After",unlocked:({memoryAlbum})=>memoryAlbum.some(id=>id.startsWith("ramen:"))},
+  {id:"stadium",category:"Background",title:"After the match",detail:"The crowd might be gone, but Kai still finds a reason to come back and see you.",source:"Watch His Game",unlocked:({memoryAlbum})=>memoryAlbum.some(id=>id.startsWith("stadium:"))},
+  {id:"hoodie",category:"Habits",title:"The borrowed hoodie",detail:"Kai doesn't seem particularly eager to get his hoodie back.",source:"Borrowed Hoodie · Chapter 2",unlocked:({completedStories})=>completedStories.includes(2)},
+  {id:"loss",category:"Personality",title:"When words don't help",detail:"After a difficult loss, he sometimes needs quiet company more than advice.",source:"3–2 Loss · Chapter 3",unlocked:({completedStories})=>completedStories.includes(3)},
+  {id:"championship",category:"Background",title:"The night before",detail:"Big matches matter to Kai. So does having someone he trusts nearby.",source:"Championship Eve · Chapter 6",unlocked:({completedStories})=>completedStories.includes(6)}
+];
+function BioTab({memoryAlbum=[],completedStories=[]}){
+  const context={memoryAlbum,completedStories};
+  const known=KAI_PROFILE_FACTS.filter(f=>f.unlocked(context)).length;
+  const groups=["Personality","Background","Interests","Habits"];
+  return <div className="pd-kai-profile" aria-label="Kai's character profile">
+    <header className="pd-kai-profile-hero">
+      <div className="pd-kai-profile-art"><img src={PORTRAITS.neutral} alt="Portrait of Kai"/></div>
+      <div className="pd-kai-profile-intro">
+        <span className="pd-kai-profile-eyebrow">CHARACTER PROFILE</span>
+        <h2>{CHARACTER.name}</h2>
+        <p className="pd-kai-profile-title">{CHARACTER.title}</p>
+        <p className="pd-kai-profile-bio">{CHARACTER.bio}</p>
+        <dl className="pd-kai-profile-basics"><div><dt>Age</dt><dd>{CHARACTER.age}</dd></div><div><dt>Sign</dt><dd>{CHARACTER.sign}</dd></div></dl>
       </div>
-      <div style={{padding:"19px 18px 20px"}}>
-        <div style={{display:"flex",alignItems:"start",justifyContent:"space-between",gap:10}}>
-          <div>
-            <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:0}}>{CHARACTER.name}</h3>
-            <div style={{fontSize:12,color:CARE_COLORS.muted,fontWeight:800,marginTop:2}}>{CHARACTER.title}</div>
-          </div>
-          <span style={{background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"6px 9px",fontSize:10,fontWeight:900,color:PALETTE.navy,transform:"rotate(7deg)",whiteSpace:"nowrap"}}>♡ FAVE PERSON</span>
-        </div>
-        <p style={{fontSize:13,color:PALETTE.navy,lineHeight:1.7,margin:"13px 0 16px"}}>{CHARACTER.bio}</p>
-        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{pills.map(p=><div key={p.label} style={{background:p.color,border:"2px solid "+PALETTE.navy,borderRadius:11,padding:"7px 10px",boxShadow:"2px 2px 0 "+PALETTE.navy}}>
-          <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy}}>{p.label}: </span><span style={{fontSize:11,fontWeight:800,color:PALETTE.navy}}>{p.value}</span>
-        </div>)}</div>
-      </div>
-    </section>
-    <section aria-label="Discover Kai through stories" style={{marginBottom:24}}>
-      <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:22,margin:"0 0 8px",color:PALETTE.navy}}>Getting to know Kai 📖</h3>
-      <p style={{fontSize:12,color:CARE_COLORS.muted,margin:"0 0 13px"}}>{completedStories.length} of {CHARACTER.stories.length} chapters read · Finish a chapter to add a page to Kai's scrapbook.</p>
-      <div style={{display:"grid",gap:9}}>
-        {CHARACTER.stories.map((story,i)=><div key={story.id} style={{background:completedStories.includes(story.id)?"white":CARE_COLORS.paper,border:"1px solid rgba(7,59,76,.2)",borderRadius:14,padding:"12px 14px"}}>
-          <strong style={{fontSize:13}}>{completedStories.includes(story.id)?story.title:"🔒 A story still to discover"}</strong>
-          <p style={{fontSize:12,lineHeight:1.55,color:CARE_COLORS.muted,margin:"5px 0 0"}}>{completedStories.includes(story.id)?story.preview:"Read chapter "+(i+1)+" in Kai's story journal to reveal this memory."}</p>
-        </div>)}
-      </div>
-    </section>
-    <section aria-label="Shared memories">
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
-        <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:24,color:PALETTE.navy,margin:"0 0 6px"}}>Memory Album 💌</h3>
-        <span style={{fontSize:12,fontWeight:900,color:PALETTE.navy,background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px"}}>{memoryAlbum.length} / {ALL_MEMORY_IDS.length} found</span>
-      </div>
-      <div role="progressbar" aria-label="Memories collected" aria-valuenow={memoryAlbum.length} aria-valuemin={0} aria-valuemax={ALL_MEMORY_IDS.length} style={{height:13,border:"2px solid "+PALETTE.navy,borderRadius:99,background:PALETTE.paper,overflow:"hidden",margin:"8px 0 22px"}}>
-        <div style={{height:"100%",width:(memoryAlbum.length/ALL_MEMORY_IDS.length*100)+"%",background:PALETTE.red,transition:"width .3s ease"}}/>
-      </div>
-      {groups.map((group,groupIndex)=>{
-        const found=group.choices.filter(c=>memoryAlbum.includes(c.memoryId)).length;
-        return <div key={group.id} style={{marginBottom:24}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,marginBottom:11}}>
-            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:17,color:PALETTE.navy}}>{group.emoji} {group.label}</div>
-            <span style={{fontSize:11,fontWeight:900,color:CARE_COLORS.muted}}>{found} / {group.choices.length}</span>
-          </div>
-          <div className="pocket-memory-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,140px),1fr))",gap:13}}>
-            {group.choices.map((c,i)=>{
-              const unlocked=memoryAlbum.includes(c.memoryId);
-              return <article key={c.memoryId} aria-label={unlocked?c.title:"Undiscovered memory"} style={{background:unlocked?"white":CARE_COLORS.paper,border:"2.5px solid "+(unlocked?PALETTE.navy:CARE_COLORS.muted),borderRadius:13,overflow:"hidden",boxShadow:unlocked?"3px 4px 0 "+PALETTE.navy:"none",transform:"rotate("+((i+groupIndex)%2===0?-1.5:1.5)+"deg)"}}>
-                <div style={{height:91,background:unlocked?group.color:CARE_COLORS.paper,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",borderBottom:"2px dashed "+(unlocked?PALETTE.navy:CARE_COLORS.muted)}}>
-                  <span aria-hidden="true" style={{fontSize:37}}>{unlocked?"💌":"🔒"}</span>
-                  <span style={{position:"absolute",top:7,right:8,fontSize:10,fontWeight:900,color:PALETTE.navy}}>#{i+1}</span>
-                </div>
-                <div style={{padding:"12px 10px 14px"}}>
-                  <div style={{fontFamily:"'Fredoka One',cursive",fontSize:13,lineHeight:1.3,color:PALETTE.navy}}>{unlocked?c.title:"Secret memory"}</div>
-                  <p style={{fontSize:11,lineHeight:1.5,color:CARE_COLORS.muted,margin:"7px 0 0",fontWeight:700}}>{unlocked?c.ending:"Replay this date to discover another moment."}</p>
-                </div>
-              </article>;
-            })}
-          </div>
-        </div>;
-      })}
-      {jogMemory&&<p style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:800}}>♡ Last Morning Jog moment: {MEMORY_TITLES[jogMemory]}</p>}
-    </section>
+    </header>
+    <div className="pd-kai-profile-discoveries">
+      <h3>Get to know Kai</h3>
+      <p>Some things are obvious. Others become clearer as you play dates and read chapters.</p>
+      <span className="pd-kai-profile-count">{known} of {KAI_PROFILE_FACTS.length} details discovered</span>
+      {groups.map(group=><section key={group} className="pd-kai-profile-group" aria-label={group}>
+        <h4>{group}</h4>
+        <div className="pd-kai-facts">{KAI_PROFILE_FACTS.filter(f=>f.category===group).map(f=>{
+          const unlocked=f.unlocked(context);
+          return <article key={f.id} className={"pd-kai-fact"+(unlocked?"":" is-locked")}>
+            <span className="pd-kai-fact-icon" aria-hidden="true">{unlocked?"✦":"◇"}</span>
+            <div><h5>{unlocked?f.title:"Undiscovered detail"}</h5>
+              <p>{unlocked?f.detail:"Discover this through Kai's story."}</p>
+              <small>{unlocked?"Discovered in: ":"Available in: "}{f.source}</small>
+            </div>
+          </article>;
+        })}</div>
+      </section>)}
+    </div>
   </div>;
 }
 
@@ -763,7 +730,7 @@ export default function OtomeGame(){
           <button type="button" aria-current={kaiSection==="dates"?"page":undefined} onClick={()=>setKaiSection("dates")}>Dates</button>
           <button type="button" aria-current={kaiSection==="profile"?"page":undefined} onClick={()=>setKaiSection("profile")}>Profile</button>
         </nav>}
-        {tab==="bio"&&kaiSection==="profile"&&<BioTab jogMemory={jogMemory} memoryAlbum={memoryAlbum} completedStories={completedStories}/>}
+        {tab==="bio"&&kaiSection==="profile"&&<BioTab memoryAlbum={memoryAlbum} completedStories={completedStories}/>}
 
         {tab==="care"&&<><PersonaSelector/><CareMode mode="preferences"/><div style={{padding:"0 16px 32px"}}><InstallApp/></div></>}
 

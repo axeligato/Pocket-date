@@ -315,3 +315,35 @@ body {background:radial-gradient(ellipse at 80% 0%,#263943 0%,#121F26 65%)}
 .pd-kai-nav button:focus-visible{outline:3px solid #E4BC83;outline-offset:2px}
 .pocket-dates,.pocket-stories{padding-top:16px!important;padding-bottom:18px!important}
 .pocket-stories{border-top:1px solid rgba(244,238,231,.18)}
+
+
+/* Kai character dossier — story-driven discoveries, not progress bars. */
+.pd-kai-profile{padding:16px 16px 35px;background:#182930;color:#F4EEE7}
+.pd-kai-profile-hero{overflow:hidden;border:1px solid rgba(244,238,231,.23);border-radius:23px;background:#243840}
+.pd-kai-profile-art{height:205px;display:flex;align-items:end;justify-content:center;background:radial-gradient(ellipse at 50% 90%,#48656A,#304750 70%);overflow:hidden}
+.pd-kai-profile-art img{display:block;max-width:85%;height:205px;object-fit:contain;object-position:bottom center;filter:drop-shadow(0 9px 12px rgba(0,0,0,.25))}
+.pd-kai-profile-intro{padding:18px}
+.pd-kai-profile-eyebrow{color:#E4BC83;font-size:11px;letter-spacing:1.3px;font-weight:900}
+.pd-kai-profile-intro h2{margin:5px 0 1px;font-size:28px;line-height:1.2;color:#F4EEE7}
+.pd-kai-profile-title{color:#BFD3D7;font-size:13px;margin:0}
+.pd-kai-profile-bio{font-size:14px;line-height:1.65;margin:14px 0 16px;color:#E3E9E8}
+.pd-kai-profile-basics{display:flex;flex-wrap:wrap;gap:10px;margin:0}
+.pd-kai-profile-basics div{display:flex;gap:6px;align-items:center;border:1px solid rgba(244,238,231,.22);border-radius:999px;padding:7px 11px;background:#304750}
+.pd-kai-profile-basics dt{font-size:12px;color:#BBCBD0}
+.pd-kai-profile-basics dd{margin:0;font-size:12px;font-weight:800;color:#F4EEE7}
+.pd-kai-profile-discoveries{padding-top:25px}
+.pd-kai-profile-discoveries>h3{font-size:23px;margin:0 0 6px}
+.pd-kai-profile-discoveries>p{font-size:13px;line-height:1.6;color:#C5D6D9;margin:0 0 9px}
+.pd-kai-profile-count{font-size:12px;color:#E4BC83;font-weight:800}
+.pd-kai-profile-group{margin-top:23px}
+.pd-kai-profile-group h4{font-size:16px;margin:0 0 10px;color:#F4EEE7}
+.pd-kai-facts{display:grid;gap:9px}
+.pd-kai-fact{display:flex;gap:12px;padding:13px;background:#243840;border:1px solid rgba(244,238,231,.2);border-radius:15px}
+.pd-kai-fact-icon{flex:0 0 30px;width:30px;height:30px;display:grid;place-items:center;border-radius:10px;background:#405D63;color:#E4BC83;font-size:18px}
+.pd-kai-fact h5{font-size:14px;line-height:1.4;margin:0 0 4px;color:#F4EEE7}
+.pd-kai-fact p{font-size:13px;line-height:1.55;margin:0 0 8px;color:#D8E4E4}
+.pd-kai-fact small{font-size:11px;line-height:1.4;color:#D9C7A9}
+.pd-kai-fact.is-locked{background:#20323A}
+.pd-kai-fact.is-locked .pd-kai-fact-icon{background:#344750;color:#BBCBD0}
+.pd-kai-fact.is-locked small{color:#BBCBD0}
+@media(min-width:600px){.pd-kai-profile-hero{display:grid;grid-template-columns:40% 60%}.pd-kai-profile-art,.pd-kai-profile-art img{height:100%;min-height:240px}}
