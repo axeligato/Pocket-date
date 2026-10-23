@@ -363,3 +363,38 @@ body {background:radial-gradient(ellipse at 80% 0%,#263943 0%,#121F26 65%)}
 .pd-date-revisit:disabled{opacity:.6;cursor:not-allowed}
 .pd-date-revisit:focus-visible{outline:3px solid #E4BC83;outline-offset:3px}
 @media(max-width:360px){.pd-date-memories{padding:11px}}
+
+
+/* Mobile visual consistency: clear hierarchy, fewer heavy nested containers. */
+.pocket-content{scroll-padding-top:16px;overscroll-behavior-y:contain}
+.pd-daily-quests{margin:14px 14px 18px;padding:17px 14px;border-radius:20px}
+.pd-daily-heading h2{font-size:clamp(21px,5.4vw,24px);line-height:1.2}
+.pd-daily-intro,.pd-daily-footer{font-size:13px;line-height:1.65}
+.pd-daily-quest{min-height:70px;padding:12px;gap:12px}
+.pd-daily-copy strong{font-size:14px;line-height:1.4}
+.pd-daily-copy small{font-size:12px;line-height:1.5}
+.pd-daily-reward{font-size:12px}
+.pd-daily-scrapbook{border-radius:13px}
+.pd-kai-nav{margin:14px 14px 2px}
+.pd-kai-nav button{font-size:15px;min-height:48px}
+.pocket-dates,.pocket-stories{padding-left:14px!important;padding-right:14px!important}
+.pd-date-memories{margin:10px 1px 7px;border-color:rgba(244,238,231,.17);box-shadow:none}
+.pd-kai-profile{padding:14px 14px 30px}
+.pd-kai-profile-discoveries>p{font-size:14px}
+.pd-kai-fact p{font-size:13px;line-height:1.6}
+.pd-kai-fact small{font-size:12px}
+.pd-kai-fact{box-shadow:none}
+.pocket-content button:focus-visible,.pocket-content a:focus-visible{outline:3px solid #E4BC83;outline-offset:3px}
+@media(max-width:360px){
+ .pd-daily-quests{margin-left:10px;margin-right:10px;padding:13px}
+ .pd-daily-quest{gap:8px;padding:10px}
+ .pd-daily-emoji{font-size:21px}
+ .pd-daily-reward{white-space:normal;text-align:right;max-width:56px}
+ .pd-kai-nav{margin-left:10px;margin-right:10px}
+ .pocket-dates,.pocket-stories{padding-left:10px!important;padding-right:10px!important}
+ .pd-kai-profile{padding-left:10px;padding-right:10px}
+ .pd-kai-profile-intro{padding:15px}
+}
+@media(prefers-reduced-motion:reduce){
+ .pd-date-entry,.pd-date-memory,.pd-kai-fact,.pd-daily-quest{transition:none!important;animation:none!important}
+}
