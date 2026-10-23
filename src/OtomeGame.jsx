@@ -213,7 +213,7 @@ function MorningJog({date,onComplete,previousChoice}){
           ):(
             <div>
               <p style={{color:PALETTE.navy,fontSize:13,lineHeight:1.6,margin:"0 0 14px"}}>{selected.ending}</p>
-              <div style={{fontSize:12,color:PALETTE.navy,fontWeight:800,marginBottom:12}}>+{date.xp} XP · +{selected.bonus} bonus XP · +{Math.floor((date.xp+selected.bonus)/4)} affection</div>
+              <div style={{fontSize:12,color:PALETTE.navy,fontWeight:800,marginBottom:12}}>{date.isReplay?"Replay · No additional XP or affection":`+${date.xp} XP · +${selected.bonus} bonus XP · +${Math.floor((date.xp+selected.bonus)/4)} affection`}</div>
               <button onClick={()=>beat===0?setBeat(1):onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>{beat===0?"One more moment →":"Finish date ♡"}</button>
             </div>
           )}
@@ -339,7 +339,7 @@ function DateScreen({date, onComplete}){
             style={{background:date.color,color:PALETTE.navy,border:"3px solid "+PALETTE.navy,borderRadius:99,
               padding:"12px 32px",fontSize:15,fontFamily:"'Fredoka One',cursive",cursor:"pointer",
               boxShadow:`4px 4px 0 ${PALETTE.navy}`,letterSpacing:0.5}}>
-            +{date.xp} XP ♡
+            {date.isReplay?"Finish replay":`+${date.xp} XP`}
           </button>
         )}
       </div>
