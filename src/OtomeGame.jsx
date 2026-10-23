@@ -1,5 +1,6 @@
 import PersonaSelector from "./PersonaSelector.jsx";
 import RomanceMoment from "./RomanceMoment.jsx";
+import DailyQuests from "./DailyQuests.jsx";
 import InstallApp from "./InstallApp.jsx";
 import {XP_PER_LEVEL,MAX_LEVEL,applyXpReward} from "./gameRules.js";
 import KaiMiniGame from "./KaiMiniGame.jsx";
@@ -753,6 +754,7 @@ export default function OtomeGame(){
 
         {tab==="bio"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
         {tab==="bio"&&<div style={{width:"100%",padding:"4px 16px 10px",display:"flex",gap:9,flexWrap:"wrap"}}><button type="button" onClick={()=>{setShowDates(v=>!v);setKaiSection("profile");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:CARE_COLORS.rose,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>💌 {showDates?"Hide dates":"Plan a date"}</button><button type="button" onClick={()=>{setShowDates(false);setKaiSection("stories");setTab("bio");}} style={{flex:"1 1 130px",minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:15,background:PALETTE.paper,color:PALETTE.navy,fontWeight:900,cursor:"pointer"}}>📖 Our story</button></div>}
+        {tab==="home"&&<DailyQuests onEarnXp={awardXp}/>}
         {tab==="home"&&<button type="button" onClick={()=>setTab("wellness")} style={{margin:"12px 16px 24px",padding:"16px",width:"calc(100% - 32px)",textAlign:"left",border:"2px solid "+PALETTE.navy,borderRadius:19,background:CARE_COLORS.rose,color:PALETTE.navy,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}><span><strong style={{display:"block",fontSize:17}}>♡ A little care with Kai</strong><span style={{display:"block",fontSize:12,marginTop:5}}>Breathe, unwind, ground yourself or talk.</span></span><span aria-hidden="true" style={{fontSize:22}}>→</span></button>}
         {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
