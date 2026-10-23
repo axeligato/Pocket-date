@@ -282,3 +282,12 @@ body {background:radial-gradient(ellipse at 80% 0%,#263943 0%,#121F26 65%)}
 .pocket-app :is(button,[role="button"],summary):focus-visible{outline:3px solid #E4BC83!important;outline-offset:3px!important}
 @media(max-width:380px){.pd-daily-quests{padding:16px 13px;margin-inline:12px}.pd-daily-quest{padding:10px;gap:8px}.pd-daily-emoji{width:37px;height:37px}.pd-daily-reward{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.pd-daily-quest{transition:none!important;transform:none!important}.pd-daily-sticker,.pd-daily-sticker-mini{transform:none!important}}
+
+
+.pd-today-care-link{display:flex;align-items:center;gap:13px;width:calc(100% - 32px);margin:0 16px 25px;padding:14px 16px;text-align:left;background:#243840;color:#F4EEE7;border:1px solid rgba(244,238,231,.25);border-radius:17px;cursor:pointer;min-height:70px}
+.pd-today-care-link:hover{background:#304750}
+.pd-today-care-icon{display:grid;place-items:center;flex-shrink:0;width:39px;height:39px;border-radius:13px;background:#405D63;color:#F2D5B2;font-size:27px}
+.pd-today-care-link>span:nth-child(2){display:grid;gap:4px;flex:1}
+.pd-today-care-link strong{font-size:14px;line-height:1.3}
+.pd-today-care-link small{font-size:12px;line-height:1.4;color:#C8D8DB}
+.pd-today-care-arrow{font-size:23px;color:#E4BC83}
