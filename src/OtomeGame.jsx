@@ -431,7 +431,6 @@ export default function OtomeGame(){
   const [memoryAlbum,setMemoryAlbum]=useState(savedStart.memoryAlbum??[]);
   const [completedStories,setCompletedStories]=useState(()=>{try{const d=JSON.parse(localStorage.getItem("pocket-date-read-stories-v1")||"[]");return Array.isArray(d)?CHARACTER.stories.map(s=>s.id).filter(id=>d.includes(id)):[];}catch{return [];}});
   const [kaiSection,setKaiSection]=useState("dates");
-  const [showDates,setShowDates]=useState(false);
   const [lastTapReward,setLastTapReward]=useState(0);
   const progressRef=useRef({level:savedStart.level??1,xp:savedStart.xp??0});
   const [mood,setMood]=useState("neutral");
@@ -837,7 +836,7 @@ export default function OtomeGame(){
       <nav className="pocket-tabs" aria-label="Main navigation" style={{display:"flex",borderTop:"3px solid "+PALETTE.navy,background:CARE_COLORS.paper,position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:420,zIndex:120,flexShrink:0,paddingBottom:"env(safe-area-inset-bottom, 0px)"}}>
         {TABS.map(t=>{
           const active=tab===t.id;
-          return <button className="pocket-tab" type="button" key={t.id} aria-current={active?"page":undefined} onClick={()=>{setTab(t.id);setShowDates(false);setOpenStory(null);setActiveDate(null);}}
+          return <button className="pocket-tab" type="button" key={t.id} aria-current={active?"page":undefined} onClick={()=>{setTab(t.id);setOpenStory(null);setActiveDate(null);}}
             style={{flex:1,padding:"8px 3px 7px",background:active?t.color:"transparent",border:"2px solid transparent",borderRadius:14,cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,color:PALETTE.navy,fontFamily:"'Nunito',sans-serif",fontWeight:900}}>
             <span className="pocket-tab-icon" aria-hidden="true">{t.icon}</span>
             <span className="pocket-tab-label" style={{fontSize:10,letterSpacing:.4,textTransform:"uppercase",fontWeight:900,color:PALETTE.navy}}>{t.label}</span>
