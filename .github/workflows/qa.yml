@@ -12,6 +12,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm install --no-audit --no-fund
+      # esbuild's postinstall binary check can sporadically hit ETXTBSY on
+      # hosted runners. Retry only that transient install failure.
+      - name: Install dependencies (retry transient esbuild ETXTBSY)
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            if npm install --no-audit --no-fund; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              echo "Dependency installation failed after 3 attempts"
+              exit 1
+            fi
+            echo "Install attempt $attempt failed; cleaning and retrying"
+            rm -rf node_modules
+            sleep 3
+          done
       - run: npm test
       - run: npm run build
