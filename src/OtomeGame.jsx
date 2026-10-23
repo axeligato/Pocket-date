@@ -193,7 +193,7 @@ function MorningJog({date,onComplete,previousChoice}){
     <div role="dialog" aria-modal="true" aria-label="Morning Jog with Kai" style={{position:"fixed",inset:0,zIndex:80,background:CARE_COLORS.paper,display:"flex",flexDirection:"column",fontFamily:"'Nunito',sans-serif",overflowY:"auto"}}>
       <div style={{background:date.color,padding:"16px 20px",borderBottom:`3px solid ${PALETTE.navy}`,boxShadow:"0 4px 0 rgba(7,59,76,.08)",flexShrink:0}}>
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>🌅 Morning Jog</div>
-        <div style={{fontSize:12,color:PALETTE.navy}}>A little time together, a choice that matters.</div>
+        <div style={{fontSize:12,color:PALETTE.navy}}>Choose how the conversation unfolds.</div>
       </div>
       <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#345D6A,#182930)"}}>
         <div aria-hidden="true" style={{position:"absolute",width:"min(75vw,290px)",height:"min(75vw,290px)",background:date.color,border:"3px solid "+PALETTE.navy,borderRadius:"48% 52% 44% 56%",transform:"rotate(-9deg)",boxShadow:"7px 8px 0 "+PALETTE.navy,opacity:.85}}/>
@@ -269,7 +269,7 @@ function BranchingDate({date,onComplete}){
   return <div role="dialog" aria-modal="true" aria-label={date.label} style={{position:"fixed",inset:0,zIndex:80,background:CARE_COLORS.paper,display:"flex",flexDirection:"column",overflowY:"auto",fontFamily:"'Nunito',sans-serif"}}>
     <div style={{background:date.color,padding:"16px 20px",borderBottom:`3px solid ${PALETTE.navy}`,boxShadow:"0 4px 0 rgba(7,59,76,.08)"}}>
       <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>{date.emoji} {date.label}</div>
-      <div style={{fontSize:12,color:PALETTE.navy}}>A moment worth remembering ♡</div>
+      <div style={{fontSize:12,color:PALETTE.navy}}>Your choices shape the scene.</div>
     </div>
     <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:`linear-gradient(180deg,${date.color}44,${PALETTE.cream})`}}>
       <div aria-hidden="true" style={{position:"absolute",width:"min(75vw,290px)",height:"min(75vw,290px)",background:date.color,border:"3px solid "+PALETTE.navy,borderRadius:"48% 52% 44% 56%",transform:"rotate(-9deg)",boxShadow:"7px 8px 0 "+PALETTE.navy,opacity:.85}}/>
@@ -313,7 +313,7 @@ function DateScreen({date, onComplete}){
         <span style={{fontSize:28}}>{date.emoji}</span>
         <div>
           <div style={{fontFamily:"'Fredoka One',cursive",fontSize:18,color:PALETTE.navy}}>{date.label}</div>
-          <div style={{fontSize:12,color:PALETTE.navy+"aa"}}>{done?"What a lovely time ♡":"Spending time together..."}</div>
+          <div style={{fontSize:12,color:PALETTE.navy+"aa"}}>{done?"Date complete":"Scene in progress"}</div>
         </div>
       </div>
       {/* Character — big display */}
@@ -476,10 +476,11 @@ export default function OtomeGame(){
     setMessage(jogMemory&&Math.random()<0.35?JOG_MEMORY_LINES[jogMemory]:rand(CHARACTER.messages[getMood(Math.min(affection+gain,100))]));
   }
 
-  function goDate(date){
-    if(coins<date.cost)return;
-    setCoins(c=>c-date.cost);
-    setActiveDate(date);
+  function goDate(date,{replay=false}={}){
+    if(!replay&&coins<date.cost)return;
+    if(replay&&dateMemories(date.id,memoryAlbum).length===0)return;
+    if(!replay)setCoins(c=>c-date.cost);
+    setActiveDate({...date,isReplay:replay});
   }
 
   function finishDate(date){
@@ -489,9 +490,11 @@ export default function OtomeGame(){
       setMemoryAlbum(prev=>prev.includes(date.memoryChoice)?prev:[...prev,date.memoryChoice]);
       if(JOG_MEMORY_LINES[date.memoryChoice])setMessage(JOG_MEMORY_LINES[date.memoryChoice]);
     }
-    setAffection(a=>Math.min(a+Math.floor(date.xp/4),100));
-    awardXp(date.xp);
-    setCoins(c=>c+Math.floor(date.xp/3));
+    if(!date.isReplay){
+      setAffection(a=>Math.min(a+Math.floor(date.xp/4),100));
+      awardXp(date.xp);
+      setCoins(c=>c+Math.floor(date.xp/3));
+    }
     setTab("bio");
     setKaiSection("dates");
   }
@@ -749,7 +752,7 @@ export default function OtomeGame(){
           <div className="pocket-dates" style={{padding:"22px 16px 32px"}}>
             <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>DATES</div>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Dates</div>
-            <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Choose a date to play. Your choices can reveal new scenes and memories.</p>
+            <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Play a date to discover different outcomes. Revisit unlocked scenes whenever you like.</p>
             <div style={{display:"grid",gap:16}}>
               {DATES.map((date,i)=>{
                 const ok=coins>=date.cost;
@@ -770,7 +773,7 @@ export default function OtomeGame(){
                     </div>
                   </div>
                 </button>
-                {memories.length>0&&<section className="pd-date-memories" aria-label={date.label+" memories"}><h3>Memories from this date</h3><div className="pd-date-memory-list">{memories.map(memory=><div className="pd-date-memory" key={memory.id}><span aria-hidden="true">✦</span><div><strong>{memory.title}</strong><p>{memory.description}</p></div></div>)}</div><button type="button" className="pd-date-revisit" disabled={!ok} onClick={()=>goDate(date)}>{ok?"Replay "+date.label:"Not enough flowers to replay"}</button></section>}
+                {memories.length>0&&<section className="pd-date-memories" aria-label={date.label+" memories"}><h3>Memories from this date</h3><div className="pd-date-memory-list">{memories.map(memory=><div className="pd-date-memory" key={memory.id}><span aria-hidden="true">✦</span><div><strong>{memory.title}</strong><p>{memory.description}</p></div></div>)}</div><button type="button" className="pd-date-revisit" onClick={()=>goDate(date,{replay:true})}>Replay date · Free</button></section>}
                 </article>;
               })}
             </div>
@@ -784,7 +787,7 @@ export default function OtomeGame(){
           <div className="pocket-stories" style={{padding:"22px 16px 32px"}}>
             <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>CHAPTERS</div>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Story chapters</div>
-            <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Read unlocked chapters to discover more about Kai.</p>
+            <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Read chapters to learn more about Kai.</p>
             <div style={{display:"grid",gap:17}}>
               {stories.map((story,i)=>{
                 const colors=[CARE_COLORS.rose];
