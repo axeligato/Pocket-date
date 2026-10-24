@@ -693,31 +693,7 @@ export default function OtomeGame(){
                 <div key={h.id} style={{position:"absolute",left:h.x+h.ox,top:h.y-8,fontSize:22,
                   pointerEvents:"none",animation:"hf 1.1s ease-out forwards",zIndex:10,color:PALETTE.red}}>♡</div>
               ))}
-              {tapHint&&(
-                <div style={{position:"absolute",bottom:18,zIndex:2,background:PALETTE.paper,
-                  border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 14px",
-                  fontSize:11,color:PALETTE.navy,fontWeight:800,boxShadow:`2px 2px 0 ${PALETTE.navy}`,
-                  animation:"bounce 1.6s ease-in-out infinite"}}>
-                  ♡ tap Kai to show affection
-                </div>
-              )}
-            </div>
 
-            {/* Speech bubble */}
-            <div className="pocket-dialogue pd-conversation" style={{margin:"14px 16px 10px",background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,
-              borderRadius:18,padding:"14px 18px",width:"calc(100% - 32px)",
-              boxShadow:`4px 5px 0 ${PALETTE.navy}`,animation:"fi 0.3s ease",position:"relative"}}>
-              {/* Bubble triangle */}
-              <div style={{position:"absolute",top:-11,left:36,width:0,height:0,
-                borderLeft:"10px solid transparent",borderRight:"10px solid transparent",
-                borderBottom:`11px solid ${PALETTE.navy}`}}/>
-              <div style={{position:"absolute",top:-8,left:37,width:0,height:0,
-                borderLeft:"9px solid transparent",borderRight:"9px solid transparent",
-                borderBottom:"10px solid white"}}/>
-              <div style={{fontFamily:"Fredoka One, cursive",fontSize:11,color:PALETTE.red,letterSpacing:1.5,marginBottom:5}}>A LITTLE SOMETHING FROM KAI ♡</div>
-              <p style={{margin:0,fontSize:15,color:PALETTE.navy,fontStyle:"italic",lineHeight:1.65,fontWeight:600}}>
-                "{message}"
-              </p>
             </div>
 
 
