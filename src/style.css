@@ -398,3 +398,11 @@ body {background:radial-gradient(ellipse at 80% 0%,#263943 0%,#121F26 65%)}
 @media(prefers-reduced-motion:reduce){
  .pd-date-entry,.pd-date-memory,.pd-kai-fact,.pd-daily-quest{transition:none!important;animation:none!important}
 }
+
+
+/* Header: settings is consistently the first action, followed by flowers. */
+.pd-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-shrink:0}
+.pd-header-settings{display:grid;place-items:center;min-width:44px;min-height:44px;padding:0;border:2px solid #182930;border-radius:13px;background:#F4EEE7;color:#182930;font-size:21px;cursor:pointer}
+.pd-header-settings[aria-pressed="true"]{background:#E4BC83}
+.pd-header-settings:focus-visible{outline:3px solid #E4BC83;outline-offset:3px}
+@media(max-width:360px){.pd-header-actions{gap:6px}.pd-header-settings{min-width:44px;min-height:44px}}
