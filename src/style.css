@@ -445,3 +445,36 @@ body{-webkit-overflow-scrolling:touch}
 .pd-daily-reaction-dismiss{width:100%;min-height:48px;padding:12px 14px;border:2px solid #E4BC83;border-radius:13px;background:#E4BC83;color:#182930;font-weight:900;cursor:pointer}
 .pd-daily-reaction-dismiss:focus-visible{outline:3px solid #F4EEE7;outline-offset:3px}
 @media(max-width:360px){.pd-home-minigame{margin-left:10px;margin-right:10px}.pd-daily-reaction-dialog{padding:20px 16px}}
+
+
+/* High-contrast prototype: black canvas, neutral panels, readable accent colors. */
+:root{color-scheme:dark;--pd-ink:#F5F5F5;--pd-muted:#C7C7C7;--pd-paper:#000;--pd-surface:#151515;--pd-accent:#262626;--pd-outline:3px solid #FACC15;--pocket-ink:#F5F5F5;--pocket-paper:#000}
+html,body,#root{background:#000;color:#F5F5F5}
+.pocket-app,.pocket-content,.pocket-home{background:#000!important;color:#F5F5F5}
+.pd-utility-bar{background:#000;border-bottom:1px solid #454545}
+.pd-utility-settings{background:#1B1B1B;color:#FFF;border:1px solid #777}
+.pd-companion-header{background:#111!important;border-bottom:1px solid #454545}
+.pd-companion-eyebrow,.pd-companion-name,.pd-companion-title{color:#F5F5F5}
+.pocket-tabs{background:#0B0B0B!important;border-top:1px solid #555!important}
+.pocket-tabs .pocket-tab{color:#F5F5F5!important}
+.pocket-tabs .pocket-tab[aria-current="page"]{background:#292929!important;border-color:#FACC15!important;box-shadow:none!important}
+.pocket-tabs .pocket-tab:not([aria-current="page"]):hover{background:#242424!important}
+.pocket-content h1,.pocket-content h2,.pocket-content h3,.pocket-content h4{color:#F5F5F5}
+.pd-daily-quests,.pd-daily-quest,.pd-daily-scrapbook,.pd-kai-profile,.pd-kai-profile-intro,.pd-kai-fact,.pd-date-memories,.pd-date-memory,.pd-care,.pd-care-hero,.pd-care-activities,.pd-care-feeling,.pd-care-stats-details{background:#151515!important;color:#F5F5F5!important;border-color:#555!important;box-shadow:none!important}
+.pd-daily-quest strong,.pd-daily-quest small,.pd-daily-scrapbook-title,.pd-kai-fact p,.pd-kai-fact strong,.pd-kai-profile p,.pd-date-memory p,.pd-date-memory strong{color:#F5F5F5!important}
+.pd-daily-intro,.pd-daily-footer,.pd-kai-profile-discoveries>p{color:#C7C7C7!important}
+.pd-daily-quest:not(:disabled):focus-visible,.pd-daily-reaction-dismiss:focus-visible,.pocket-app button:focus-visible{outline:3px solid #FACC15!important;outline-offset:3px}
+.pd-daily-quest[aria-pressed="true"]{border-color:#4ADE80!important}
+.pd-daily-done{color:#4ADE80!important}
+.pd-daily-reaction-overlay{background:rgba(0,0,0,.88)}
+.pd-daily-reaction-dialog{background:#181818;color:#FFF;border-color:#666}
+.pd-daily-reaction-dismiss{background:#FACC15;color:#101010;border-color:#FACC15}
+.pd-daily-reaction-eyebrow,.pd-daily-reaction-reward{color:#FACC15}
+.pd-care .pd-settings-card,.pd-care .pd-setting-option,.pd-care .pd-conversation,.pd-care details,.pd-care .pd-care-topic{background:#181818!important;color:#F5F5F5!important;border-color:#666!important}
+.pd-care select,.pd-care input,.pd-care textarea{background:#1B1B1B!important;color:#F5F5F5!important;border-color:#777!important}
+.pd-feelings .pd-choice{background:#222!important;color:#FFF!important;border-color:#888!important}
+.pd-feelings .pd-choice[aria-pressed="true"]{background:#393939!important;border-color:#FACC15!important}
+.pd-care p,.pd-care strong,.pd-care label,.pd-care summary{color:#F5F5F5}
+.pocket-home .pocket-dialogue,.pocket-home .pd-conversation{background:#181818!important;border-color:#777!important;box-shadow:none!important}
+.pocket-home .pocket-dialogue p{color:#F5F5F5!important}
+.pd-home-minigame{background:#101010;color:#F5F5F5}
