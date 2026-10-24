@@ -214,7 +214,7 @@ function MorningJog({date,onComplete,previousChoice}){
             <div>
               <p style={{color:PALETTE.navy,fontSize:13,lineHeight:1.6,margin:"0 0 14px"}}>{selected.ending}</p>
               <div style={{fontSize:12,color:PALETTE.navy,fontWeight:800,marginBottom:12}}>{date.isReplay?"Replay · No additional XP or affection":`+${date.xp} XP · +${selected.bonus} bonus XP · +${Math.floor((date.xp+selected.bonus)/4)} affection`}</div>
-              <button onClick={()=>beat===0?setBeat(1):onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>{beat===0?"One more moment →":"Finish date ♡"}</button>
+              <button onClick={()=>beat===0?setBeat(1):onComplete({...date,xp:date.xp+selected.bonus,memoryChoice:date.id+":"+selected.id})} style={{width:"100%",minHeight:48,border:`3px solid ${PALETTE.navy}`,borderRadius:16,background:PALETTE.yellow,color:PALETTE.navy,fontSize:15,fontWeight:900,cursor:"pointer",boxShadow:"4px 5px 0 "+PALETTE.navy}}>{beat===0?"One more moment →":"Finish date ♡"}</button>
             </div>
           )}
         </div>
@@ -414,6 +414,7 @@ export default function OtomeGame(){
   const [pulse,setPulse]=useState(false);
   const [hearts,setHearts]=useState([]);
   const [tab,setTab]=useState("home");
+  const [previousTab,setPreviousTab]=useState("home");
   const [activeDate,setActiveDate]=useState(null);
   const [openStory,setOpenStory]=useState(null);
   const [tapHint,setTapHint]=useState(true);
@@ -510,6 +511,7 @@ export default function OtomeGame(){
     {id:"wellness",label:"Care",icon:"♡",color:CARE_COLORS.rose},
   ];
 
+  const openSettings=()=>{if(tab==="care"){setTab(previousTab);}else{setPreviousTab(tab);setTab("care");}};
   const headerColors=[CARE_COLORS.rose];
   const activeTabColor=TABS.find(t=>t.id===tab)?.color||PALETTE.yellow;
 
@@ -616,14 +618,14 @@ export default function OtomeGame(){
           <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,lineHeight:1}}>{CHARACTER.name}</div>
           <div style={{fontSize:11,color:PALETTE.navy+"99",marginTop:1,fontStyle:"italic"}}>{CHARACTER.title}</div>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:9}}><button type="button" aria-label={tab==="care"?"Back to Today":"Open settings"} onClick={()=>setTab(tab==="care"?"home":"care")} style={{minWidth:44,minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:14,background:PALETTE.paper,color:PALETTE.navy,fontSize:21,cursor:"pointer"}}>{tab==="care"?"←":"⚙️"}</button><div style={{background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
+        <div className="pd-header-actions"><button className="pd-header-settings" type="button" aria-label={tab==="care"?"Close settings":"Open settings"} aria-pressed={tab==="care"} onClick={openSettings} style={{minWidth:44,minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:14,background:tab==="care"?"#E4BC83":PALETTE.paper,color:PALETTE.navy,fontSize:21,cursor:"pointer"}}>⚙️</button><div style={{background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
           display:"flex",alignItems:"center",gap:5,boxShadow:`3px 3px 0 ${PALETTE.navy}`}}>
           <span style={{fontSize:14}}>🌸</span>
           <span style={{fontWeight:900,fontSize:15,color:PALETTE.navy}}>{coins}</span>
         </div></div>
       </div>
 
-      {tab!=="bio"&&<>
+      {tab==="home"&&<>
       {/* ── XP + Affection bars ── */}
       <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"2px solid "+PALETTE.navy}}>
         {/* Level row */}
