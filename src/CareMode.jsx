@@ -5,7 +5,6 @@ import CareRoutine from "./CareRoutine.jsx";
 import CareActivityDashboard,{readActivity,recordActivity,ACTIVITY_KEY} from "./CareActivityDashboard.jsx";
 import {careSectionStyle,careSummaryStyle} from "./careTheme.js";
 import {CARE_COLORS} from "./careTheme.js";
-import CareMemories from "./CareMemories.jsx";
 import CycleCare from "./CycleCare.jsx";
 import Milestones from "./Milestones.jsx";
 import React, {useEffect,useState} from "react";
@@ -56,12 +55,13 @@ export default function CareMode({mode="home",onOpenPreferences}){
   const snooze=()=>{persist({...care,snoozed:String(Date.now()+60*60*1000)});setClock(Date.now());};
   const dismiss=()=>persist({...care,dismissed:today,snoozed:"",lastCheck:Date.now()});
   return <section className="pocket-care pd-care" aria-label="Care Mode" style={{padding:"22px 16px 36px",maxWidth:740,margin:"0 auto",width:"100%",color:INK}}>
-    <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>{mode==="home"?"A moment with Kai ♡":"Care preferences"}</h2>
+    <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>{mode==="home"?"Care ♡":"Reminder settings"}</h2>
     {mode==="home"&&<div className="pd-care-home">
       <div className="pd-care-hero"><span className="pd-care-eyebrow">A MOMENT FOR YOU ♡</span><p>{getPersona()==="jenny"?"Jenny says: I saved us a quiet moment. What sounds good?":"Kai says: Hey, you. We can take things slow today. What would help?"}</p><span className="pd-care-hero-footer">No pressure. Just a little care, together.</span></div>
 
       <div className="pd-care-activities"><div className="pd-care-section-heading"><div><span className="pd-care-eyebrow">QUICK START</span><h3>What would help right now?</h3></div></div><WellnessToolkit onComplete={onSessionComplete}/></div>
       <CareRoutine/>
+      <div className="pd-care-feeling"><CycleCare/></div>
       <div className="pd-care-feeling"><div className="pd-care-section-heading"><div><span className="pd-care-eyebrow">CHECK IN</span><h3>Talk about your day</h3></div></div><FeelingCheckIn/></div>
     </div>}
     {mode==="preferences"&&<>
@@ -105,24 +105,10 @@ export default function CareMode({mode="home",onOpenPreferences}){
       {response&&<button type="button" onClick={()=>setResponse("I'm glad we got a little moment together. Take it at your own pace. ♡")} style={{background:CARE_COLORS.gold,border:"2px solid "+INK,borderRadius:12,padding:"10px 14px",fontWeight:900,color:INK,cursor:"pointer",marginBottom:16}}>♡ Thanks, Kai</button>}
 
     </>}
-    {mode==="home"&&<div style={{marginTop:18}}>
-      <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:21,margin:"0 0 6px"}}>More ways to feel close ♡</h3>
-      <p style={{fontSize:12,color:CARE_COLORS.muted,lineHeight:1.6,margin:"0 0 14px"}}>Open what feels right today. Everything here is optional.</p>
-      <div style={{display:"grid",gap:13}}>
-        <details style={careSectionStyle}>
-          <summary style={careSummaryStyle}><span>🎂 Special days</span><span aria-hidden="true">＋</span></summary>
-          <div style={{padding:"0 12px 15px"}}><Milestones/></div>
-        </details>
-        <details style={careSectionStyle}>
-          <summary style={careSummaryStyle}><span>🌷 Comfort corner</span><span aria-hidden="true">＋</span></summary>
-          <div style={{padding:"0 12px 15px"}}><CycleCare/></div>
-        </details>
-        <details style={careSectionStyle}>
-          <summary style={careSummaryStyle}><span>💌 Little moments & memories</span><span aria-hidden="true">＋</span></summary>
-          <div style={{padding:"0 12px 15px"}}><CareMemories/></div>
-        </details>
-      </div>
-    </div>}
+    {mode==="preferences"&&<details style={careSectionStyle}>
+      <summary style={careSummaryStyle}><span>🎂 Special days</span><span aria-hidden="true">＋</span></summary>
+      <div style={{padding:"0 12px 15px"}}><Milestones/></div>
+    </details>}
     {mode==="home"&&<details className="pd-care-stats-details" style={careSectionStyle}>
       <summary style={careSummaryStyle}><span>Activity statistics</span><span aria-hidden="true">＋</span></summary>
       <div className="pd-care-stats-body"><CareActivityDashboard entries={activity} onClear={clearActivity}/></div>
