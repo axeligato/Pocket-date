@@ -618,7 +618,7 @@ export default function OtomeGame(){
           <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,lineHeight:1}}>{CHARACTER.name}</div>
           <div style={{fontSize:11,color:PALETTE.navy+"99",marginTop:1,fontStyle:"italic"}}>{CHARACTER.title}</div>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:9}}><button type="button" aria-label={tab==="care"?"Close settings":"Open settings"} aria-pressed={tab==="care"} onClick={openSettings} style={{minWidth:44,minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:14,background:PALETTE.paper,color:PALETTE.navy,fontSize:21,cursor:"pointer"}}>⚙️</button><div style={{background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
+        <div className="pd-header-actions"><button className="pd-header-settings" type="button" aria-label={tab==="care"?"Close settings":"Open settings"} aria-pressed={tab==="care"} onClick={openSettings} style={{minWidth:44,minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:14,background:PALETTE.paper,color:PALETTE.navy,fontSize:21,cursor:"pointer"}}>⚙️</button><div style={{background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
           display:"flex",alignItems:"center",gap:5,boxShadow:`3px 3px 0 ${PALETTE.navy}`}}>
           <span style={{fontSize:14}}>🌸</span>
           <span style={{fontWeight:900,fontSize:15,color:PALETTE.navy}}>{coins}</span>
