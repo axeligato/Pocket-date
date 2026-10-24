@@ -774,7 +774,7 @@ export default function OtomeGame(){
                     <div style={{fontFamily:"'Fredoka One',cursive",fontSize:17,color:PALETTE.navy,lineHeight:1.25}}>{date.label}</div>
                     <div style={{fontSize:12,color:CARE_COLORS.muted,fontWeight:800,marginTop:8}}>{memories.length?memories.length+" memories discovered":"No memories discovered yet"}</div>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:6,marginTop:13,flexWrap:"wrap"}}>
-                      <span style={{background:ok?CARE_COLORS.paper:CARE_COLORS.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"4px 9px",fontSize:11,fontWeight:900,color:PALETTE.navy}}>{date.cost>0?"🌸 "+date.cost:""}</span>
+                      {date.cost>0&&<span style={{background:CARE_COLORS.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"4px 9px",fontSize:11,fontWeight:900,color:PALETTE.navy}}>🌸 {date.cost}</span>}
                       <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy}}>{ok?"LET'S GO ↗":"🔒 NEED FLOWERS"}</span>
                     </div>
                   </div>
