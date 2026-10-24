@@ -15,7 +15,6 @@ export default function CycleCare(){
  const clear=()=>{setOpen(false);setFeeling(null);setAck(false);};
  const selected=FEELINGS.find(f=>f.id===feeling);
  return <section aria-label="Optional cycle support" style={{marginTop:0,background:"transparent",border:0,borderRadius:0,padding:"0 4px 4px",boxShadow:"none"}}>
-  <span style={{display:"inline-block",background:CARE_COLORS.rose,border:"2px solid "+INK,borderRadius:8,padding:"4px 9px",fontSize:10,fontWeight:900,letterSpacing:1}}>🌸 OPTIONAL COMFORT CORNER</span>
   <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:20,margin:"12px 0 6px",color:INK}}>A little extra care ♡</h3>
   <p style={{fontSize:12,lineHeight:1.65,color:CARE_COLORS.muted,margin:"0 0 13px"}}>If you're on your period or simply want some comfort, Kai can listen. You never have to share anything. This feature doesn't track or predict your cycle.</p>
   {!open?<button type="button" onClick={()=>setOpen(true)} style={{...button,background:CARE_COLORS.rose,width:"100%"}}>♡ Talk to Kai privately</button>:<>
