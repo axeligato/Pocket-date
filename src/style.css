@@ -426,3 +426,22 @@ body{-webkit-overflow-scrolling:touch}
 .pd-companion-title{font-size:11px;color:#243840;font-style:italic;line-height:1.4}
 .pd-flower-count{display:flex;align-items:center;gap:5px;flex-shrink:0;padding:8px 13px;border:2px solid #182930;border-radius:999px;background:#F4EEE7;color:#182930;font-size:15px;font-weight:900}
 @media(max-width:360px){.pd-utility-bar{padding-right:10px}.pd-companion-header{padding:12px}.pd-flower-count{padding:7px 10px}}
+
+
+/* Clear icon-only utility action; accessible name stays on the button. */
+.pd-utility-settings{width:44px;min-width:44px;padding:7px;gap:0}
+.pd-utility-settings span:first-child{font-size:21px}
+.pd-home-minigame{margin:0 14px 18px}
+.pd-care-stats-details{margin-top:20px}
+.pd-care-stats-body{padding:8px 12px 14px}
+.pd-care-stats-body .pd-care-dashboard{margin:0}
+.pd-daily-reaction-overlay{position:fixed;inset:0;z-index:150;display:grid;place-items:center;padding:24px 16px max(24px,env(safe-area-inset-bottom));background:rgba(12,25,32,.82);overflow-y:auto}
+.pd-daily-reaction-dialog{width:min(100%,380px);max-height:calc(100dvh - 48px);overflow-y:auto;padding:25px 22px 22px;border:1px solid #7B9B9F;border-radius:24px;background:#243840;color:#F4EEE7;text-align:center;box-shadow:0 18px 60px rgba(0,0,0,.3)}
+.pd-daily-reaction-illustration{font-size:48px;line-height:1.3;margin-bottom:10px}
+.pd-daily-reaction-eyebrow{display:block;font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#E4BC83}
+.pd-daily-reaction-dialog h3{margin:8px 0 14px;font-size:23px;line-height:1.25;color:#F4EEE7}
+.pd-daily-reaction-dialog p{font-size:15px;line-height:1.65;color:#F4EEE7;margin:0 0 14px}
+.pd-daily-reaction-reward{display:block;font-size:13px;font-weight:900;color:#E4BC83;margin-bottom:18px}
+.pd-daily-reaction-dismiss{width:100%;min-height:48px;padding:12px 14px;border:2px solid #E4BC83;border-radius:13px;background:#E4BC83;color:#182930;font-weight:900;cursor:pointer}
+.pd-daily-reaction-dismiss:focus-visible{outline:3px solid #F4EEE7;outline-offset:3px}
+@media(max-width:360px){.pd-home-minigame{margin-left:10px;margin-right:10px}.pd-daily-reaction-dialog{padding:20px 16px}}

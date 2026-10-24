@@ -59,7 +59,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
     <h2 style={{fontFamily:"'Fredoka One',cursive",fontSize:28,margin:"15px 0 7px"}}>{mode==="home"?"A moment with Kai ♡":"Care preferences"}</h2>
     {mode==="home"&&<div className="pd-care-home">
       <div className="pd-care-hero"><span className="pd-care-eyebrow">A MOMENT FOR YOU ♡</span><p>{getPersona()==="jenny"?"Jenny says: I saved us a quiet moment. What sounds good?":"Kai says: Hey, you. We can take things slow today. What would help?"}</p><span className="pd-care-hero-footer">No pressure. Just a little care, together.</span></div>
-      <CareActivityDashboard entries={activity} onClear={clearActivity}/>
+
       <div className="pd-care-activities"><div className="pd-care-section-heading"><div><span className="pd-care-eyebrow">QUICK START</span><h3>What would help right now?</h3></div></div><WellnessToolkit onComplete={onSessionComplete}/></div>
       <CareRoutine/>
       <div className="pd-care-feeling"><div className="pd-care-section-heading"><div><span className="pd-care-eyebrow">CHECK IN</span><h3>Talk about your day</h3></div></div><FeelingCheckIn/></div>
@@ -123,6 +123,10 @@ export default function CareMode({mode="home",onOpenPreferences}){
         </details>
       </div>
     </div>}
+    {mode==="home"&&<details className="pd-care-stats-details" style={careSectionStyle}>
+      <summary style={careSummaryStyle}><span>Activity statistics</span><span aria-hidden="true">＋</span></summary>
+      <div className="pd-care-stats-body"><CareActivityDashboard entries={activity} onClear={clearActivity}/></div>
+    </details>}
     {mode==="preferences"&&<p style={{margin:"23px 0 0",fontSize:11,lineHeight:1.65,color:CARE_COLORS.muted}}>♡ Privacy: Only your selected everyday care topics, preferred check-in time, and dismissal/snooze state are saved in this browser's local storage, not sent to an account or server by this feature. You can clear them at any time. Shared devices and browser backups may expose locally stored preferences. Birthday and personal dates are separately optional and deletable; cycle-related feelings are only used temporarily on screen and are not saved. This is friendly encouragement, not medical guidance.</p>}
   </section>;
 }

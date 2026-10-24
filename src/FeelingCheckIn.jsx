@@ -87,13 +87,9 @@ export default function FeelingCheckIn(){
  const activeAction=selectedReply?.action||response?.prompt;
  return <section className="pd-feelings" aria-label="Talk about how you feel" style={{padding:"8px 0 20px",marginBottom:12,color:CARE_COLORS.ink}}>
   <h3 style={{fontFamily:"'Fredoka One',cursive",fontSize:24,margin:"0 0 6px"}}>How are you feeling?</h3>
-  <p style={{fontSize:12,fontWeight:900,margin:"12px 0 9px",color:CARE_COLORS.muted}}>Feeling good</p>
-  <div className="pd-choice-group" role="group" aria-label="Positive feelings" style={{display:"flex",flexWrap:"wrap",gap:8}}>
-   {POSITIVE_FEELINGS.map(t=><button type="button" className="pd-choice" key={t.id} aria-pressed={topic===t.id} onClick={()=>selectTopic(t.id)} style={{...pill,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper}}>{t.label}</button>)}
-  </div>
-  <p style={{fontSize:12,fontWeight:900,margin:"17px 0 9px",color:CARE_COLORS.muted}}>When you need support</p>
-  <div className="pd-choice-group" role="group" aria-label="Feelings that need support" style={{display:"flex",flexWrap:"wrap",gap:8}}>
-   {FEELINGS.map(t=><button type="button" className="pd-choice" key={t.id} aria-pressed={topic===t.id} onClick={()=>selectTopic(t.id)} style={{...pill,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper}}>{t.label}</button>)}
+  <p style={{fontSize:13,color:CARE_COLORS.muted,margin:"10px 0 12px"}}>Choose whatever describes your experience right now. Every feeling belongs here.</p>
+  <div className="pd-choice-group" role="group" aria-label="Choose how you are feeling" style={{display:"flex",flexWrap:"wrap",gap:8}}>
+   {[...POSITIVE_FEELINGS,...FEELINGS].map(t=><button type="button" className="pd-choice" key={t.id} aria-pressed={topic===t.id} onClick={()=>selectTopic(t.id)} style={{...pill,background:topic===t.id?CARE_COLORS.rose:CARE_COLORS.paper}}>{t.label}</button>)}
   </div>
   {response&&<>
    <div aria-live="polite" aria-atomic="true" style={{marginTop:20}}>

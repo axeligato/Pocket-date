@@ -406,7 +406,7 @@ export default function OtomeGame(){
   const [jogMemory,setJogMemory]=useState(savedStart.jogMemory??null);
   const [memoryAlbum,setMemoryAlbum]=useState(savedStart.memoryAlbum??[]);
   const [completedStories,setCompletedStories]=useState(()=>{try{const d=JSON.parse(localStorage.getItem("pocket-date-read-stories-v1")||"[]");return Array.isArray(d)?CHARACTER.stories.map(s=>s.id).filter(id=>d.includes(id)):[];}catch{return [];}});
-  const [kaiSection,setKaiSection]=useState("dates");
+  const [kaiSection,setKaiSection]=useState("profile");
   const [lastTapReward,setLastTapReward]=useState(0);
   const progressRef=useRef({level:savedStart.level??1,xp:savedStart.xp??0});
   const [mood,setMood]=useState("neutral");
@@ -612,7 +612,7 @@ export default function OtomeGame(){
         <button type="button" className="pd-utility-settings"
           aria-label={tab==="care"?"Close settings":"Open settings"}
           aria-pressed={tab==="care"} onClick={openSettings}>
-          <span aria-hidden="true">⚙️</span><span>Settings</span>
+          <span aria-hidden="true">⚙️</span>
         </button>
       </div>
       {/* Kai and flowers are content identity/currency, not navigation. */}
@@ -740,13 +740,14 @@ export default function OtomeGame(){
         )}
 
         {tab==="home"&&<DailyQuests onEarnXp={awardXp}/>}
+        {tab==="home"&&<div className="pd-home-minigame"><KaiMiniGame onReward={amount=>setCoins(c=>c+amount)}/></div>}
         {tab==="home"&&<button className="pd-today-care-link" type="button" onClick={()=>setTab("wellness")}><span className="pd-today-care-icon" aria-hidden="true">♡</span><span><strong>Need a quiet moment?</strong><small>Breathe, unwind, or talk with Kai</small></span><span className="pd-today-care-arrow" aria-hidden="true">→</span></button>}
         {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
         {/* Kai: two destinations, with chapters inside Dates rather than a third tab. */}
         {tab==="bio"&&<nav className="pd-kai-nav" aria-label="Kai sections">
-          <button type="button" aria-current={kaiSection==="dates"?"page":undefined} onClick={()=>setKaiSection("dates")}>Dates</button>
           <button type="button" aria-current={kaiSection==="profile"?"page":undefined} onClick={()=>setKaiSection("profile")}>Profile</button>
+          <button type="button" aria-current={kaiSection==="dates"?"page":undefined} onClick={()=>setKaiSection("dates")}>Dates</button>
         </nav>}
         {tab==="bio"&&kaiSection==="profile"&&<BioTab memoryAlbum={memoryAlbum} completedStories={completedStories}/>}
 
@@ -773,17 +774,16 @@ export default function OtomeGame(){
                     <div style={{fontFamily:"'Fredoka One',cursive",fontSize:17,color:PALETTE.navy,lineHeight:1.25}}>{date.label}</div>
                     <div style={{fontSize:12,color:CARE_COLORS.muted,fontWeight:800,marginTop:8}}>{memories.length?memories.length+" memories discovered":"No memories discovered yet"}</div>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:6,marginTop:13,flexWrap:"wrap"}}>
-                      <span style={{background:ok?CARE_COLORS.paper:CARE_COLORS.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"4px 9px",fontSize:11,fontWeight:900,color:PALETTE.navy}}>🌸 {date.cost===0?"FREE":date.cost}</span>
+                      {date.cost>0&&<span style={{background:CARE_COLORS.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"4px 9px",fontSize:11,fontWeight:900,color:PALETTE.navy}}>🌸 {date.cost}</span>}
                       <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy}}>{ok?"LET'S GO ↗":"🔒 NEED FLOWERS"}</span>
                     </div>
                   </div>
                 </button>
-                {memories.length>0&&<section className="pd-date-memories" aria-label={date.label+" memories"}><h3>Memories from this date</h3><div className="pd-date-memory-list">{memories.map(memory=><div className="pd-date-memory" key={memory.id}><span aria-hidden="true">✦</span><div><strong>{memory.title}</strong><p>{memory.description}</p></div></div>)}</div><button type="button" className="pd-date-revisit" onClick={()=>goDate(date,{replay:true})}>Replay date · Free</button></section>}
+                {memories.length>0&&<section className="pd-date-memories" aria-label={date.label+" memories"}><h3>Memories from this date</h3><div className="pd-date-memory-list">{memories.map(memory=><div className="pd-date-memory" key={memory.id}><span aria-hidden="true">✦</span><div><strong>{memory.title}</strong><p>{memory.description}</p></div></div>)}</div><button type="button" className="pd-date-revisit" onClick={()=>goDate(date,{replay:true})}>Replay date</button></section>}
                 </article>;
               })}
             </div>
             <RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>
-            <KaiMiniGame onReward={amount=>setCoins(c=>c+amount)}/>
           </div>
         )}
 
