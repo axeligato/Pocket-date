@@ -513,7 +513,7 @@ export default function OtomeGame(){
 
   const openSettings=()=>{if(tab==="care"){setTab(previousTab);}else{setPreviousTab(tab);setTab("care");}};
   const headerColors=[CARE_COLORS.rose];
-  const activeTabColor=TABS.find(t=>t.id===tab)?.color||PALETTE.yellow;
+  const activeTabColor="#111111";
 
   return(
     <div className="pocket-app" style={{minHeight:"100dvh",width:"100%",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
