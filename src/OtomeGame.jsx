@@ -618,9 +618,8 @@ export default function OtomeGame(){
       {/* Kai and flowers are content identity/currency, not navigation. */}
       <header className="pd-companion-header" style={{background:activeTabColor}}>
         <div className="pd-companion-identity">
-          <div className="pd-companion-eyebrow">Your Companion</div>
           <div className="pd-companion-name">{CHARACTER.name}</div>
-          <div className="pd-companion-title">{CHARACTER.title}</div>
+          <div className="pd-relationship-status" aria-label="Current relationship status">Confidentes</div>
         </div>
 
       </header>
@@ -661,11 +660,6 @@ export default function OtomeGame(){
         {/* HOME */}
         {tab==="home"&&(
           <div className="pocket-home pd-home" style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
-            <div className="pocket-home-heading" style={{width:"100%",padding:"18px 22px 0",position:"relative",zIndex:4}}>
-              <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.4,color:PALETTE.navy}}>✦ YOUR LITTLE LOVE STORY</div>
-              <div style={{fontFamily:"'Fredoka One',cursive",fontSize:"clamp(22px,5vw,30px)",lineHeight:1.1,color:PALETTE.navy,marginTop:10}}>Hang out with Kai <span aria-hidden="true">♡</span></div>
-              <div style={{fontSize:12,fontWeight:700,color:CARE_COLORS.muted,marginTop:5}}>Every tap makes the day a little sweeter.</div>
-            </div>
             {/* Tap area */}
             <div className="pocket-character" role="button" tabIndex={0} aria-label={`Show affection to ${CHARACTER.name}`} onClick={tapChar} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tapChar(e);}}}
               style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
@@ -675,7 +669,7 @@ export default function OtomeGame(){
               <div aria-hidden="true" style={{position:"absolute",inset:"15% 14% 13%",border:"2px dashed rgba(244,238,231,.38)",borderRadius:"48%",transform:"rotate(9deg)",zIndex:0}}/>
               <span className="pocket-sticker" aria-hidden="true" style={{top:"12%",left:"7%",fontSize:27,transform:"rotate(-13deg)",textShadow:"2px 2px 0 #182930"}}>✦</span>
               <span className="pocket-sticker" aria-hidden="true" style={{right:"8%",bottom:"24%",fontSize:30,transform:"rotate(12deg)",color:CARE_COLORS.rose,textShadow:"2px 2px 0 white"}}>♥</span>
-              <span className="pocket-sticker" aria-hidden="true" style={{top:"22%",right:"6%",background:PALETTE.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px",fontSize:11,transform:"rotate(12deg)",boxShadow:"3px 3px 0 #073B4C"}}>{new Date().getHours()<11?"A fresh start.":new Date().getHours()<17?"Take your time.":"Rest when you need to."}</span>
+
               <img className="pocket-character-portrait" key={mood} src={PORTRAITS[MOOD_PORTRAIT[mood]]} alt={`${CHARACTER.name} — ${mood}`}
                 style={{
                   height:315,
@@ -699,31 +693,7 @@ export default function OtomeGame(){
                 <div key={h.id} style={{position:"absolute",left:h.x+h.ox,top:h.y-8,fontSize:22,
                   pointerEvents:"none",animation:"hf 1.1s ease-out forwards",zIndex:10,color:PALETTE.red}}>♡</div>
               ))}
-              {tapHint&&(
-                <div style={{position:"absolute",bottom:18,zIndex:2,background:PALETTE.paper,
-                  border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 14px",
-                  fontSize:11,color:PALETTE.navy,fontWeight:800,boxShadow:`2px 2px 0 ${PALETTE.navy}`,
-                  animation:"bounce 1.6s ease-in-out infinite"}}>
-                  ♡ tap Kai to show affection
-                </div>
-              )}
-            </div>
 
-            {/* Speech bubble */}
-            <div className="pocket-dialogue pd-conversation" style={{margin:"14px 16px 10px",background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,
-              borderRadius:18,padding:"14px 18px",width:"calc(100% - 32px)",
-              boxShadow:`4px 5px 0 ${PALETTE.navy}`,animation:"fi 0.3s ease",position:"relative"}}>
-              {/* Bubble triangle */}
-              <div style={{position:"absolute",top:-11,left:36,width:0,height:0,
-                borderLeft:"10px solid transparent",borderRight:"10px solid transparent",
-                borderBottom:`11px solid ${PALETTE.navy}`}}/>
-              <div style={{position:"absolute",top:-8,left:37,width:0,height:0,
-                borderLeft:"9px solid transparent",borderRight:"9px solid transparent",
-                borderBottom:"10px solid white"}}/>
-              <div style={{fontFamily:"Fredoka One, cursive",fontSize:11,color:PALETTE.red,letterSpacing:1.5,marginBottom:5}}>A LITTLE SOMETHING FROM KAI ♡</div>
-              <p style={{margin:0,fontSize:15,color:PALETTE.navy,fontStyle:"italic",lineHeight:1.65,fontWeight:600}}>
-                "{message}"
-              </p>
             </div>
 
 

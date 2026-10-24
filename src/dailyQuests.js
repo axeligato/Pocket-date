@@ -8,13 +8,24 @@ export const DAILY_QUESTS=[
 {id:"rest",emoji:"🌙",title:"Make room for rest",hint:"Wind down or take a break, on your schedule.",xp:10,reaction:"We don't have to earn our rest, you know. I'm happy we got a quiet moment together."}
 ];
 export const localQuestDay=(date=new Date())=>[date.getFullYear(),String(date.getMonth()+1).padStart(2,"0"),String(date.getDate()).padStart(2,"0")].join("-");
+// Count repeat interactions separately from the once-per-day XP reward.
+// Existing v1 completion data is migrated in place on first read.
+const normalizeCounts=data=>Object.fromEntries(DAILY_QUESTS.map(q=>[q.id,Math.max(data?.completed?.includes(q.id)?1:0,Number.isSafeInteger(data?.counts?.[q.id])?Math.max(0,data.counts[q.id]):0)]));
 export function readQuests(day=localQuestDay()){
-try{const data=JSON.parse(localStorage.getItem(QUEST_KEY)||"null");if(data?.version!==1||data.day!==day||!Array.isArray(data.completed))return {day,completed:[]};return {day,completed:DAILY_QUESTS.map(q=>q.id).filter(id=>data.completed.includes(id))};}catch{return {day,completed:[]};}
+ try{
+  const data=JSON.parse(localStorage.getItem(QUEST_KEY)||"null");
+  if(!data||data.day!==day||!Array.isArray(data.completed)||![1,2].includes(data.version))return {day,completed:[],counts:{}};
+  const completed=DAILY_QUESTS.map(q=>q.id).filter(id=>data.completed.includes(id));
+  return {day,completed,counts:normalizeCounts(data)};
+ }catch{return {day,completed:[],counts:{}};}
 }
 export function claimQuest(id,day=localQuestDay()){
-const quest=DAILY_QUESTS.find(q=>q.id===id);if(!quest||day!==localQuestDay())return {claimed:false,quest};
-const current=readQuests(day);if(current.completed.includes(id))return {claimed:false,quest};
-const next={version:1,day,completed:[...current.completed,id]};
-try{localStorage.setItem(QUEST_KEY,JSON.stringify(next));}catch{return {claimed:false,quest};}
-return {claimed:true,quest,completed:next.completed};
+ const quest=DAILY_QUESTS.find(q=>q.id===id);
+ if(!quest||day!==localQuestDay())return {claimed:false,quest};
+ const current=readQuests(day);
+ const firstCompletion=!current.completed.includes(id);
+ const counts={...current.counts,[id]:(current.counts[id]||0)+1};
+ const next={version:2,day,completed:firstCompletion?[...current.completed,id]:current.completed,counts};
+ try{localStorage.setItem(QUEST_KEY,JSON.stringify(next));}catch{return {claimed:false,quest};}
+ return {claimed:true,firstCompletion,quest,completed:next.completed,counts};
 }

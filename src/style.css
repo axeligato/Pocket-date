@@ -478,3 +478,27 @@ html,body,#root{background:#000;color:#F5F5F5}
 .pocket-home .pocket-dialogue,.pocket-home .pd-conversation{background:#181818!important;border-color:#777!important;box-shadow:none!important}
 .pocket-home .pocket-dialogue p{color:#F5F5F5!important}
 .pd-home-minigame{background:#101010;color:#F5F5F5}
+
+
+/* Minimal companion identity and repeatable daily activity stickers. */
+.pd-companion-header{padding-top:12px;padding-bottom:12px}
+.pd-companion-identity{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+.pd-companion-name{font-size:26px}
+.pd-relationship-status{display:inline-flex;align-items:center;min-height:26px;padding:4px 10px;border:1px solid #F472B6;border-radius:999px;background:#25141D;color:#FFD1E6;font-size:11px;font-weight:800;letter-spacing:.2px}
+.pd-daily-reward{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:4px;flex-shrink:0}
+.pd-daily-reward small{font-size:11px;color:#C7C7C7;font-weight:700}
+.pd-daily-sticker-count{display:inline-flex;align-items:center;gap:4px;padding:5px 8px;border:1px solid #777;border-radius:999px;background:#252525;color:#FACC15;font-size:12px;font-weight:900;white-space:nowrap}
+.pd-daily-sticker-mini{display:inline-flex;align-items:center;gap:3px}
+.pd-daily-sticker-mini small{font-size:11px;color:#FACC15;font-weight:800}
+@media(max-width:360px){.pd-daily-sticker-count{padding:4px 6px}.pd-companion-identity{gap:6px}}
+
+
+/* Streamlined Kai identity and repeatable daily sticker counts. */
+.pd-companion-identity{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pd-relationship-status{display:inline-flex;align-items:center;min-height:28px;padding:4px 11px;border:1px solid #F472B6;border-radius:999px;background:#25151F;color:#FFD4E7;font-size:12px;font-weight:800;letter-spacing:.2px}
+.pd-daily-reward{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.pd-daily-sticker-count{display:inline-flex;align-items:center;gap:4px;min-width:49px;justify-content:center;border:1px solid #FACC15;border-radius:999px;padding:5px 8px;background:#30290A;color:#FFE36C;font-size:12px;font-weight:900;white-space:nowrap}
+.pd-daily-reward small{font-size:11px;color:#D4D4D4}
+.pd-daily-sticker-mini small{font-size:11px;font-weight:900}
+.pocket-home .pocket-character{margin-top:8px}
+@media(max-width:360px){.pd-companion-identity{gap:7px}.pd-relationship-status{font-size:11px}.pd-daily-reward{gap:2px}.pd-daily-sticker-count{padding:4px 6px}}
