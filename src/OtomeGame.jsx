@@ -516,8 +516,8 @@ export default function OtomeGame(){
   const activeTabColor=TABS.find(t=>t.id===tab)?.color||PALETTE.yellow;
 
   return(
-    <div className="pocket-app" style={{minHeight:"100dvh",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
-      fontFamily:"'Nunito',sans-serif",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden"}}>
+    <div className="pocket-app" style={{minHeight:"100dvh",width:"100%",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
+      fontFamily:"'Nunito',sans-serif",display:"flex",flexDirection:"column",position:"relative",overflow:"visible"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
         :root{--pocket-ink:#F4EEE7;--pocket-paper:#182930;--pocket-outline:3px solid var(--pocket-ink);--pocket-shadow:4px 5px 0 var(--pocket-ink)}
@@ -607,23 +607,26 @@ export default function OtomeGame(){
         }
       `}</style>
 
-      {/* ── Header ── */}
-      <div style={{background:activeTabColor,borderBottom:"3px solid "+PALETTE.navy,padding:"14px 18px 12px",
-        display:"flex",justifyContent:"space-between",alignItems:"flex-start",flexShrink:0,
-        transition:"background 0.3s ease",position:"relative",overflow:"hidden"}}>
-        {/* Deco dots */}
-        <div style={{position:"absolute",top:6,left:"50%",width:12,height:12,borderRadius:"50%",background:"rgba(255,255,255,0.35)",transform:"translateX(-50%)"}}/>
-        <div>
-          <div style={{fontSize:10,letterSpacing:3,color:PALETTE.navy+"bb",textTransform:"uppercase",fontWeight:900,marginBottom:1}}>Your Companion</div>
-          <div style={{fontFamily:"'Fredoka One',cursive",fontSize:26,color:PALETTE.navy,lineHeight:1}}>{CHARACTER.name}</div>
-          <div style={{fontSize:11,color:PALETTE.navy+"99",marginTop:1,fontStyle:"italic"}}>{CHARACTER.title}</div>
-        </div>
-        <div className="pd-header-actions"><button className="pd-header-settings" type="button" aria-label={tab==="care"?"Close settings":"Open settings"} aria-pressed={tab==="care"} onClick={openSettings} style={{minWidth:44,minHeight:44,border:"2px solid "+PALETTE.navy,borderRadius:14,background:tab==="care"?"#E4BC83":PALETTE.paper,color:PALETTE.navy,fontSize:21,cursor:"pointer"}}>⚙️</button><div style={{background:PALETTE.paper,border:"2.5px solid "+PALETTE.navy,borderRadius:99,padding:"6px 14px",
-          display:"flex",alignItems:"center",gap:5,boxShadow:`3px 3px 0 ${PALETTE.navy}`}}>
-          <span style={{fontSize:14}}>🌸</span>
-          <span style={{fontWeight:900,fontSize:15,color:PALETTE.navy}}>{coins}</span>
-        </div></div>
+      {/* Settings is a utility control above the companion/currency header. */}
+      <div className="pd-utility-bar">
+        <button type="button" className="pd-utility-settings"
+          aria-label={tab==="care"?"Close settings":"Open settings"}
+          aria-pressed={tab==="care"} onClick={openSettings}>
+          <span aria-hidden="true">⚙️</span><span>Settings</span>
+        </button>
       </div>
+      {/* Kai and flowers are content identity/currency, not navigation. */}
+      <header className="pd-companion-header" style={{background:activeTabColor}}>
+        <div className="pd-companion-identity">
+          <div className="pd-companion-eyebrow">Your Companion</div>
+          <div className="pd-companion-name">{CHARACTER.name}</div>
+          <div className="pd-companion-title">{CHARACTER.title}</div>
+        </div>
+        <div className="pd-flower-count" aria-label={coins+" flowers"}>
+          <span aria-hidden="true">🌸</span>
+          <span>{coins}</span>
+        </div>
+      </header>
 
       {tab==="home"&&<>
       {/* ── XP + Affection bars ── */}
@@ -656,7 +659,7 @@ export default function OtomeGame(){
       </>}
 
       {/* ── Content ── */}
-      <div className="pocket-content" style={{flex:1,overflow:"auto",minHeight:0}}>
+      <div className="pocket-content" style={{flex:"1 0 auto",overflow:"visible",minHeight:0}}>
 
         {/* HOME */}
         {tab==="home"&&(
