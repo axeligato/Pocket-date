@@ -7,6 +7,7 @@ const [reaction,setReaction]=useState("");
 const [recentSticker,setRecentSticker]=useState(null);
 const [pendingRecap,setPendingRecap]=useState(null);
 const dismissReaction=()=>{setReaction("");setPendingRecap(null);setRecentSticker(null);};
+useEffect(()=>{if(!reaction)return;const onKeyDown=e=>{if(e.key==="Escape")dismissReaction();};window.addEventListener("keydown",onKeyDown);return()=>window.removeEventListener("keydown",onKeyDown);},[reaction]);
 const [saveError,setSaveError]=useState(false);
 useEffect(()=>{const sync=()=>{const today=localQuestDay();const latest=readQuests(today).completed;if(today!==day){setDay(today);setReaction("");setRecentSticker(null);setPendingRecap(null);setSaveError(false);}setCompleted(latest);};const timer=setInterval(sync,60000);window.addEventListener("focus",sync);window.addEventListener("storage",sync);return()=>{clearInterval(timer);window.removeEventListener("focus",sync);window.removeEventListener("storage",sync);};},[day]);
 function finish(id){const today=localQuestDay();if(today!==day){setDay(today);setCompleted(readQuests(today).completed);setReaction("");setRecentSticker(null);setPendingRecap(null);return;}const result=claimQuest(id,today);if(!result.claimed){setSaveError(true);return;}setSaveError(false);setCompleted(result.completed);setReaction(result.quest.reaction);setRecentSticker(result.quest);setPendingRecap(result.quest.id);onEarnXp?.(result.quest.xp);}
