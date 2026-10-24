@@ -92,15 +92,15 @@ const TAP_REWARD_XP = 1;
 const LEVEL_UP_FLOWERS = 15;
 
 const PALETTE = {
-  cream: CARE_COLORS.paper,
-  paper: CARE_COLORS.surface,
-  red: CARE_COLORS.rose,
-  yellow: CARE_COLORS.gold,
-  green: CARE_COLORS.gold,
-  blue: CARE_COLORS.rose,
-  navy: CARE_COLORS.ink,
-  pink: CARE_COLORS.rose,
-  orange: CARE_COLORS.gold,
+  cream: "#000000",
+  paper: "#141414",
+  red: "#FB7185",
+  yellow: "#FACC15",
+  green: "#4ADE80",
+  blue: "#60A5FA",
+  navy: "#F5F5F5",
+  pink: "#F472B6",
+  orange: "#FBBF24",
 };
 
 function getMood(a){ return a<20?"tired":a<40?"neutral":a<65?"happy":a<85?"flustered":"pumped"; }
@@ -622,10 +622,7 @@ export default function OtomeGame(){
           <div className="pd-companion-name">{CHARACTER.name}</div>
           <div className="pd-companion-title">{CHARACTER.title}</div>
         </div>
-        <div className="pd-flower-count" aria-label={coins+" flowers"}>
-          <span aria-hidden="true">🌸</span>
-          <span>{coins}</span>
-        </div>
+
       </header>
 
       {tab==="home"&&<>
@@ -639,9 +636,9 @@ export default function OtomeGame(){
           </div>
           <span style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:900}}>{level>=MAX_LEVEL?"MAX":`${xp}/${XP_PER_LEVEL}`}</span>
         </div>
-        <div style={{height:10,background:CARE_COLORS.paper,borderRadius:99,border:"1.5px solid #526773",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:"#242424",borderRadius:99,border:"1.5px solid #686868",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${level>=MAX_LEVEL?100:(xp/XP_PER_LEVEL)*100}%`,
-            background:`linear-gradient(90deg,${PALETTE.yellow},${PALETTE.orange})`,
+            background:"#FACC15",
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(255,180,0,0.5)"}}/>
         </div>
         {/* Affection row */}
@@ -649,9 +646,9 @@ export default function OtomeGame(){
           <span style={{fontSize:10,color:PALETTE.red,fontWeight:900,letterSpacing:1}}>♡ AFFECTION</span>
           <span style={{fontSize:10,color:CARE_COLORS.muted,fontWeight:700}}>{affection}%</span>
         </div>
-        <div style={{height:10,background:CARE_COLORS.rose,borderRadius:99,border:"1.5px solid #A9D6E5",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:"#242424",borderRadius:99,border:"1.5px solid #686868",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${affection}%`,
-            background:`linear-gradient(90deg,${PALETTE.pink},${PALETTE.red})`,
+            background:"#F472B6",
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(239,71,111,0.4)"}}/>
         </div>
       </div>
@@ -678,7 +675,7 @@ export default function OtomeGame(){
               <div aria-hidden="true" style={{position:"absolute",inset:"15% 14% 13%",border:"2px dashed rgba(244,238,231,.38)",borderRadius:"48%",transform:"rotate(9deg)",zIndex:0}}/>
               <span className="pocket-sticker" aria-hidden="true" style={{top:"12%",left:"7%",fontSize:27,transform:"rotate(-13deg)",textShadow:"2px 2px 0 #182930"}}>✦</span>
               <span className="pocket-sticker" aria-hidden="true" style={{right:"8%",bottom:"24%",fontSize:30,transform:"rotate(12deg)",color:CARE_COLORS.rose,textShadow:"2px 2px 0 white"}}>♥</span>
-              <span className="pocket-sticker" aria-hidden="true" style={{top:"22%",right:"6%",background:PALETTE.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px",fontSize:11,transform:"rotate(12deg)",boxShadow:"3px 3px 0 #073B4C"}}>SO CUTE!</span>
+              <span className="pocket-sticker" aria-hidden="true" style={{top:"22%",right:"6%",background:PALETTE.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"5px 10px",fontSize:11,transform:"rotate(12deg)",boxShadow:"3px 3px 0 #073B4C"}}>{new Date().getHours()<11?"A fresh start.":new Date().getHours()<17?"Take your time.":"Rest when you need to."}</span>
               <img className="pocket-character-portrait" key={mood} src={PORTRAITS[MOOD_PORTRAIT[mood]]} alt={`${CHARACTER.name} — ${mood}`}
                 style={{
                   height:315,
@@ -729,19 +726,12 @@ export default function OtomeGame(){
               </p>
             </div>
 
-            {/* Mood pill */}
-            <div className="pocket-mood" style={{display:"inline-flex",alignItems:"center",gap:7,
-              background:moodColor[mood],border:"2.5px solid "+PALETTE.navy,
-              borderRadius:99,padding:"6px 16px",boxShadow:`3px 3px 0 ${PALETTE.navy}`,marginBottom:16}}>
-              <span style={{fontSize:15}}>{moodEmoji[mood]}</span>
-              <span style={{fontSize:11,textTransform:"capitalize",color:PALETTE.navy,fontWeight:900,letterSpacing:1}}>{mood}</span>
-            </div>
+
           </div>
         )}
 
         {tab==="home"&&<DailyQuests onEarnXp={awardXp}/>}
         {tab==="home"&&<div className="pd-home-minigame"><KaiMiniGame onReward={amount=>setCoins(c=>c+amount)}/></div>}
-        {tab==="home"&&<button className="pd-today-care-link" type="button" onClick={()=>setTab("wellness")}><span className="pd-today-care-icon" aria-hidden="true">♡</span><span><strong>Need a quiet moment?</strong><small>Breathe, unwind, or talk with Kai</small></span><span className="pd-today-care-arrow" aria-hidden="true">→</span></button>}
         {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
         {/* Kai: two destinations, with chapters inside Dates rather than a third tab. */}
