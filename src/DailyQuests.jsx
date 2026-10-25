@@ -29,7 +29,7 @@ return <section className="pd-daily-quests" aria-labelledby="pd-daily-heading">
     <span className="pd-daily-reaction-eyebrow">Activity completed</span>
     <h3 id="pd-daily-reaction-title">A note from Kai</h3>
     <p id="pd-daily-reaction-message">{reaction}</p>
-    {pendingRecap&&<span className="pd-daily-reaction-reward">{pendingCount===1?"+"+(recentSticker?.xp||0)+" XP · ":""}Sticker ×{pendingCount}</span>}
+    {pendingCount===1&&<span className="pd-daily-reaction-reward">+{recentSticker?.xp||0} XP</span>}
     <button type="button" className="pd-daily-reaction-dismiss" onClick={dismissReaction} autoFocus>Let’s go!</button>
   </div>
 </div>}
