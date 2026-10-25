@@ -692,14 +692,16 @@ export default function OtomeGame(){
           </div>
         )}
 
+        {tab==="home"&&<RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>}
         {tab==="home"&&<DailyQuests onEarnXp={awardXp}/>}
         {tab==="home"&&<div className="pd-home-minigame"><KaiMiniGame onReward={amount=>setCoins(c=>c+amount)}/></div>}
         {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
-        {/* Kai: two destinations, with chapters inside Dates rather than a third tab. */}
+        {/* Separate character discoveries, repeatable hangouts and story chapters. */}
         {tab==="bio"&&<nav className="pd-kai-nav" aria-label="Kai sections">
           <button type="button" aria-current={kaiSection==="profile"?"page":undefined} onClick={()=>setKaiSection("profile")}>Profile</button>
-          <button type="button" aria-current={kaiSection==="dates"?"page":undefined} onClick={()=>setKaiSection("dates")}>Dates</button>
+          <button type="button" aria-current={kaiSection==="dates"?"page":undefined} onClick={()=>setKaiSection("dates")}>Hangouts</button>
+          <button type="button" aria-current={kaiSection==="story"?"page":undefined} onClick={()=>setKaiSection("story")}>Story</button>
         </nav>}
         {tab==="bio"&&kaiSection==="profile"&&<><BioTab memoryAlbum={memoryAlbum} completedStories={completedStories}/><div className="pd-keepsakes"><CareMemories/></div></>}
 
@@ -708,8 +710,8 @@ export default function OtomeGame(){
         {/* DATES */}
         {tab==="bio"&&kaiSection==="dates"&&(
           <div className="pocket-dates" style={{padding:"22px 16px 32px"}}>
-            <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>DATES</div>
-            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Dates</div>
+            <div style={{display:"inline-block",background:PALETTE.yellow,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>HANGOUTS</div>
+            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Hangouts</div>
             <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Play a date to discover different outcomes. Revisit unlocked scenes whenever you like.</p>
             <div style={{display:"grid",gap:16}}>
               {DATES.map((date,i)=>{
@@ -736,12 +738,11 @@ export default function OtomeGame(){
                 </article>;
               })}
             </div>
-            <RomanceMoment affection={affection} jogMemory={jogMemory} onChoose={amount=>setAffection(a=>Math.min(a+amount,100))}/>
           </div>
         )}
 
         {/* STORIES */}
-        {tab==="bio"&&kaiSection==="dates"&&(
+        {tab==="bio"&&kaiSection==="story"&&(
           <div className="pocket-stories" style={{padding:"22px 16px 32px"}}>
             <div style={{display:"inline-block",background:PALETTE.pink,border:"2px solid "+PALETTE.navy,borderRadius:8,padding:"4px 10px",transform:"rotate(-3deg)",fontSize:10,fontWeight:900,letterSpacing:1.3,color:PALETTE.navy,boxShadow:"3px 3px 0 "+PALETTE.navy}}>CHAPTERS</div>
             <div style={{fontFamily:"'Fredoka One',cursive",fontSize:27,color:PALETTE.navy,margin:"13px 0 5px"}}>Story chapters</div>

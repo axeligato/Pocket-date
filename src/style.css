@@ -510,3 +510,5 @@ html,body,#root{background:#000;color:#F5F5F5}
 
 .pd-utility-bar{justify-content:space-between;gap:12px}
 .pd-app-name{font-family:"Fredoka One",cursive;font-size:22px;line-height:1.2;color:#F5F5F5}
+
+.pd-kai-nav{grid-template-columns:repeat(3,minmax(0,1fr))}

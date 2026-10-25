@@ -11,9 +11,9 @@ function load(){try{const value=JSON.parse(localStorage.getItem(KEY)||"null");re
 export default function CareRoutine(){
  const [selected,setSelected]=useState(load);
  const choose=id=>{const next=id===selected?null:id;setSelected(next);try{if(next)localStorage.setItem(KEY,JSON.stringify(next));else localStorage.removeItem(KEY);}catch{/* Optional preference */}};
- return <section aria-label="Your gentle routine" style={{margin:"24px 0",color:C.ink}}>
-  <h3 style={{fontSize:21,margin:"0 0 8px"}}>Your little routine ♡</h3>
-  <p style={{fontSize:13,color:C.muted,margin:"0 0 12px",lineHeight:1.6}}>Pick a favorite moment to return to. No streaks, deadlines or notifications.</p>
+ return <section aria-label="Preferred relaxation activity" style={{margin:"24px 0",color:C.ink}}>
+  <h3 style={{fontSize:21,margin:"0 0 8px"}}>Preferred relaxation activity</h3>
+  <p style={{fontSize:13,color:C.muted,margin:"0 0 12px",lineHeight:1.6}}>Save your preferred relaxation activity for a morning pause, midday reset or evening wind-down. This preference does not schedule reminders.</p>
   <div style={{display:"grid",gap:9}}>
    {ROUTINES.map(r=><div key={r.id} style={{display:"flex",gap:10,alignItems:"center",padding:12,background:selected===r.id?"rgba(169,214,229,.28)":C.surface,border:"1px solid rgba(7,59,76,.2)",borderRadius:16}}>
     <span aria-hidden="true" style={{fontSize:24}}>{r.icon}</span>
@@ -21,6 +21,6 @@ export default function CareRoutine(){
     <button type="button" aria-pressed={selected===r.id} onClick={()=>choose(r.id)} style={{border:"1px solid "+C.ink,borderRadius:12,padding:"9px",minHeight:44,background:selected===r.id?C.rose:"white",fontSize:11,fontWeight:800,color:C.ink,cursor:"pointer"}}>{selected===r.id?"Saved ✓":"Save"}</button>
    </div>)}
   </div>
-  {selected&&<p style={{fontSize:12,color:C.muted,margin:"10px 0 0"}}>♡ Your preference is saved on this device. Choose the matching activity above whenever you want.</p>}
+  {selected&&<p style={{fontSize:12,color:C.muted,margin:"10px 0 0"}}>♡ Your preference is saved on this device. Open Care to start the matching breathing, grounding or wind-down activity whenever you want.</p>}
  </section>;
 }

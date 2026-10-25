@@ -60,7 +60,6 @@ export default function CareMode({mode="home",onOpenPreferences}){
       <div className="pd-care-hero"><span className="pd-care-eyebrow">A MOMENT FOR YOU ♡</span><p>{getPersona()==="jenny"?"Jenny says: I saved us a quiet moment. What sounds good?":"Kai says: Hey, you. We can take things slow today. What would help?"}</p><span className="pd-care-hero-footer">No pressure. Just a little care, together.</span></div>
 
       <div className="pd-care-activities"><div className="pd-care-section-heading"><div><span className="pd-care-eyebrow">QUICK START</span><h3>What would help right now?</h3></div></div><WellnessToolkit onComplete={onSessionComplete}/></div>
-      <CareRoutine/>
       <div className="pd-care-feeling"><CycleCare/></div>
       <div className="pd-care-feeling"><div className="pd-care-section-heading"><div><span className="pd-care-eyebrow">CHECK IN</span><h3>Talk about your day</h3></div></div><FeelingCheckIn/></div>
     </div>}
@@ -105,6 +104,7 @@ export default function CareMode({mode="home",onOpenPreferences}){
       {response&&<button type="button" onClick={()=>setResponse("I'm glad we got a little moment together. Take it at your own pace. ♡")} style={{background:CARE_COLORS.gold,border:"2px solid "+INK,borderRadius:12,padding:"10px 14px",fontWeight:900,color:INK,cursor:"pointer",marginBottom:16}}>♡ Thanks, Kai</button>}
 
     </>}
+    {mode==="preferences"&&<CareRoutine/>}
     {mode==="preferences"&&<details style={careSectionStyle}>
       <summary style={careSummaryStyle}><span>🎂 Special days</span><span aria-hidden="true">＋</span></summary>
       <div style={{padding:"0 12px 15px"}}><Milestones/></div>
