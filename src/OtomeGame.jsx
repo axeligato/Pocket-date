@@ -372,7 +372,6 @@ function BioTab({memoryAlbum=[],completedStories=[]}){
         <span className="pd-kai-profile-eyebrow">CHARACTER PROFILE</span>
         <h2>{CHARACTER.name}</h2>
         <p className="pd-kai-profile-title">{CHARACTER.title}</p>
-        <p className="pd-kai-profile-bio">{CHARACTER.bio}</p>
         <dl className="pd-kai-profile-basics"><div><dt>Age</dt><dd>{CHARACTER.age}</dd></div><div><dt>Sign</dt><dd>{CHARACTER.sign}</dd></div></dl>
       </div>
     </header>
@@ -610,6 +609,7 @@ export default function OtomeGame(){
 
       {/* Settings is a utility control above the companion/currency header. */}
       <div className="pd-utility-bar">
+        <span className="pd-app-name">Pocket Date</span>
         <button type="button" className="pd-utility-settings"
           aria-label={tab==="care"?"Close settings":"Open settings"}
           aria-pressed={tab==="care"} onClick={openSettings}>
@@ -713,10 +713,11 @@ export default function OtomeGame(){
             <p style={{color:CARE_COLORS.muted,fontSize:13,margin:"0 0 21px",fontWeight:700,lineHeight:1.6}}>Play a date to discover different outcomes. Revisit unlocked scenes whenever you like.</p>
             <div style={{display:"grid",gap:16}}>
               {DATES.map((date,i)=>{
-                const ok=coins>=date.cost;
                 const memories=dateMemories(date.id,memoryAlbum);
-                return <article key={date.id} className="pd-date-entry"><button type="button" disabled={!ok} onClick={()=>goDate(date)}
-                  aria-label={date.label+", "+date.cost+" flowers"+(ok?"":", not enough flowers")}
+                const replay=memories.length>0;
+                const ok=replay||coins>=date.cost;
+                return <article key={date.id} className="pd-date-entry"><button type="button" disabled={!ok} onClick={()=>goDate(date,{replay})}
+                  aria-label={(replay?"Replay date: ":"Play date: ")+date.label+(replay?"":", "+date.cost+" flowers")+(ok?"":", not enough flowers")}
                   style={{display:"flex",width:"100%",position:"relative",textAlign:"left",alignItems:"stretch",padding:0,background:ok?CARE_COLORS.surface:CARE_COLORS.paper,border:"3px solid "+(ok?PALETTE.navy:CARE_COLORS.muted),borderRadius:19,boxShadow:ok?"5px 6px 0 "+PALETTE.navy:"none",cursor:ok?"pointer":"not-allowed",opacity:ok?1:.78,overflow:"hidden",transform:"rotate("+(i%2===0?-1:1)+"deg)",fontFamily:"'Nunito',sans-serif"}}>
                   <div aria-hidden="true" style={{width:96,minWidth:96,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:ok?date.color:CARE_COLORS.paper,borderRight:"3px dashed "+PALETTE.navy,padding:"16px 7px"}}>
                     <span style={{fontSize:40,lineHeight:1.2}}>{date.emoji}</span>
@@ -726,12 +727,12 @@ export default function OtomeGame(){
                     <div style={{fontFamily:"'Fredoka One',cursive",fontSize:17,color:PALETTE.navy,lineHeight:1.25}}>{date.label}</div>
                     <div style={{fontSize:12,color:CARE_COLORS.muted,fontWeight:800,marginTop:8}}>{memories.length?memories.length+" memories discovered":"No memories discovered yet"}</div>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:6,marginTop:13,flexWrap:"wrap"}}>
-                      {date.cost>0&&<span style={{background:CARE_COLORS.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"4px 9px",fontSize:11,fontWeight:900,color:PALETTE.navy}}>🌸 {date.cost}</span>}
-                      <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy}}>{ok?"LET'S GO ↗":"🔒 NEED FLOWERS"}</span>
+                      {!replay&&date.cost>0&&<span style={{background:CARE_COLORS.paper,border:"2px solid "+PALETTE.navy,borderRadius:99,padding:"4px 9px",fontSize:11,fontWeight:900,color:PALETTE.navy}}>🌸 {date.cost}</span>}
+                      <span style={{fontSize:10,fontWeight:900,color:PALETTE.navy}}>{replay?"Replay date ↗":ok?"Play date ↗":"🔒 NEED FLOWERS"}</span>
                     </div>
                   </div>
                 </button>
-                {memories.length>0&&<section className="pd-date-memories" aria-label={date.label+" memories"}><h3>Memories from this date</h3><div className="pd-date-memory-list">{memories.map(memory=><div className="pd-date-memory" key={memory.id}><span aria-hidden="true">✦</span><div><strong>{memory.title}</strong><p>{memory.description}</p></div></div>)}</div><button type="button" className="pd-date-revisit" onClick={()=>goDate(date,{replay:true})}>Replay date</button></section>}
+                {memories.length>0&&<section className="pd-date-memories" aria-label={date.label+" memories"}><h3>Memories from this date</h3><div className="pd-date-memory-list">{memories.map(memory=><div className="pd-date-memory" key={memory.id}><span aria-hidden="true">✦</span><div><strong>{memory.title}</strong><p>{memory.description}</p></div></div>)}</div></section>}
                 </article>;
               })}
             </div>

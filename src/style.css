@@ -507,3 +507,6 @@ html,body,#root{background:#000;color:#F5F5F5}
 .pd-rps-dialog{width:min(360px,calc(100% - 32px));max-height:80dvh;overflow:auto;padding:22px;border:2px solid #777;border-radius:20px;background:#202020;color:#F5F5F5;font-family:'Nunito',sans-serif}
 .pd-rps-dialog::backdrop{background:rgba(0,0,0,.7)}
 .pd-rps-dialog p{font-size:17px;line-height:1.5;margin:0 0 18px}
+
+.pd-utility-bar{justify-content:space-between;gap:12px}
+.pd-app-name{font-family:"Fredoka One",cursive;font-size:22px;line-height:1.2;color:#F5F5F5}
