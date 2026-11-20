@@ -1,11 +1,11 @@
-// Shared Care Mode colors: a warm midnight base, gentle teal and plum accents, and readable light ink.
+// Shared Moonlit Letter colors. Used by gameplay, dialogue, Care and Settings.
 export const CARE_COLORS={
- ink:"#F5F5F5",
- paper:"#000000",
- surface:"#151515",
- muted:"#C7C7C7",
- rose:"#252525",
- gold:"#363636",
+ ink:"#382A3B",
+ paper:"#FFF9F4",
+ surface:"#FFFDFB",
+ muted:"#756776",
+ rose:"#F8EAF0",
+ gold:"#F2DCE7",
 };
-export const careSectionStyle={border:"3px solid "+CARE_COLORS.ink,borderRadius:19,background:CARE_COLORS.surface,boxShadow:"0 6px 20px rgba(0,0,0,.22)",overflow:"hidden"};
-export const careSummaryStyle={cursor:"pointer",padding:"16px 17px",fontFamily:"'Fredoka One',cursive",fontSize:17,color:CARE_COLORS.ink,listStyle:"none",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8};
+export const careSectionStyle={border:"1px solid #E6CBD7",borderRadius:20,background:CARE_COLORS.surface,boxShadow:"0 10px 28px rgba(91,49,72,.07)",overflow:"hidden"};
+export const careSummaryStyle={cursor:"pointer",padding:"16px 17px",fontFamily:"'DM Sans',sans-serif",fontSize:16,fontWeight:700,color:CARE_COLORS.ink,listStyle:"none",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8};
