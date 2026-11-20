@@ -566,6 +566,7 @@ export default function OtomeGame(){
         {/* HOME */}
         {tab==="home"&&(
           <div className="pocket-home pd-home" style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
+            <header className="cozy-intro"><span className="cozy-kicker">YOUR LITTLE CORNER OF THE WORLD</span><h1>Today with Kai <span aria-hidden="true">♡</span></h1><p>Slow moments, sweet conversations, and a little time together.</p></header>
             {/* Tap area */}
             <div className="pocket-character" role="button" tabIndex={0} aria-label={`Show affection to ${CHARACTER.name}`} onClick={tapChar} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tapChar(e);}}}
               style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
@@ -601,8 +602,8 @@ export default function OtomeGame(){
               ))}
 
             </div>
-
-
+            <div className="cozy-dialogue" role="status" aria-live="polite"><span className="cozy-kicker">A NOTE FROM KAI</span><p>“{message}”</p><small>{tapHint?"Tap Kai to say hello":"Just between the two of you ♡"}</small></div>
+            <div className="cozy-actions"><button type="button" onClick={()=>{setTab("bio");setKaiSection("dates");}}>Plan a date <span aria-hidden="true">↗</span></button><button type="button" onClick={()=>{setTab("bio");setKaiSection("profile");}}>Meet Kai <span aria-hidden="true">→</span></button></div>
           </div>
         )}
 
