@@ -77,3 +77,23 @@ body{font-family:'DM Sans',sans-serif!important;background:radial-gradient(circl
 @media(min-width:768px){.pocket-app{border-left:1px solid #ebd8df!important;border-right:1px solid #ebd8df!important}.pocket-home.pd-home{display:flex!important}.pocket-home .pocket-character-portrait{height:350px!important}}
 @media(max-width:380px){.cozy-actions{grid-template-columns:1fr}.cozy-intro{padding-top:20px}.cozy-dialogue{padding:16px 18px}.pocket-app .pd-daily-quests{margin-inline:10px!important}}
 @media(prefers-reduced-motion:reduce){.pocket-app *,.pocket-app *::before,.pocket-app *::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Kai's portrait: a simple rectangular keepsake frame, not the old dark circle */
+.pocket-home .pocket-character{padding:20px 18px 14px!important}
+.pocket-home .cozy-portrait-frame{
+  position:relative;z-index:1;display:flex;align-items:center;justify-content:center;
+  width:min(100%,340px);height:360px;overflow:hidden;
+  padding:12px;background:linear-gradient(155deg,#fffdfb,#f8e8ef);
+  border:1px solid #e4c6d3;border-radius:20px;
+  box-shadow:0 15px 38px rgba(113,66,87,.12),inset 0 0 0 5px rgba(255,255,255,.55);
+}
+.pocket-home .cozy-portrait-frame::before{
+  content:"";position:absolute;inset:12px;pointer-events:none;
+  border-radius:12px;background:linear-gradient(145deg,#f3dce7,#e7dff1 65%,#f8e9de);
+}
+.pocket-home .cozy-portrait-frame .pocket-character-portrait{
+  position:relative;z-index:1;display:block;width:100%!important;height:100%!important;
+  max-width:100%!important;max-height:none!important;object-fit:contain!important;
+  object-position:center center;filter:none!important;
+}
+@media(max-width:380px){.pocket-home .cozy-portrait-frame{height:315px;width:min(100%,300px)}}
