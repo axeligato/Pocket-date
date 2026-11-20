@@ -82,10 +82,10 @@ const CHARACTER = {
 };
 
 const DATES = [
-  { id:"jog",     label:"Morning Jog",    emoji:"🌅", xp:15, cost:0,  duration:2200, color:"#A9D6E5" },
-  { id:"stadium", label:"Watch His Game", emoji:"🏟️", xp:30, cost:15, duration:3500, color:"#EF476F" },
-  { id:"ramen",   label:"Ramen After",    emoji:"🍜", xp:20, cost:8,  duration:2800, color:"#06D6A0" },
-  { id:"gym",     label:"Gym Together",   emoji:"💪", xp:25, cost:12, duration:3000, color:"#118AB2" },
+  { id:"jog",     label:"Morning Jog",    emoji:"🌅", xp:15, cost:0,  duration:2200, color:"#F6DFE9" },
+  { id:"stadium", label:"Watch His Game", emoji:"🏟️", xp:30, cost:15, duration:3500, color:"#C56C88" },
+  { id:"ramen",   label:"Ramen After",    emoji:"🍜", xp:20, cost:8,  duration:2800, color:"#9CC6A3" },
+  { id:"gym",     label:"Gym Together",   emoji:"💪", xp:25, cost:12, duration:3000, color:"#9A99C5" },
 ];
 
 const TAP_REWARD_COOLDOWN_MS = 30000;
@@ -138,7 +138,7 @@ function StoryReader({story,onClose,onComplete}){
         <div style={{height:"100%",width:((idx+1)/lines.length*100)+"%",background:col,transition:"width .2s ease"}}/>
       </div>
     </div>
-    <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",minHeight:0,position:"relative",isolation:"isolate",background:"radial-gradient(circle at 20% 25%,#2B414B,transparent 45%),#182930"}}>
+    <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",overflow:"hidden",minHeight:0,position:"relative",isolation:"isolate",background:"radial-gradient(circle at 20% 25%,#F0DDE7,transparent 45%),#E6D8E8"}}>
       <div aria-hidden="true" style={{position:"absolute",height:"min(50dvh,370px)",width:"min(78vw,370px)",background:col,border:"3px solid "+PALETTE.navy,borderRadius:"46% 54% 50% 50% / 54% 44% 56% 46%",transform:"rotate(-9deg)",boxShadow:"7px 9px 0 "+PALETTE.navy,opacity:.75}}/>
       <span aria-hidden="true" style={{position:"absolute",top:"13%",left:"12%",fontSize:28,transform:"rotate(-13deg)"}}>✦</span>
       <span aria-hidden="true" style={{position:"absolute",top:"19%",right:"11%",fontSize:25,transform:"rotate(13deg)"}}>💗</span>
@@ -189,7 +189,7 @@ function MorningJog({date,onComplete,previousChoice}){
         <div style={{fontFamily:"'Fredoka One',cursive",fontSize:21,color:PALETTE.navy}}>🌅 Morning Jog</div>
         <div style={{fontSize:12,color:PALETTE.navy}}>Choose how the conversation unfolds.</div>
       </div>
-      <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#345D6A,#182930)"}}>
+      <div style={{flex:"1 1 auto",minHeight:180,display:"flex",alignItems:"center",justifyContent:"center",position:"relative",isolation:"isolate",background:"linear-gradient(180deg,#E5D5E5,#E6D8E8)"}}>
         <div aria-hidden="true" style={{position:"absolute",width:"min(75vw,290px)",height:"min(75vw,290px)",background:date.color,border:"3px solid "+PALETTE.navy,borderRadius:"48% 52% 44% 56%",transform:"rotate(-9deg)",boxShadow:"7px 8px 0 "+PALETTE.navy,opacity:.85}}/>
         <span aria-hidden="true" style={{position:"absolute",top:18,left:"10%",fontSize:27,transform:"rotate(-15deg)"}}>✦</span>
         <span aria-hidden="true" style={{position:"absolute",right:"10%",top:"18%",fontSize:26,transform:"rotate(15deg)"}}>💗</span>
@@ -506,7 +506,7 @@ export default function OtomeGame(){
 
   const openSettings=()=>{if(tab==="care"){setTab(previousTab);}else{setPreviousTab(tab);setTab("care");}};
   const headerColors=[CARE_COLORS.rose];
-  const activeTabColor="#111111";
+  const activeTabColor="#A65A79";
 
   return(
     <div className="pocket-app" style={{minHeight:"100dvh",width:"100%",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
@@ -543,7 +543,7 @@ export default function OtomeGame(){
         </div>
         <div style={{height:10,background:"#F1E5EB",borderRadius:99,border:"1px solid #E6CBD7",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${level>=MAX_LEVEL?100:(xp/XP_PER_LEVEL)*100}%`,
-            background:"#FACC15",
+            background:"#C88EAD",
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(255,180,0,0.5)"}}/>
         </div>
         {/* Affection row */}
@@ -553,7 +553,7 @@ export default function OtomeGame(){
         </div>
         <div style={{height:10,background:"#F1E5EB",borderRadius:99,border:"1px solid #E6CBD7",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${affection}%`,
-            background:"#F472B6",
+            background:"#D59AB8",
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(239,71,111,0.4)"}}/>
         </div>
       </div>
