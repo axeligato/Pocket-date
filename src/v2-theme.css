@@ -97,3 +97,39 @@ body{font-family:'DM Sans',sans-serif!important;background:radial-gradient(circl
   object-position:center center;filter:none!important;
 }
 @media(max-width:380px){.pocket-home .cozy-portrait-frame{height:315px;width:min(100%,300px)}}
+
+/* Cross-page palette pass: Home, Kai, Dates, Stories, Care, Settings and overlays */
+:root{--pd-ink:#463449!important;--pd-muted:#796b79!important;--pd-paper:#fff9f5!important;--pd-surface:#fffcfa!important;--pd-accent:#a65a79!important;--pocket-ink:#463449!important;--pocket-paper:#fff9f5!important;--pd-outline:3px solid #a65a79!important}
+.pocket-app .pd-care,.pocket-app .pd-care-home,.pocket-app .pd-kai-profile,.pocket-app .pocket-dates,.pocket-app .pocket-stories{background:#fff9f5!important;color:#463449!important}
+.pocket-app :is(.pd-care-hero,.pd-care-dashboard,.pd-care-activities,.pd-care-feeling,.pd-care-encouragement,.pd-care-stats-details,.pd-daily-scrapbook,.pd-date-memories,.pd-date-memory,.pd-kai-profile-group,.pd-kai-fact,.pd-settings-card,.pd-care details,.pd-care-topic,.pd-keepsakes){background:#fffcfa!important;color:#463449!important;border:1px solid #ebd8df!important;box-shadow:0 8px 24px rgba(116,68,88,.06)!important}
+.pocket-app :is(.pd-care-hero,.pd-care-dashboard,.pd-care-activities,.pd-care-feeling,.pd-care-encouragement,.pd-care-stats-details,.pd-daily-scrapbook,.pd-date-memories,.pd-keepsakes){border-radius:22px!important}
+.pocket-app :is(.pd-kai-profile-intro,.pd-kai-profile-basics,.pd-kai-profile-discoveries,.pd-kai-profile-group,.pd-kai-fact,.pd-date-memory,.pd-daily-scrapbook,.pd-daily-quest,.pd-daily-reaction,.pd-care-hero,.pd-care-dashboard,.pd-care-activities,.pd-care-feeling,.pd-care-encouragement,.pd-care-stats-details,.pd-care-topic,.pd-care details,.pd-settings-card) :is(h2,h3,h4,h5,p,strong,small,span,label,summary,dt,dd){color:#463449!important;text-shadow:none!important}
+.pocket-app :is(.pd-daily-intro,.pd-daily-footer,.pd-daily-scrapbook-empty,.pd-kai-profile-bio,.pd-kai-profile-discoveries>p,.pd-care-trend-note,.pd-care-history-footer,.pd-date-memory p){color:#796b79!important}
+.pocket-app :is(.pd-daily-eyebrow,.pd-daily-xp,.pd-daily-scrapbook-title,.pd-kai-profile-eyebrow,.pd-care-eyebrow,.pd-care-hero-footer,.pd-daily-reaction-eyebrow,.pd-daily-reaction-reward){color:#a65a79!important}
+.pocket-app :is(.pd-daily-quest,.pd-daily-sticker,.pd-daily-sticker-mini,.pd-date-memory,.pd-kai-fact,.pd-setting-option,.pd-choice){background:#fff9f5!important;border-color:#ebd8df!important;box-shadow:none!important}
+.pocket-app .pd-daily-quest:disabled{opacity:.7!important}
+.pocket-app .pd-daily-quest[aria-pressed="true"],.pocket-app .pd-feelings .pd-choice[aria-pressed="true"]{background:#f5e1ea!important;border-color:#a65a79!important}
+.pocket-app .pd-daily-done{color:#6a8c70!important}
+.pocket-app .pd-daily-scrapbook-title{font-weight:800}
+.pocket-app .pd-date-entry > button,.pocket-app .pd-date-revisit,.pocket-app .pocket-stories button{background:#fffcfa!important;color:#463449!important;border:1px solid #ebd8df!important;border-radius:18px!important;box-shadow:0 8px 22px rgba(116,68,88,.06)!important;transform:none!important}
+.pocket-app .pd-date-entry > button :is(span,strong,small,p),.pocket-app .pocket-stories button :is(span,strong,small,p){color:#463449!important}
+.pocket-app .pd-date-revisit:disabled{opacity:.55!important}
+.pocket-app :is(.pd-care input,.pd-care select,.pd-care textarea){background:#fffdfb!important;color:#463449!important;border:1px solid #dcbfcc!important;border-radius:12px!important}
+.pocket-app :is(.pd-care input,.pd-care select,.pd-care textarea)::placeholder{color:#9d8997!important}
+.pocket-app .pd-care-encouragement-grid button,.pocket-app .pd-care-history-footer button,.pocket-app .pd-feelings .pd-choice{background:#f7e7ee!important;color:#674358!important;border:1px solid #e9ceda!important;border-radius:14px!important;box-shadow:none!important}
+.pocket-app .pd-care-stats strong,.pocket-app .pd-care-trend-head span{color:#463449!important}
+.pocket-app .pd-care-bar-track{background:#f1e3e9!important}
+.pocket-app .pd-care-bar-fill{background:#c57e9e!important}
+.pocket-app .pd-care-day[aria-pressed="true"] .pd-care-bar-track{outline:2px solid #a65a79!important}
+.pocket-app .pd-daily-reaction-overlay{background:rgba(70,52,73,.45)!important}
+.pocket-app .pd-daily-reaction-dialog{background:#fffcfa!important;color:#463449!important;border:1px solid #ebd8df!important;box-shadow:0 22px 60px rgba(70,52,73,.18)!important}
+.pocket-app .pd-daily-reaction-dismiss{background:#a65a79!important;color:white!important;border-color:#a65a79!important}
+.pocket-app .pd-rps-dialog,.pd-rps-dialog{background:#fffcfa!important;color:#463449!important;border:1px solid #ebd8df!important}
+.pocket-app .pd-home-minigame{background:transparent!important;color:#463449!important}
+.pocket-app .pocket-dialogue,.pocket-app .pd-conversation{background:#fffcfa!important;color:#463449!important;border:1px solid #ebd8df!important;box-shadow:0 10px 26px rgba(116,68,88,.06)!important}
+.pocket-app .pocket-dialogue p{color:#463449!important}
+.pocket-app .pd-today-care-link{background:#fffcfa!important;color:#463449!important;border:1px solid #ebd8df!important;box-shadow:none!important}
+.pocket-app .pd-today-care-link :is(strong,small,span){color:#463449!important}
+.pocket-app .pd-today-care-icon{background:#f7e4ec!important}
+.pocket-app .pocket-tab:not([aria-current="page"]):hover{background:#f9eff3!important}
+.pocket-app :is(.pd-daily-quest,.pd-date-entry>button,.pd-care button,.pd-kai-nav button):focus-visible{outline:3px solid #a65a79!important;outline-offset:3px!important}
