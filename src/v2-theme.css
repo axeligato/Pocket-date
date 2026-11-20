@@ -273,3 +273,24 @@ body, .pocket-app { font-family:'DM Sans',sans-serif !important; }
   .pocket-app :is(.pocket-dates,.pocket-stories) { padding-inline:14px !important; }
   .pd-v2-home-dialogue p { font-size:19px !important; }
 }
+
+/* Contrast-safe replacements for old hardcoded black components */
+.pocket-app .pd-relationship-status { background:#f8eaf0 !important; color:#873c60 !important; border-color:#e6cbd7 !important; }
+.pocket-app .pd-daily-sticker-count,.pocket-app .pd-daily-sticker-mini { background:#f8eaf0 !important; color:#873c60 !important; border-color:#e6cbd7 !important; }
+.pocket-app .pd-daily-sticker-mini small,.pocket-app .pd-daily-reward small { color:#756776 !important; }
+.pocket-app .pd-keepsakes { background:#fffdfb !important; border-color:#e6cbd7 !important; }
+.pd-rps-dialog { background:#fffdfb !important; color:#382a3b !important; border:1px solid #e6cbd7 !important; box-shadow:0 20px 60px rgba(91,49,72,.2) !important; }
+.pd-rps-dialog::backdrop { background:rgba(56,42,59,.45) !important; }
+.pocket-app .pd-home-minigame > section { background:#fffdfb !important; border:1px solid #e6cbd7 !important; box-shadow:0 10px 26px rgba(91,49,72,.07) !important; }
+.pocket-app .pd-home-minigame button { border-color:#e6cbd7 !important; background:#f8eaf0 !important; color:#382a3b !important; box-shadow:none !important; }
+.pocket-app .pd-romance > div > button { background:#873c60 !important; color:#fffdfb !important; border-radius:15px !important; box-shadow:none !important; }
+.pocket-app .pd-romance { background:transparent !important; box-shadow:none !important; border:0 !important; }
+.pocket-app .pd-daily-quests { background:#fffdfb !important; }
+.pocket-app .pd-daily-quest { box-shadow:none !important; }
+.pocket-app .pd-daily-quest :is(strong,small,span) { color:#382a3b !important; }
+.pocket-app .pd-daily-quest .pd-daily-sticker-count { color:#873c60 !important; }
+.pocket-app .pd-care-topic,.pocket-app .pd-care details { background:#fffdfb !important; border-color:#e6cbd7 !important; box-shadow:none !important; }
+.pocket-app .pd-care-topic :is(h3,h4,p,span),.pocket-app .pd-care details :is(summary,p,span) { color:#382a3b !important; }
+.pocket-app .pd-settings-card :is(h2,h3,p,span,label) { color:#382a3b !important; }
+.pocket-app .pd-setting-option { background:#fffdfb !important; color:#382a3b !important; border-color:#e6cbd7 !important; }
+.pocket-app .pd-setting-option:has(input:checked) { background:#f8eaf0 !important; border-color:#873c60 !important; }
