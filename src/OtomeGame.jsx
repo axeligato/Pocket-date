@@ -376,9 +376,8 @@ function BioTab({memoryAlbum=[],completedStories=[]}){
       </div>
     </header>
     <div className="pd-kai-profile-discoveries">
-      <h3>Get to know Kai</h3>
-      <p>Some things are obvious. Others become clearer as you play dates and read chapters.</p>
-      <span className="pd-kai-profile-count">{known} of {KAI_PROFILE_FACTS.length} details discovered</span>
+      <div className="pd-v2-section-heading"><span className="pd-v2-eyebrow">THE LITTLE DETAILS</span><h3>Getting to know Kai</h3><p>Every shared moment reveals another side of him.</p></div>
+      <div className="pd-v2-discovery-progress" aria-label={`${known} of ${KAI_PROFILE_FACTS.length} details discovered`}><div className="pd-v2-discovery-meta"><span>Discoveries</span><strong>{known} / {KAI_PROFILE_FACTS.length}</strong></div><div className="pd-v2-progress-track"><span style={{width:`${100*known/KAI_PROFILE_FACTS.length}%`}}/></div></div>
       {groups.map(group=><section key={group} className="pd-kai-profile-group" aria-label={group}>
         <h4>{group}</h4>
         <div className="pd-kai-facts">{KAI_PROFILE_FACTS.filter(f=>f.category===group).map(f=>{
@@ -652,6 +651,7 @@ export default function OtomeGame(){
         {/* HOME */}
         {tab==="home"&&(
           <div className="pocket-home pd-home" style={{display:"flex",flexDirection:"column",alignItems:"center",paddingBottom:8}}>
+            <header className="pd-v2-home-intro"><span className="pd-v2-eyebrow">A LITTLE TIME TOGETHER</span><h1>Just you & Kai<span aria-hidden="true"> ♡</span></h1><p>Some of the best moments are the ones you don’t plan.</p></header>
             {/* Tap area */}
             <div className="pocket-character" role="button" tabIndex={0} aria-label={`Show affection to ${CHARACTER.name}`} onClick={tapChar} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();tapChar(e);}}}
               style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
@@ -687,8 +687,8 @@ export default function OtomeGame(){
               ))}
 
             </div>
-
-
+            <div className="pd-v2-home-dialogue" role="status" aria-live="polite"><span className="pd-v2-eyebrow">KAI SAYS</span><p>“{message}”</p><span className="pd-v2-tap-hint">{tapHint?"Tap Kai to say hello":"A moment just for you two"}</span></div>
+            <div className="pd-v2-home-actions"><button type="button" onClick={()=>{setTab("bio");setKaiSection("dates");}}>Plan a hangout <span aria-hidden="true">↗</span></button><button type="button" onClick={()=>{setTab("bio");setKaiSection("profile");}}>Get to know Kai <span aria-hidden="true">→</span></button></div>
           </div>
         )}
 
@@ -698,6 +698,7 @@ export default function OtomeGame(){
         {tab==="wellness"&&<CareMode mode="home" onOpenPreferences={()=>setTab("care")}/>}
 
         {/* Separate character discoveries, repeatable hangouts and story chapters. */}
+        {tab==="bio"&&<div className="pd-v2-kai-heading"><span className="pd-v2-eyebrow">YOUR STORY TOGETHER</span><h1>Meet Kai</h1><p>Discover his world, one moment at a time.</p></div>}
         {tab==="bio"&&<nav className="pd-kai-nav" aria-label="Kai sections">
           <button type="button" aria-current={kaiSection==="profile"?"page":undefined} onClick={()=>setKaiSection("profile")}>Profile</button>
           <button type="button" aria-current={kaiSection==="dates"?"page":undefined} onClick={()=>setKaiSection("dates")}>Hangouts</button>
