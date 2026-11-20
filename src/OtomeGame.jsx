@@ -93,15 +93,8 @@ const TAP_REWARD_XP = 1;
 const LEVEL_UP_FLOWERS = 15;
 
 const PALETTE = {
-  cream: "#000000",
-  paper: "#141414",
-  red: "#FB7185",
-  yellow: "#FACC15",
-  green: "#4ADE80",
-  blue: "#60A5FA",
-  navy: "#F5F5F5",
-  pink: "#F472B6",
-  orange: "#FBBF24",
+  cream:"#FFF9F5",paper:"#FFFCFA",red:"#C56C88",yellow:"#F8E9B9",
+  green:"#DCEBD9",blue:"#E3E4F8",navy:"#463449",pink:"#F5D7E3",orange:"#F6DFC6"
 };
 
 function getMood(a){ return a<20?"tired":a<40?"neutral":a<65?"happy":a<85?"flustered":"pumped"; }
@@ -506,8 +499,8 @@ export default function OtomeGame(){
   const moodEmoji={tired:"😴",neutral:"😶",happy:"😊",flustered:"🫣",pumped:"🔥"};
   const moodColor={tired:PALETTE.blue,neutral:PALETTE.navy,happy:PALETTE.green,flustered:PALETTE.pink,pumped:PALETTE.red};
   const TABS=[
-    {id:"home",   label:"Today",    icon:"🏠", color:PALETTE.yellow},
-    {id:"bio",    label:"Kai", icon:"👤", color:PALETTE.green},
+    {id:"home",   label:"Today",    icon:"⌂", color:PALETTE.yellow},
+    {id:"bio",    label:"Kai", icon:"♡", color:PALETTE.green},
     {id:"wellness",label:"Care",icon:"♡",color:CARE_COLORS.rose},
   ];
 
@@ -519,93 +512,14 @@ export default function OtomeGame(){
     <div className="pocket-app" style={{minHeight:"100dvh",width:"100%",maxWidth:420,margin:"0 auto",background:PALETTE.cream,
       fontFamily:"'Nunito',sans-serif",display:"flex",flexDirection:"column",position:"relative",overflow:"visible"}}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
-        :root{--pocket-ink:#F4EEE7;--pocket-paper:#182930;--pocket-outline:3px solid var(--pocket-ink);--pocket-shadow:4px 5px 0 var(--pocket-ink)}
-        .pocket-content{padding-bottom:calc(94px + env(safe-area-inset-bottom, 0px)) !important}
-        .pocket-app [role="dialog"][aria-modal="true"]{bottom:calc(82px + env(safe-area-inset-bottom, 0px)) !important}
-        .pocket-tabs{box-sizing:border-box}\n        .pocket-tabs{gap:5px;padding:9px 10px 10px;align-items:stretch}
-        .pocket-tabs .pocket-tab{border:2px solid transparent !important;border-radius:14px !important;min-width:0;min-height:55px;transition:transform .16s ease,background .16s ease,box-shadow .16s ease !important}
-        .pocket-tabs .pocket-tab[aria-current="page"]{border-color:var(--pocket-ink) !important;box-shadow:3px 3px 0 var(--pocket-ink);transform:translateY(-2px)}
-        .pocket-tabs .pocket-tab:not([aria-current="page"]):hover{background:#FFFAF2 !important;transform:translateY(-2px)}
-        .pocket-tabs .pocket-tab-label{font-size:10px !important;letter-spacing:.4px !important}
-        .pocket-tabs .pocket-tab-icon{font-size:21px !important;line-height:1.25}
-        .pocket-content{scrollbar-width:thin;scrollbar-color:#526773 transparent}
-        .pocket-content button:not(:disabled):active{filter:brightness(.97)}
-        @media(prefers-reduced-motion:reduce){.pocket-tabs .pocket-tab{transition:none !important}.pocket-tabs .pocket-tab:hover{transform:none !important}}
-        .pocket-home{position:relative;isolation:isolate;background:radial-gradient(circle at 12% 17%,#304750 0 12%,transparent 12.5%),radial-gradient(circle at 91% 55%,#3E4459 0 14%,transparent 14.5%),#182930}
-        .pocket-character{isolation:isolate}
-        .pocket-sticker{position:absolute;z-index:3;pointer-events:none;font-family:"Fredoka One",cursive;color:#073B4C}
-        .pocket-home .pocket-dialogue{transform:rotate(-1deg);border-width:3px !important;border-radius:20px 20px 22px 12px !important;box-shadow:0 8px 24px rgba(0,0,0,.3) !important}
-        .pocket-home .pocket-mood{transform:rotate(3deg);margin-top:4px}
-        @media (min-width:768px){.pocket-home .pocket-home-heading{grid-column:2;grid-row:1;align-self:end;margin-bottom:8px}}
-        @media (max-width:767px){.pocket-home-heading{padding-top:15px}.pocket-home .pocket-dialogue{margin-top:8px !important}}
-        @keyframes hf{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-55px) scale(1.8)}}
-        @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-        @keyframes portraitIn{from{opacity:.65;transform:translateY(8px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-        @keyframes chibiPop{0%{opacity:0;transform:translateY(16px) scale(.55) rotate(-12deg)}20%{opacity:1;transform:translateY(-7px) scale(1.12) rotate(5deg)}35%{transform:translateY(0) scale(1) rotate(0)}78%{opacity:1}100%{opacity:0;transform:translateY(-24px) scale(.92)}}
-        @media (prefers-reduced-motion:reduce){.pocket-chibi-popup,.pocket-character-portrait{animation:none !important}}
-        @keyframes wiggle{0%,100%{transform:rotate(-1deg)}50%{transform:rotate(1deg)}}
-        *{box-sizing:border-box} .pocket-content::-webkit-scrollbar{width:7px} .pocket-content::-webkit-scrollbar-thumb{background:#526773;border-radius:10px}
-        @media (min-width: 768px) {
-          body { background: #121F26; }
-          .pocket-app { max-width: 920px !important; min-height: min(860px, calc(100dvh - 48px)) !important; height: calc(100dvh - 48px); margin: 24px auto !important; border: 2px solid #55727B; border-radius: 24px; box-shadow: 0 18px 44px rgba(0,0,0,.38); }
-          .pocket-content { scrollbar-width: thin; }
-          .pocket-home { display: grid !important; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: auto auto auto; align-items: center !important; align-content: center; column-gap: 30px; row-gap: 12px; padding: 28px 40px !important; min-height: 100%; }
-          .pocket-character { grid-column:1; grid-row:1 / 4; min-height: 360px; align-items: center; }
-          .pocket-character-portrait { height: min(46vh, 410px) !important; max-height: 410px; }
-          .pocket-chibi-popup { height: auto !important; max-height: 160px !important; }
-          .pocket-dialogue { grid-column: 2; grid-row:2; width: 100% !important; margin: 0 0 10px !important; align-self: center; }
-          .pocket-dialogue > div:nth-child(-n+2) { display: none; }
-          .pocket-mood { grid-column: 2; grid-row:3; justify-self: start; align-self: start; }
-          .pocket-bio { max-width: 740px; margin: 0 auto; }
-          .pocket-dates, .pocket-stories { max-width: 740px; margin: 0 auto; padding: 32px 28px !important; }
-          .pocket-tabs { justify-content: center; }
-          .pocket-tabs button { flex: 0 1 150px !important; }
-        }
-        @media (min-width: 768px) and (max-height: 650px) {
-          .pocket-app { min-height: 480px !important; height: calc(100dvh - 24px); margin: 12px auto !important; }
-          .pocket-home { padding-top: 12px !important; padding-bottom: 12px !important; row-gap:5px; }
-          .pocket-character { min-height: 280px; }
-          .pocket-character-portrait { height: 270px !important; }
-        }
-        /* Responsive QA: prevent clipping on small phones and short landscape viewports */
-        .pocket-story-reader{overscroll-behavior:contain} .pocket-story-reader>div:nth-child(3){min-height:140px;flex-shrink:0} .pocket-story-reader>div:last-child{position:relative;z-index:2}
-        .pocket-story-reader button{touch-action:manipulation}
-        @media (max-width: 380px){
-          .pocket-home-heading{padding-left:16px !important;padding-right:16px !important}
-          .pocket-home .pocket-character-portrait{height:min(39dvh,280px) !important}
-          .pocket-home .pocket-dialogue{padding:12px 14px !important;margin-top:8px !important}
-          .pocket-tabs{gap:2px;padding-left:5px;padding-right:5px}
-          .pocket-tabs .pocket-tab{min-height:50px;padding:5px 2px !important}
-          .pocket-tabs .pocket-tab-label{font-size:9px !important}
-          .pocket-dates,.pocket-stories{padding-left:12px !important;padding-right:12px !important}
-        }
-        @media (max-height: 580px) and (max-width:767px){
-          .pocket-story-reader>div:nth-child(3){min-height:125px;flex:0 0 125px !important}
-          .pocket-home .pocket-character-portrait{height:min(34dvh,230px) !important}
-          .pocket-home-heading{padding-top:8px !important}
-          .pocket-tabs .pocket-tab{min-height:45px}
-          .pocket-story-reader>div:nth-child(2){padding-top:6px !important;padding-bottom:4px !important}
-          .pocket-story-reader>div:last-child{padding-bottom:12px !important}
-          .pocket-story-reader>div:last-child button{padding:11px 14px !important}
-        }
-        @media (min-width:768px) and (max-height:650px){
-          .pocket-story-reader>div:nth-child(3){min-height:150px;flex:0 0 150px !important}
-          .pocket-home .pocket-home-heading{padding-top:0 !important}
-          .pocket-home .pocket-dialogue{padding:10px 14px !important}
-          .pocket-home .pocket-mood{margin-bottom:5px !important}
-        }
-        .pocket-character:focus-visible,button:focus-visible,[role="button"]:focus-visible{outline:3px solid #E4BC83;outline-offset:4px}
-        button{touch-action:manipulation}
-        @media (prefers-reduced-motion:reduce){.pocket-character-portrait,.pocket-chibi-popup{animation:none !important}.pocket-character{transition:none !important}}
-        @media (max-width: 767px) {
-          .pocket-app { width: 100%; min-height:100dvh !important; }
-          .pocket-character-portrait { max-height: min(42dvh,340px); }
-          .pocket-tabs { padding-bottom: env(safe-area-inset-bottom, 0px); }
-          .pocket-tabs button { min-height: 48px; }
-        }
-      `}</style>
+@keyframes hf{to{opacity:0;transform:translateY(-55px) scale(1.8)}}
+@keyframes portraitIn{from{opacity:.7;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes chibiPop{0%{opacity:0;transform:scale(.6)}20%{opacity:1;transform:scale(1.08)}80%{opacity:1}100%{opacity:0;transform:translateY(-20px)}}
+.pocket-content{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))!important}
+.pocket-sticker{position:absolute;z-index:3;pointer-events:none}
+.pocket-character{isolation:isolate}
+@media(prefers-reduced-motion:reduce){.pocket-character-portrait,.pocket-chibi-popup{animation:none!important}}
+`}</style>
 
       {/* Settings is a utility control above the companion/currency header. */}
       <div className="pd-utility-bar">
@@ -618,7 +532,7 @@ export default function OtomeGame(){
       </div>
       {tab==="home"&&<>
       {/* ── XP + Affection bars ── */}
-      <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"2px solid "+PALETTE.navy}}>
+      <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"1px solid #EBD8DF"}}>
         {/* Level row */}
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
           <div style={{display:"flex",alignItems:"center",gap:6}}>
@@ -627,7 +541,7 @@ export default function OtomeGame(){
           </div>
           <span style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:900}}>{level>=MAX_LEVEL?"MAX":`${xp}/${XP_PER_LEVEL}`}</span>
         </div>
-        <div style={{height:10,background:"#242424",borderRadius:99,border:"1.5px solid #686868",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:"#F1E5EB",borderRadius:99,border:"1px solid #E6CBD7",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${level>=MAX_LEVEL?100:(xp/XP_PER_LEVEL)*100}%`,
             background:"#FACC15",
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(255,180,0,0.5)"}}/>
@@ -637,7 +551,7 @@ export default function OtomeGame(){
           <span style={{fontSize:10,color:PALETTE.red,fontWeight:900,letterSpacing:1}}>♡ AFFECTION</span>
           <span style={{fontSize:10,color:CARE_COLORS.muted,fontWeight:700}}>{affection}%</span>
         </div>
-        <div style={{height:10,background:"#242424",borderRadius:99,border:"1.5px solid #686868",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:"#F1E5EB",borderRadius:99,border:"1px solid #E6CBD7",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${affection}%`,
             background:"#F472B6",
             transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(239,71,111,0.4)"}}/>
