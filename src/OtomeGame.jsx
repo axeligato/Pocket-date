@@ -540,7 +540,7 @@ export default function OtomeGame(){
       </div>
       {tab==="home"&&<>
       {/* ── XP + Affection bars ── */}
-      <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"2px solid "+PALETTE.navy}}>
+      <div style={{padding:"10px 18px 0",flexShrink:0,background:PALETTE.paper,borderBottom:"1px solid #E6CBD7"}}>
         {/* Level row */}
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
           <div style={{display:"flex",alignItems:"center",gap:6}}>
@@ -549,20 +549,20 @@ export default function OtomeGame(){
           </div>
           <span style={{fontSize:11,color:CARE_COLORS.muted,fontWeight:900}}>{level>=MAX_LEVEL?"MAX":`${xp}/${XP_PER_LEVEL}`}</span>
         </div>
-        <div style={{height:10,background:"#242424",borderRadius:99,border:"1.5px solid #686868",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:"#F0DFE8",borderRadius:99,border:"1px solid #E6CBD7",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${level>=MAX_LEVEL?100:(xp/XP_PER_LEVEL)*100}%`,
-            background:"#FACC15",
-            transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(255,180,0,0.5)"}}/>
+            background:"#A86A91",
+            transition:"width 0.5s ease"}}/>
         </div>
         {/* Affection row */}
         <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
           <span style={{fontSize:10,color:PALETTE.red,fontWeight:900,letterSpacing:1}}>♡ AFFECTION</span>
           <span style={{fontSize:10,color:CARE_COLORS.muted,fontWeight:700}}>{affection}%</span>
         </div>
-        <div style={{height:10,background:"#242424",borderRadius:99,border:"1.5px solid #686868",overflow:"hidden",marginBottom:8}}>
+        <div style={{height:10,background:"#F0DFE8",borderRadius:99,border:"1px solid #E6CBD7",overflow:"hidden",marginBottom:8}}>
           <div style={{height:"100%",borderRadius:99,width:`${affection}%`,
-            background:"#F472B6",
-            transition:"width 0.5s ease",boxShadow:"0 0 6px rgba(239,71,111,0.4)"}}/>
+            background:"#D99BB9",
+            transition:"width 0.5s ease"}}/>
         </div>
       </div>
 
