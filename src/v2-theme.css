@@ -1,0 +1,133 @@
+/* Pocket Date V2 — Moonlit Letter
+   Isolated, reversible design layer. Imported after the legacy stylesheet.
+   Palette: parchment / wine / rose / lilac / ink. */
+:root {
+  color-scheme: light;
+  --pd-ink: #382a3b;
+  --pd-muted: #756776;
+  --pd-paper: #fff9f4;
+  --pd-surface: #fffdfb;
+  --pd-accent: #873c60;
+  --pd-focus: #873c60;
+  --pd-radius: 20px;
+  --pd-outline: 2px solid #873c60;
+  --pd-shadow: 0 12px 34px rgba(91,49,72,.10);
+  --pd-soft-border: 1px solid rgba(115,68,94,.16);
+  --pd-soft-shadow: 0 8px 26px rgba(91,49,72,.08);
+  --pd-night: #fff9f4;
+  --pd-panel: #fffdfb;
+  --pd-raised: #f8eaf0;
+  --pd-cream: #382a3b;
+  --pd-soft: #756776;
+  --pd-honey: #873c60;
+  --pd-sage: #e7d7e7;
+  --pd-plum: #873c60;
+}
+html, body, #root { background: #fff9f4 !important; color: #382a3b; }
+body { background: radial-gradient(ellipse at 85% 5%,#f7e1eb,transparent 55%),#fff9f4 !important; }
+.pocket-app, .pocket-home {
+  background: radial-gradient(circle at 88% 12%,rgba(219,174,195,.23),transparent 35%),#fff9f4 !important;
+  color: #382a3b !important;
+}
+.pocket-content, .pd-romance, .pd-feelings, .pd-care { color: #382a3b !important; }
+.pocket-content :is(h1,h2,h3), .pd-daily-heading h2 {
+  font-family: Georgia, 'Times New Roman', serif !important;
+  letter-spacing: -.025em;
+  font-weight: 600;
+}
+.pocket-content p { line-height: 1.65; }
+.pocket-app :is(button,input,select,textarea) { color: #382a3b; }
+.pocket-app :is(input,select,textarea) {
+  background: #fffdfb !important;
+  border: 1px solid #d9becb !important;
+  border-radius: 12px;
+}
+.pocket-app :is(button,summary,input,select,textarea,[role="button"]):focus-visible {
+  outline: 3px solid #873c60 !important;
+  outline-offset: 3px !important;
+}
+.pocket-app button:disabled { opacity: .58; }
+.pocket-app :is(button,summary) { touch-action: manipulation; }
+.pocket-app .pocket-tab { min-height: 48px; border-radius: 14px; }
+.pocket-app .pocket-tab:not([aria-current="page"]):hover { background: #f4e5ec !important; }
+.pocket-home .pocket-character-portrait {
+  filter: drop-shadow(0 18px 25px rgba(97,55,79,.16)) !important;
+}
+.pocket-home .pocket-dialogue, .pocket-app .pd-conversation {
+  background: #fffdfb !important;
+  color: #382a3b !important;
+  border: 1px solid #e4cbd6 !important;
+  border-radius: 24px !important;
+  box-shadow: 0 14px 38px rgba(91,49,72,.09) !important;
+}
+.pocket-home .pocket-mood {
+  background: #fffdfb !important;
+  border-color: #d8bac9 !important;
+  box-shadow: 0 5px 18px rgba(91,49,72,.10) !important;
+}
+.pocket-home .pocket-mood span { color: #382a3b !important; }
+.pocket-home .pocket-sticker, .pocket-app .pocket-sticker {
+  color: #873c60 !important; text-shadow: none !important;
+}
+.pd-choice {
+  background: #fffdfb !important;
+  color: #382a3b !important;
+  border: 1px solid #d9becb !important;
+  border-radius: 16px !important;
+  min-height: 48px;
+}
+.pd-choice:hover:not(:disabled), .pd-choice[aria-pressed="true"] {
+  background: #f5dfe9 !important;
+  color: #382a3b !important;
+  border-color: #873c60 !important;
+}
+.pd-daily-quests, .pd-care-hero {
+  background: linear-gradient(145deg,#fffdfb,#f8e9f0) !important;
+  color: #382a3b !important;
+  border: 1px solid #e6cbd7 !important;
+  box-shadow: 0 12px 34px rgba(91,49,72,.08) !important;
+}
+.pd-daily-heading h2, .pd-daily-reaction strong, .pd-daily-quest,
+.pd-daily-eyebrow, .pd-daily-intro, .pd-daily-footer, .pd-daily-xp {
+  color: #382a3b !important;
+}
+.pd-daily-quest, .pd-care-stats>div, .pd-care-encouragement-grid button {
+  background: #fffdfb !important;
+  color: #382a3b !important;
+  border: 1px solid #e6cbd7 !important;
+}
+.pd-daily-quest small, .pd-daily-quest .pd-daily-reward,
+.pd-care-eyebrow, .pd-care-hero-footer { color: #756776 !important; }
+.pd-daily-quest:disabled { background: #f2e9ed !important; }
+.pd-daily-reaction { background: #f8eaf0 !important; border-left-color: #873c60; }
+.pd-care-dashboard,.pd-care-activities,.pd-care-feeling,.pd-care-encouragement,
+.pd-settings-card {
+  background: #fffdfb !important;
+  color: #382a3b !important;
+  border: 1px solid #e6cbd7 !important;
+  box-shadow: 0 8px 26px rgba(91,49,72,.06) !important;
+}
+.pd-care-stats span, .pd-care-encouragement p, .pd-care-trend-note {
+  color: #756776 !important;
+}
+.pd-care-bar-track { background: #f1e3e9 !important; }
+.pd-care-bar-fill { background: #aa6b8b !important; }
+.pd-wellness-session {
+  background: #fff9f4 !important; color: #382a3b !important;
+}
+.pd-guided-visual { background: radial-gradient(circle,#fffdfb,#f5e0e9) !important; }
+.pd-guided-visual--ground { background: linear-gradient(#f7e8f1,#eee3f4) !important; }
+.pocket-app [style*="background: white"],
+.pocket-app [style*="background: rgb(255, 255, 255)"] { background: #fffdfb !important; }
+@media(max-width: 420px) {
+  .pd-daily-quests { margin-inline: 12px; padding: 16px 14px; }
+  .pd-care-dashboard,.pd-care-activities,.pd-care-feeling { padding: 14px; }
+  .pocket-app :is(button, [role="button"]) { min-height: 44px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .pocket-app *, .pocket-app *::before, .pocket-app *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
