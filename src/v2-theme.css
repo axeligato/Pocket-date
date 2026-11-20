@@ -196,3 +196,80 @@ body { background: radial-gradient(ellipse at 85% 5%,#f7e1eb,transparent 55%),#f
   .pd-v2-home-dialogue { padding:14px 16px; }
   .pd-v2-kai-heading { padding:20px 12px 12px; }
 }
+
+/* V2 overhaul: remove the old sticker/card-game visual language across every screen */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap');
+:root {
+  --pd-ink:#382a3b; --pd-muted:#756776; --pd-paper:#fff9f4; --pd-surface:#fffdfb;
+  --pd-accent:#873c60; --pd-soft-border:1px solid #e6cbd7; --pd-soft-shadow:0 12px 32px rgba(91,49,72,.07);
+}
+body, .pocket-app { font-family:'DM Sans',sans-serif !important; }
+.pocket-app { max-width:480px !important; border:0 !important; box-shadow:none !important; background:#fff9f4 !important; }
+.pocket-app .pocket-content { background:#fff9f4 !important; }
+.pocket-app :is(h1,h2,h3,h4),.pd-kai-profile-intro h2,.pd-v2-home-dialogue p {
+  font-family:'DM Serif Display',Georgia,serif !important; font-weight:400 !important; letter-spacing:-.025em !important;
+}
+.pocket-app button { font-family:'DM Sans',sans-serif !important; }
+.pocket-app :is(button,[role="button"]):focus-visible { outline:3px solid #873c60 !important; outline-offset:3px; }
+.pd-v2-home-intro h1,.pd-v2-kai-heading h1 { font-family:'DM Serif Display',Georgia,serif !important; font-size:clamp(34px,9vw,46px) !important; }
+.pd-v2-home-dialogue p { font-size:22px !important; }
+.pocket-home.pd-home .pocket-character > .pocket-sticker { opacity:.35; font-size:18px !important; text-shadow:none !important; }
+.pocket-home.pd-home .pocket-character > div:first-child { inset:7% 13% 5% !important; transform:none !important; border-radius:42% 58% 55% 45% / 48% 45% 55% 52% !important; }
+.pocket-home.pd-home .pocket-character > div:nth-child(2) { display:none !important; }
+.pocket-home.pd-home .pocket-character-portrait { filter:drop-shadow(0 14px 22px rgba(75,40,64,.12)) !important; }
+.pocket-app .pd-v2-home-actions button { border-radius:15px !important; box-shadow:none !important; transform:none !important; font-size:13px !important; }
+.pocket-app .pd-v2-home-actions button:hover { filter:brightness(.96); }
+.pd-kai-profile,.pd-keepsakes { max-width:700px; margin-inline:auto; }
+.pd-kai-profile-hero { transform:none !important; }
+.pd-kai-profile-hero :is(h2,p,dt,dd) { text-shadow:none !important; }
+.pd-kai-profile-discoveries h4 { color:#873c60 !important; font-size:21px !important; }
+.pd-kai-fact { border-radius:16px !important; transform:none !important; }
+.pd-kai-fact-icon { color:#873c60 !important; }
+.pd-kai-profile-basics { background:transparent !important; }
+.pocket-app .pd-companion-header { background:#fffdfb !important; border-bottom:1px solid #e6cbd7 !important; box-shadow:none !important; }
+.pd-companion-name { font-family:'DM Serif Display',Georgia,serif !important; font-size:25px !important; font-weight:400 !important; color:#382a3b !important; }
+.pd-companion-eyebrow,.pd-companion-title { color:#756776 !important; }
+.pd-flower-count { background:#f8eaf0 !important; color:#873c60 !important; border:1px solid #e6cbd7 !important; box-shadow:none !important; }
+.pocket-app .pd-utility-bar { min-height:62px; padding:10px 20px !important; }
+.pd-app-name { font-family:'DM Serif Display',Georgia,serif !important; font-size:22px !important; }
+.pd-utility-settings { border-radius:50% !important; }
+.pocket-app .pocket-tabs { max-width:480px !important; gap:4px !important; padding:9px 14px calc(10px + env(safe-area-inset-bottom,0px)) !important; }
+.pocket-tabs .pocket-tab { border:0 !important; border-radius:14px !important; }
+.pocket-tabs .pocket-tab-icon { font-size:19px !important; }
+.pocket-tabs .pocket-tab-label { font-size:11px !important; letter-spacing:0 !important; text-transform:none !important; font-weight:700 !important; }
+.pocket-app .pd-kai-nav { max-width:660px; margin-inline:auto; }
+.pocket-app :is(.pocket-dates,.pocket-stories) { padding:22px 20px 36px !important; }
+.pocket-app :is(.pocket-dates,.pocket-stories) > div:first-child { transform:none !important; background:#f8eaf0 !important; border:0 !important; box-shadow:none !important; color:#873c60 !important; border-radius:99px !important; padding:7px 12px !important; }
+.pocket-app :is(.pocket-dates,.pocket-stories) > div:nth-child(2) { font-family:'DM Serif Display',Georgia,serif !important; font-weight:400 !important; font-size:32px !important; color:#382a3b !important; }
+.pocket-app :is(.pocket-dates,.pocket-stories) > p { color:#756776 !important; font-weight:400 !important; }
+.pocket-app :is(.pd-date-entry > button,.pocket-stories > div:last-child > button) { transform:none !important; border:1px solid #e6cbd7 !important; border-radius:20px !important; box-shadow:0 9px 24px rgba(91,49,72,.06) !important; background:#fffdfb !important; overflow:hidden; }
+.pocket-app :is(.pd-date-entry > button,.pocket-stories > div:last-child > button) > div:first-child { border-right:1px solid #e6cbd7 !important; background:#f8eaf0 !important; }
+.pocket-app :is(.pd-date-entry > button,.pocket-stories > div:last-child > button) :is(span,div) { text-shadow:none !important; }
+.pocket-app .pd-date-entry > button div[style*="Fredoka"],.pocket-app .pocket-stories button div[style*="Fredoka"] { font-family:'DM Serif Display',Georgia,serif !important; font-weight:400 !important; color:#382a3b !important; }
+.pocket-app .pd-date-memory-list { border-color:#e6cbd7 !important; }
+.pocket-app .pd-date-memory { background:#fffdfb !important; border-color:#e6cbd7 !important; }
+.pocket-app :is(.pd-daily-quests,.pd-care-dashboard,.pd-care-activities,.pd-care-feeling,.pd-care-encouragement,.pd-settings-card,.pd-romance,.pd-conversation,.pd-keepsakes) {
+  border-radius:22px !important; border-color:#e6cbd7 !important; box-shadow:0 8px 28px rgba(91,49,72,.05) !important;
+}
+.pocket-app .pd-choice { border-radius:14px !important; box-shadow:none !important; }
+.pocket-app .pd-care-topic { border-radius:16px !important; }
+.pocket-app .pd-care-hero { border-radius:24px !important; }
+.pocket-app .pd-daily-reaction-overlay { background:rgba(56,42,59,.52) !important; }
+.pocket-app .pd-daily-reaction-dialog { background:#fffdfb !important; color:#382a3b !important; border:1px solid #e6cbd7 !important; box-shadow:0 22px 60px rgba(56,42,59,.17) !important; }
+.pd-daily-reaction-dialog :is(h3,p) { color:#382a3b !important; }
+.pd-daily-reaction-eyebrow,.pd-daily-reaction-reward { color:#873c60 !important; }
+.pd-daily-reaction-dismiss { background:#873c60 !important; color:#fffdfb !important; border-color:#873c60 !important; }
+@media(min-width:768px) {
+  body { background:radial-gradient(ellipse at 20% 10%,#f1dce8,transparent 45%),#fff9f4 !important; }
+  .pocket-app { max-width:720px !important; min-height:100dvh !important; height:auto !important; margin:0 auto !important; border-left:1px solid #ead5e0 !important; border-right:1px solid #ead5e0 !important; border-radius:0 !important; }
+  .pocket-tabs { max-width:720px !important; }
+  .pd-v2-home-intro { padding-top:36px; }
+  .pocket-home.pd-home .pocket-character-portrait { height:380px !important; }
+  .pd-v2-home-dialogue,.pd-v2-home-actions { max-width:510px; }
+  .pd-kai-profile { max-width:660px; }
+}
+@media(max-width:380px) {
+  .pocket-app .pd-utility-bar { padding-inline:14px !important; }
+  .pocket-app :is(.pocket-dates,.pocket-stories) { padding-inline:14px !important; }
+  .pd-v2-home-dialogue p { font-size:19px !important; }
+}
