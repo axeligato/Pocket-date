@@ -572,25 +572,9 @@ export default function OtomeGame(){
               style={{position:"relative",cursor:"pointer",width:"100%",display:"flex",
                 justifyContent:"center",paddingTop:16,
                 transform:pulse?"scale(1.03)":"scale(1)",transition:"transform 0.25s cubic-bezier(.4,2,.6,1)"}}>
-              <div aria-hidden="true" style={{position:"absolute",inset:"9% 9% 6%",background:CARE_COLORS.gold,border:"3px solid "+PALETTE.navy,borderRadius:"46% 54% 50% 48% / 44% 42% 58% 56%",transform:"rotate(-8deg)",boxShadow:"0 12px 30px rgba(0,0,0,.28)",zIndex:0}}/>
-              <div aria-hidden="true" style={{position:"absolute",inset:"15% 14% 13%",border:"2px dashed rgba(244,238,231,.38)",borderRadius:"48%",transform:"rotate(9deg)",zIndex:0}}/>
-              <span className="pocket-sticker" aria-hidden="true" style={{top:"12%",left:"7%",fontSize:27,transform:"rotate(-13deg)",textShadow:"2px 2px 0 #182930"}}>✦</span>
-              <span className="pocket-sticker" aria-hidden="true" style={{right:"8%",bottom:"24%",fontSize:30,transform:"rotate(12deg)",color:CARE_COLORS.rose,textShadow:"2px 2px 0 white"}}>♥</span>
-
-              <img className="pocket-character-portrait" key={mood} src={PORTRAITS[MOOD_PORTRAIT[mood]]} alt={`${CHARACTER.name} — ${mood}`}
-                style={{
-                  height:315,
-                  width:"auto",
-                  maxWidth:"88%",
-                  objectFit:"contain",
-                  objectPosition:"top center",
-                  display:"block",
-                  position:"relative",
-                  zIndex:1,
-                  filter:"drop-shadow(3px 6px 2px rgba(7,59,76,.22))",
-                  animation:"portraitIn .28s ease-out both",
-                }}
-              />
+              <div className="cozy-portrait-frame">
+                <img className="pocket-character-portrait" key={mood} src={PORTRAITS[MOOD_PORTRAIT[mood]]} alt={`${CHARACTER.name} — ${mood}`} />
+              </div>
               {chibiPopup&&(
                 <img className="pocket-chibi-popup" key={chibiPopup.id} src={CHIBIS[chibiPopup.emotion]} alt={`${CHARACTER.name} ${chibiPopup.emotion} reaction`}
                   style={{position:"absolute",right:"4%",top:"9%",width:"clamp(88px,30%,142px)",height:"auto",maxHeight:160,objectFit:"contain",zIndex:12,pointerEvents:"none",filter:"drop-shadow(2px 5px 3px rgba(7,59,76,.24))",animation:"chibiPop 1.45s ease-out both"}}/>
