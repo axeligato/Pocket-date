@@ -131,3 +131,68 @@ body { background: radial-gradient(ellipse at 85% 5%,#f7e1eb,transparent 55%),#f
     scroll-behavior: auto !important;
   }
 }
+
+/* Phase 2 — character-first Home and Kai profile */
+.pd-v2-eyebrow { color:#873c60; font-size:10px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+.pd-v2-home-intro { width:100%; padding:26px 24px 0; text-align:center; }
+.pd-v2-home-intro h1,.pd-v2-kai-heading h1 { margin:7px 0 6px; font:500 clamp(30px,7vw,42px)/1.1 Georgia,serif; color:#382a3b; letter-spacing:-.045em; }
+.pd-v2-home-intro h1 span { color:#a45d81; }
+.pd-v2-home-intro p,.pd-v2-kai-heading p { margin:0; color:#756776; font-size:13px; line-height:1.6; }
+.pocket-home.pd-home { display:flex !important; flex-direction:column !important; gap:0 !important; width:100%; }
+.pocket-home.pd-home .pocket-character { width:min(100%,440px) !important; min-height:0; padding-top:8px !important; }
+.pocket-home.pd-home .pocket-character > div:first-child {
+  background:radial-gradient(ellipse at 55% 35%,#f4d7e5,#e9d9ef 75%) !important;
+  border:1px solid #e4c5d4 !important; border-radius:48% 52% 42% 58% / 50% 44% 56% 50% !important;
+  box-shadow:0 18px 35px rgba(120,70,99,.11) !important;
+}
+.pocket-home.pd-home .pocket-character > div:nth-child(2) { border-color:rgba(135,60,96,.23) !important; }
+.pocket-home.pd-home .pocket-character-portrait { height:clamp(245px,44dvh,380px) !important; max-height:380px !important; }
+.pd-v2-home-dialogue { width:calc(100% - 36px); max-width:500px; padding:19px 21px 16px; margin:0 auto 14px; background:#fffdfb; border:1px solid #e5cad7; border-radius:22px; box-shadow:0 12px 30px rgba(91,49,72,.08); }
+.pd-v2-home-dialogue p { font:500 clamp(17px,4vw,21px)/1.45 Georgia,serif; color:#382a3b; margin:10px 0; }
+.pd-v2-tap-hint { color:#756776; font-size:11px; }
+.pd-v2-home-actions { width:calc(100% - 36px); max-width:500px; display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 auto 20px; }
+.pd-v2-home-actions button { min-height:50px; border-radius:14px; border:1px solid #873c60; padding:12px 10px; font-size:12px; font-weight:800; cursor:pointer; }
+.pd-v2-home-actions button:first-child { background:#873c60; color:#fffdfb !important; }
+.pd-v2-home-actions button:last-child { background:#fffdfb; color:#873c60 !important; }
+.pd-v2-home-actions button span { margin-left:4px; }
+.pd-v2-kai-heading { text-align:center; padding:28px 20px 18px; }
+.pd-kai-nav { display:flex; gap:5px; padding:5px; margin:0 16px 20px; background:#f3e7ed; border:1px solid #e8d4df; border-radius:17px; }
+.pd-kai-nav button { flex:1; min-height:44px; border:0; border-radius:12px; background:transparent; color:#756776 !important; font-size:13px; font-weight:800; cursor:pointer; }
+.pd-kai-nav button[aria-current="page"] { background:#fffdfb; color:#873c60 !important; box-shadow:0 3px 12px rgba(91,49,72,.08); }
+.pd-kai-profile { color:#382a3b; }
+.pd-kai-profile-hero { background:linear-gradient(145deg,#f8e9f0,#fffaf7) !important; border:1px solid #e6cbd7 !important; border-radius:24px !important; box-shadow:none !important; overflow:hidden; }
+.pd-kai-profile-art { background:radial-gradient(circle at 50% 45%,#e7c7da,#f6e6ed) !important; }
+.pd-kai-profile-intro h2 { font:500 38px/1.1 Georgia,serif !important; color:#382a3b !important; }
+.pd-kai-profile-title,.pd-kai-profile-basics,.pd-kai-profile-intro { color:#382a3b !important; }
+.pd-kai-profile-eyebrow { color:#873c60 !important; }
+.pd-kai-profile-discoveries { padding-top:12px; }
+.pd-v2-section-heading { margin-bottom:16px; }
+.pd-v2-section-heading h3 { margin:6px 0; font:500 27px/1.2 Georgia,serif !important; color:#382a3b; }
+.pd-v2-section-heading p { margin:0; color:#756776; font-size:13px; }
+.pd-v2-discovery-progress { padding:14px 16px; margin:0 0 22px; border:1px solid #e6cbd7; background:#fffdfb; border-radius:16px; }
+.pd-v2-discovery-meta { display:flex; justify-content:space-between; color:#756776; font-size:12px; margin-bottom:9px; }
+.pd-v2-discovery-meta strong { color:#873c60; }
+.pd-v2-progress-track { height:7px; background:#f0e1e9; border-radius:99px; overflow:hidden; }
+.pd-v2-progress-track span { display:block; height:100%; background:#873c60; border-radius:inherit; }
+.pd-kai-profile-group,.pd-kai-fact { background:#fffdfb !important; color:#382a3b !important; border-color:#e6cbd7 !important; box-shadow:none !important; }
+.pd-kai-fact :is(h5,p,small) { color:#382a3b !important; }
+.pd-kai-fact.is-locked { opacity:.68; }
+.pd-utility-bar { background:#fff9f4 !important; border-bottom:1px solid #efdae4; justify-content:space-between; }
+.pd-app-name { color:#873c60 !important; font:600 19px Georgia,serif !important; }
+.pd-utility-settings { background:#fffdfb !important; border-color:#e6cbd7 !important; color:#873c60 !important; }
+.pocket-tabs { background:#fffdfb !important; border-top:1px solid #e6cbd7 !important; box-shadow:0 -6px 25px rgba(91,49,72,.06); }
+.pocket-tabs .pocket-tab { background:transparent !important; box-shadow:none !important; transform:none !important; }
+.pocket-tabs .pocket-tab[aria-current="page"] { background:#f8eaf0 !important; border-color:#e6cbd7 !important; box-shadow:none !important; transform:none !important; }
+.pocket-tabs .pocket-tab-label { color:#382a3b !important; }
+@media(min-width:768px) {
+  .pocket-app { border:1px solid #e6cbd7 !important; box-shadow:0 18px 48px rgba(91,49,72,.10) !important; }
+  .pocket-home.pd-home { display:flex !important; }
+  .pocket-home.pd-home .pocket-character { grid-column:auto; grid-row:auto; }
+  .pd-v2-home-intro { padding-top:30px; }
+}
+@media(max-width:380px) {
+  .pd-v2-home-intro { padding:20px 12px 0; }
+  .pd-v2-home-actions { grid-template-columns:1fr; }
+  .pd-v2-home-dialogue { padding:14px 16px; }
+  .pd-v2-kai-heading { padding:20px 12px 12px; }
+}
